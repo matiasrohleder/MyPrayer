@@ -1,0 +1,44 @@
+html,
+body {
+    height: 100%;
+}
+
+a {
+    /* Inherit the color from the parent element */
+    color: inherit;
+    /* Remove underline */
+    text-decoration: none;
+}
+
+a:hover {
+    /* Remove underline on hover */
+    text-decoration: none;
+}
+
+.card {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-yellow {
+    background-color: #ffff66;
+}
+
+.card-blue {
+    background-color: #66b3ff;
+}
+
+.card-green {
+    background-color: #85e085;
+}
+
+.card-violet {
+    background-color: violet;
+}
