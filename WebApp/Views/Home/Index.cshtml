@@ -3,6 +3,38 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="container-fluid h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-md-6 mb-3 mt-3">
+                <a href="/User">
+                    <div class="card card-yellow">
+                        <h3>Usuarios</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 mb-3 mt-3">
+                <a href="/Category">
+                    <div class="card card-blue">
+                        <h3>Lecturas</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 mb-3 mt-3">
+                <a href="/Category">
+                    <div class="card card-green">
+                        <h3>Categorías</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 mb-3 mt-3">
+                <a href="/Content">
+                    <div class="card card-violet">
+                        <h3>Contenidos</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<link href="~/css/views/home/index.css" rel="stylesheet" asp-append-version="true">
