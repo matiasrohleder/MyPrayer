@@ -1,3 +1,4 @@
+using DataLayer.Configuration;
 using DataLayer.Constants;
 using Entities.Models.DbContexts;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +34,6 @@ public static class DbContextFactoryHelper
             default:
                 throw new NotImplementedException($"The database provider '{dbConfig.ModelProvider}' specified for the Model is not supported. ");
         }
-
-
     }
 
     /// <summary>

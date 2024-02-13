@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Entities.Helpers;
+namespace DataLayer.Configuration;
 
 public class DatabaseConfiguration
 {
