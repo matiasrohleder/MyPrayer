@@ -7,20 +7,27 @@ namespace DataLayer;
 /// <summary>
 /// Unit of Work class.
 /// </summary>
-public class UnitOfWork(DbContext modelDbContext) : IUnitOfWork, IDisposable
+public class UnitOfWork(DbContext modelsDbContext) : IUnitOfWork, IDisposable
 {
     #region Properties and constructor
 
-    private readonly DbContext modelDbContext = modelDbContext;
+    private readonly DbContext modelsDbContext = modelsDbContext;
     private bool disposed = false;
     #endregion
 
     #region Public methods
+    ///<inheritdoc/>
     public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity
     {
         return new Repository<TEntity>(
-            modelDbContext
+            modelsDbContext
         );
+    }
+
+    ///<inheritdoc/>
+    public async Task<int> SaveChangesAsync<TEntity>() where TEntity : class, IEntity
+    {
+        return await modelsDbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -38,7 +45,7 @@ public class UnitOfWork(DbContext modelDbContext) : IUnitOfWork, IDisposable
     {
         if (!disposed)
         {
-            modelDbContext.Dispose();
+            modelsDbContext.Dispose();
         }
 
         disposed = true;

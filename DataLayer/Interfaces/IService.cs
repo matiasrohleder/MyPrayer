@@ -30,4 +30,9 @@ public interface IService<TEntity> where TEntity : class, IEntity
     /// Asynchronously deletes (logical) an existent IEntity object from the database by id.
     /// </summary>
     Task DeleteAsync(Guid id);
+
+    /// <summary>
+    /// Asynchronously deletes (logical) an existent IEntity object from the database.
+    /// </summary>
+    Task DeleteAsync(TEntity entity);
 }

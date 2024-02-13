@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DataLayer.Interfaces;
 
 /// <summary>
@@ -17,13 +19,9 @@ public interface IRepository<T> where T : class, IEntity
     Task<T?> GetAsync(Guid id);
 
     /// <summary>
-    /// Asynchronously retrieves all entities.
+    /// Returns an IQueryable of type TEntity representing all rows of an IEntity table.
     /// </summary>
-    /// <returns>
-    /// A <see cref="Task{TResult}"/> representing the asynchronous operation.
-    /// The task result contains an enumerable collection of entities.
-    /// </returns>
-    Task<IEnumerable<T>> GetAllAsync();
+    DbSet<T> GetAll();
 
     /// <summary>
     /// Adds a new entity to the data source.
