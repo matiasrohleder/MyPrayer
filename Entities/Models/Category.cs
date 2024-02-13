@@ -1,6 +1,6 @@
 ﻿using DataLayer.Models.AbstractEntities;
 
-namespace Entities.Models.AbstractEntities;
+namespace Entities.Models;
 
 public class Category : Entity
 {
