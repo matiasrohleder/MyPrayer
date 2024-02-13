@@ -3,6 +3,7 @@ using DataLayer.Interfaces;
 using DataLayer.Services;
 using Entities.Models.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllersWithViews();
 // Generic service
 // builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));sarasa
 // builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.ConfigureWebApp(builder.Configuration);
 
 var app = builder.Build();
 
