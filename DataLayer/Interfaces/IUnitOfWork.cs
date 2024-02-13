@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DataLayer.Interfaces;
 
 /// <summary>
@@ -5,6 +7,17 @@ namespace DataLayer.Interfaces;
 /// </summary>
 public interface IUnitOfWork
 {
+    /// <summary>
+    /// Exposes the DbContext correspondent to a given TEntity as readonly.
+    /// </summary>
+    DbContext GetDbContext<TEntity>() where TEntity : class, IEntity;
+
+    /// <summary>
+    /// Exposes the ModelsDbContext
+    /// </summary>
+    DbContext GetModelsDbContext();
+
+
     /// <summary>
     /// Instantiates a new Repository for a given IEntity type.
     /// </summary>

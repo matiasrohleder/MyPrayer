@@ -1,6 +1,8 @@
+using DataLayer.Interfaces;
+
 namespace DataLayer.Models.AbstractEntities;
 
-public abstract class Entity
+public abstract class Entity : IEntity
 {
     public Entity()
     {
