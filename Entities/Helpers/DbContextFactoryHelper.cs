@@ -21,7 +21,7 @@ public static class DbContextFactoryHelper
                     .Build();
     }
 
-    public static void RegisterModelDbContext(IServiceCollection services)
+    public static void RegisterModelsDbContext(IServiceCollection services)
     {
         var configuration = GetConfiguration();
         var dbConfig = new DatabaseConfiguration().Bind(configuration);

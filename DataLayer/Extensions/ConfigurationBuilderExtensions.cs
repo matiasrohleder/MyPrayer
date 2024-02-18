@@ -15,7 +15,7 @@ public static class ConfigurationBuilderExtensions
 
         DatabaseConfiguration db = new DatabaseConfiguration().Bind(configuration);
 
-        return builder.Add(new MyPrayerConfigurationSource(db.ModelConnection, db.ModelProvider));
+        return builder.Add(new MyPrayerConfigurationSource(db.ModelConnection ?? "defaultConnection", db.ModelProvider ?? "defaultProvider"));
     }
 
     public static IConfigurationBuilder AddMyPrayerConfiguration(this IConfigurationBuilder builder, IWebHostEnvironment env)
@@ -26,6 +26,6 @@ public static class ConfigurationBuilderExtensions
 
         DatabaseConfiguration db = new DatabaseConfiguration().Bind(configuration);
 
-        return builder.Add(new MyPrayerConfigurationSource(db.ModelConnection, db.ModelProvider));
+        return builder.Add(new MyPrayerConfigurationSource(db.ModelConnection ?? "defaultConnection", db.ModelProvider ?? "defaultProvider"));
     }
 }

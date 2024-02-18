@@ -12,7 +12,6 @@ public class CategoryController(
 
     public IActionResult Index()
     {
-        var sarasa = categoryService.GetAll().ToList();
         return View();
     }
 }

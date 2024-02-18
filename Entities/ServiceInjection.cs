@@ -1,5 +1,6 @@
 using DataLayer;
 using DataLayer.Interfaces;
+using Entities.Helpers;
 using Entities.Models.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,7 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     /// </summary>
     private void RegisterDatabaseServices()
     {
-        Services.AddDbContext<ModelsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ModelsDbContext")), ServiceLifetime.Scoped);
+        DbContextFactoryHelper.RegisterModelsDbContext(Services);
     }
     #endregion
 }
