@@ -2,34 +2,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Primitives;
 using DataLayer.Extensions;
-using Microsoft.AspNetCore.Hosting;
 
 namespace DataLayer;
 
-public class MyPrayerConfiguration : IConfiguration
+public class MyPrayerConfiguration(IHostEnvironment env, IServiceProvider serviceProvider) : IConfiguration
 {
-    private readonly IConfigurationRoot configurationRoot;
-    private readonly IServiceProvider serviceProvider;
-
-    public MyPrayerConfiguration(IHostEnvironment env, IServiceProvider serviceProvider)
-    {
-        configurationRoot = new ConfigurationBuilder()
+    private readonly IConfigurationRoot configurationRoot = new ConfigurationBuilder()
                 .AddMyPrayerConfiguration(env)
                 .AddEnvironmentVariables()
                 .Build();
-
-        this.serviceProvider = serviceProvider;
-    }
-
-    public MyPrayerConfiguration(IWebHostEnvironment env, IServiceProvider serviceProvider)
-    {
-        configurationRoot = new ConfigurationBuilder()
-                .AddMyPrayerConfiguration(env)
-                .AddEnvironmentVariables()
-                .Build();
-
-        this.serviceProvider = serviceProvider;
-    }
+    private readonly IServiceProvider serviceProvider = serviceProvider;
 
     public string? this[string key]
     {
