@@ -5,18 +5,18 @@ namespace DataLayer.Configuration;
 
 internal class MyPrayerConfigurationContext(string connectionString, string modelProvider) : DbContext
 {
-    private readonly string _connectionString = connectionString;
-    private readonly string _modelProvider = modelProvider;
+    private readonly string connectionString = connectionString;
+    private readonly string modelProvider = modelProvider;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        switch (_modelProvider)
+        switch (modelProvider)
         {
             case DatabaseProviders.SqlServer:
-                optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseSqlServer(connectionString);
                 break;
             default:
-                throw new NotImplementedException($"The database provider '{_modelProvider}' specified for the Model is not supported. ");
+                throw new NotImplementedException($"The database provider '{modelProvider}' specified for the Model is not supported. ");
         }
     }
 }
