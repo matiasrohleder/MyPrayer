@@ -1,26 +1,17 @@
-using System.Diagnostics;
+using DataLayer.Interfaces;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
 
 namespace WebApp.Controllers;
 
-public class CategoryController : Controller
+public class CategoryController(
+    IService<Category> categoryService
+    ) : Controller
 {
-    private readonly ILogger<CategoryController> logger;
-
-    public CategoryController(ILogger<CategoryController> logger)
-    {
-        this.logger = logger;
-    }
+    private readonly IService<Category> categoryService = categoryService;
 
     public IActionResult Index()
     {
         return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
