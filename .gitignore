@@ -7,3 +7,6 @@ bin/
 
 # Appsettings Development file
 appsettings.Development.json
+
+# Visual Studio 2015
+/.vs
