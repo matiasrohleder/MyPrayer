@@ -22,6 +22,14 @@ public class CategoryController(
         return View("CreateOrEdit", new CategoryViewModel());
     }
 
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        List<CategoryViewModel> categories = categoryService.GetAll().Select(c => new CategoryViewModel(c)).ToList();
+
+        return Json(new { data = categories });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CategoryViewModel category)
     {
