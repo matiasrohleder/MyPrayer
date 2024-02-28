@@ -1,4 +1,6 @@
+using Microsoft.OpenApi.Models;
 using WebAPI;
+using WebAPI.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +8,32 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Prayer API", Version = "v1" });
+    c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+    {
+        Description = "ApiKey must appear in header",
+        Type = SecuritySchemeType.ApiKey,
+        Name = "X-Api-Key",
+        In = ParameterLocation.Header,
+        Scheme = "ApiKeyScheme"
+    });
+    var key = new OpenApiSecurityScheme()
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "ApiKey"
+        },
+        In = ParameterLocation.Header
+    };
+    var requirement = new OpenApiSecurityRequirement
+                    {
+                             { key, new List<string>() }
+                    };
+    c.AddSecurityRequirement(requirement);
+});
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
 var app = builder.Build();
@@ -23,6 +50,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.UseAuthentication();
 
