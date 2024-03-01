@@ -1,13 +1,14 @@
 $(document).ready(function () {
-    $('#categoryTable').DataTable({
+    $('#contentTable').DataTable({
         "ajax": {
-            "url": "/Category/GetAll",
+            "url": "/Content/GetAll",
             "type": "Get",
             "datatype": "json"
         },
         columns: [
             { data: "name" },
-            { data: "order" },
+            { data: "category" },
+            { data: "showDate" },
             {
                 data: "active",
                 render: function (data, type, row) {
@@ -25,7 +26,7 @@ $(document).ready(function () {
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-info" style="margin-right:1em" onclick="window.location.href='/Category/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
+                    return `<button class="btn btn-info" style="margin-right:1em" onclick="window.location.href='/Content/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
                 }
             },
         ],
@@ -38,12 +39,12 @@ $(document).ready(function () {
 function Delete(id)
 {
     $.ajax({
-        url: `/Category/Delete/${id}`,
+        url: `/Content/Delete/${id}`,
         type: 'GET',
         success: function (result) {
             Swal.fire({
                 title: "\xc9xito",
-                text: "Categor\xeda eliminada",
+                text: "Contentido eliminado",
                 type: "success"
             }).then((result) => {
                 window.location.reload();
@@ -51,8 +52,8 @@ function Delete(id)
         },
         error: function () {
             Swal.fire({
-                title: "No es posible eliminar",
-                text: "Hay contenidos pertenecientes a esta categor\xeda",
+                title: "No fue posible eliminar",
+                text: "Ocurri\xf3 un error inesperado. Intentar nuevamente.",
                 type: "error"
             });
         }
