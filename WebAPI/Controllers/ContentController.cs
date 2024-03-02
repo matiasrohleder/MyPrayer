@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         {
             List<RecentContentItem> recents = contentService.GetAll()
                                                             .Include(c => c.Category)
-                                                            .Where(c => !c.Deleted && c.Active)
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now)
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
