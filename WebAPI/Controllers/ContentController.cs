@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
             this.contentService = contentService;
         }
 
-        [HttpGet]
+        [HttpGet("getRecent")]
         public IActionResult GetRecent(int amount = 5)
         {
             List<RecentContentItem> recents = contentService.GetAll()
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
-                                                                Contents = c.OrderByDescending(i => i.ShowDate).Take(amount).Select(i => new RecentContentDTO(i)).ToList()
+                                                                Contents = c.OrderByDescending(i => i.ShowDate).Take(amount).Select(i => new ContentDTO(i)).ToList()
                                                             })
                                                             .ToList()
                                                             .OrderBy(c => c.Order)
@@ -42,6 +42,33 @@ namespace WebAPI.Controllers
                 PageSize = count,
                 Items = recents
             });
+        }
+
+        [HttpGet("getByCategory")]
+        public IActionResult GetByCategory(Guid categoryId)
+        {
+            List<ContentDTO> contents = contentService.GetAll()
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now && c.CategoryId == categoryId)
+                                                            .OrderByDescending(c => c.ShowDate)
+                                                            .Select(c => new ContentDTO(c))
+                                                            .ToList();
+
+            int count = contents.Count();
+            return Ok(new
+            {
+                Total = count,
+                Page = 1,
+                PageSize = count,
+                Items = contents
+            });
+        }
+
+        [HttpGet("get")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            Content content = await contentService.GetAsync(id);
+
+            return Ok(new ContentDTO(content));
         }
     }
 }
