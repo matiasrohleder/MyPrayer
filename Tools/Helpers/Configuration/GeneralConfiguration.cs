@@ -3,7 +3,7 @@ using System.Globalization;
 using Tools.Interfaces.Configuration;
 
 namespace Tools.Helpers.Configuration;
-// sarasa revisar properties
+
 /// <summary>
 /// Class that contains the system's general configurations.
 /// Binded from the appsettings "General" section.
@@ -12,14 +12,6 @@ public class GeneralConfiguration : IGeneralConfiguration
 {
     public string SystemName { get; set; }
     public string SystemUrl { get; set; }
-    public string BackofficeUrl { get; set; }
-    public string FrontUrl { get; set; }
-    public bool EnableAntiforgeryToken { get; set; }
-    public string CookiePolicyUrl { get; set; }
-    public string PrivacyPolicyUrl { get; set; }
-    public string TermsAndConditionsURL { get; set; }
-    public string TermsAndConditionsDate { get; set; }
-    public string SystemLogoUrl { get; set; }
 
     public GeneralConfiguration(IConfiguration configuration)
     {

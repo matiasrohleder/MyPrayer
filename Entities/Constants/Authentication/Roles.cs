@@ -11,6 +11,6 @@ public static class Roles
         typeof(Roles)
         .GetFields(BindingFlags.Public)
         .Where(f => f.IsLiteral && !f.IsInitOnly)
-        .Select(f => (f.GetValue(null) as string) ?? string.Empty) //sarasa, si falla ver bi
+        .Select(f => (f.GetValue(null) as string) ?? string.Empty)
         .ToList();
 }

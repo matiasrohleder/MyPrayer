@@ -115,7 +115,13 @@ public class RegisterModel : PageModel
         ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (ModelState.IsValid)
         {
-            var user = CreateUser();
+            ApplicationUser user = new()
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Name = "Test",
+                    LastName = "MyPrayer"
+                };
 
             await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             var result = await userManager.CreateAsync(user, Input.Password);
@@ -155,19 +161,5 @@ public class RegisterModel : PageModel
 
         // If we got this far, something failed, redisplay form
         return Page();
-    }
-
-    private ApplicationUser CreateUser()
-    {
-        try
-        {
-            return Activator.CreateInstance<ApplicationUser>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-        }
     }
 }
