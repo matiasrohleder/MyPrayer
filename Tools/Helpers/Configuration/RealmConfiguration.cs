@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Tools.Interfaces.Configuration;
 
 namespace Tools.Helpers.Configuration;
-
+// sarasa revisar properties
 public class RealmConfiguration : IRealmConfiguration
 {
     public string Name { get; set; }

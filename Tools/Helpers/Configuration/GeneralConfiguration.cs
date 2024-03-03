@@ -3,7 +3,7 @@ using System.Globalization;
 using Tools.Interfaces.Configuration;
 
 namespace Tools.Helpers.Configuration;
-
+// sarasa revisar properties
 /// <summary>
 /// Class that contains the system's general configurations.
 /// Binded from the appsettings "General" section.
