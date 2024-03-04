@@ -6,7 +6,6 @@ public class Category : Entity
 {
     public Category()
     {
-        Name = nameof(Category);
         Active = true;
     }
 
