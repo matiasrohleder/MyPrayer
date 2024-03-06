@@ -12,10 +12,10 @@ $(document).ready(function () {
                 data: "active",
                 render: function (data, type, row) {
                     if (type === 'myExport') {
-                        return data === 'Active' ? "Si" : "No";
+                        return data === 'Active' ? "S\xed" : "No";
                     }
                     if (data) {
-                        return "Si";
+                        return "S\xed";
                     } else {
                         return "No";
                     }
@@ -30,7 +30,7 @@ $(document).ready(function () {
             },
         ],
         language: {
-            url: '//cdn.datatables.net/plug-ins/2.0.0/i18n/es-ES.json',
+            url: '/lib/datatables/language_es.json',
         },
     });
 });
