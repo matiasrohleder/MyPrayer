@@ -26,14 +26,8 @@ namespace WebAPI.Controllers
                                                            .OrderBy(c => c.Order)
                                                            .Select(c => new CategoryItem(c))
                                                            .ToList();
-            int count = categories.Count();
-            return Ok(new
-            {
-                Total = count,
-                Page = 1,
-                PageSize = count,
-                Items = categories
-            });
+
+            return Ok(categories);
         }
     }
 }
