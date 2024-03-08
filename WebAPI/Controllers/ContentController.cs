@@ -34,14 +34,7 @@ namespace WebAPI.Controllers
                                                             .OrderBy(c => c.Order)
                                                             .ToList();
 
-            int count = recents.Count();
-            return Ok(new
-            {
-                Total = count,
-                Page = 1,
-                PageSize = count,
-                Items = recents
-            });
+            return Ok(recents);
         }
 
         [HttpGet("getByCategory")]
@@ -53,14 +46,7 @@ namespace WebAPI.Controllers
                                                             .Select(c => new ContentDTO(c))
                                                             .ToList();
 
-            int count = contents.Count();
-            return Ok(new
-            {
-                Total = count,
-                Page = 1,
-                PageSize = count,
-                Items = contents
-            });
+            return Ok(contents);
         }
 
         [HttpGet("get")]
