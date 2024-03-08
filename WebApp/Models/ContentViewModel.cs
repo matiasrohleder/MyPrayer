@@ -14,8 +14,11 @@ public class ContentViewModel
 
     public ContentViewModel()
     {
-        Id = Guid.NewGuid();
         Active = true;
+        Description = string.Empty;
+        Id = Guid.NewGuid();
+        Link = string.Empty;
+        Name = string.Empty;
         ShowDate = DateTime.Today;
     }
 
