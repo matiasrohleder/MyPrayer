@@ -12,10 +12,10 @@ $(document).ready(function () {
                 data: "active",
                 render: function (data, type, row) {
                     if (type === 'myExport') {
-                        return data === 'Active' ? "Si" : "No";
+                        return data === 'Active' ? "S\xed" : "No";
                     }
                     if (data) {
-                        return "Si";
+                        return "S\xed";
                     } else {
                         return "No";
                     }
@@ -25,12 +25,12 @@ $(document).ready(function () {
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-info" style="margin-right:1em" onclick="window.location.href='/Category/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
+                    return `<button class="btn btn-info" style="margin-right:1em" href="/Category/Edit/${full.id}">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
                 }
             },
         ],
         language: {
-            url: '//cdn.datatables.net/plug-ins/2.0.0/i18n/es-ES.json',
+            url: '/lib/datatables/language_es.json',
         },
     });
 });
