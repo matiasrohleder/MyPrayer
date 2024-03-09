@@ -10,26 +10,20 @@ namespace Tools.Helpers.Email;
 /// <summary>
 /// Email sender helper.
 /// </summary>
-public class EmailSender : IEmailSender
+public class EmailSender(
+    IConfiguration configuration,
+    IFluentEmailFactory mail
+        ) : IEmailSender
 {
     #region Builder Properties
-    private List<string> Emails { get; set; }
-    private Func<string> SubjectProvider { get; set; }
-    private Func<IEmailDTO> BodyTemplateModelProvider { get; set; }
-    private Func<string> HtmlBodyProvider { get; set; }
+    private List<string> Emails { get; set; } = [];
+    private Func<string> SubjectProvider { get; set; } = () => "";
+    private Func<IEmailDTO> BodyTemplateModelProvider { get; set; } = () => null!;
+    private Func<string> HtmlBodyProvider { get; set; } = () => "";
     #endregion
 
-    private readonly IFluentEmailFactory mail;
-    private readonly SmtpConfiguration smtpConfiguration;
-
-    public EmailSender(
-        IConfiguration configuration,
-        IFluentEmailFactory mail
-        )
-    {
-        this.mail = mail;
-        smtpConfiguration = new SmtpConfiguration().Bind(configuration);
-    }
+    private readonly IFluentEmailFactory mail = mail;
+    private readonly SmtpConfiguration smtpConfiguration = new SmtpConfiguration().Bind(configuration);
 
     #region Public methods
     public async Task SendEmailAsync()
@@ -77,14 +71,14 @@ public class EmailSender : IEmailSender
 
     public EmailSender SetBodyTemplateModelProvider(Func<IEmailDTO> bodyTemplateModelProvider)
     {
-        HtmlBodyProvider = null;
+        HtmlBodyProvider = () => "";
         BodyTemplateModelProvider = bodyTemplateModelProvider;
         return this;
     }
 
     public EmailSender SetHTMLBodyProvider(Func<string> htmlBodyProvider)
     {
-        BodyTemplateModelProvider = null;
+        BodyTemplateModelProvider = null!;
         HtmlBodyProvider = htmlBodyProvider;
         return this;
     }
@@ -100,7 +94,7 @@ public class EmailSender : IEmailSender
         {
             Emails = Emails,
             Subject = SubjectProvider?.Invoke(),
-            BodyTemplateModel = BodyTemplateModelProvider?.Invoke(),
+            BodyTemplateModel = BodyTemplateModelProvider.Invoke(),
             Body = HtmlBodyProvider?.Invoke()
         };
     #endregion

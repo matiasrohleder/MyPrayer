@@ -10,8 +10,8 @@ namespace Tools.Helpers.Configuration;
 /// </summary>
 public class GeneralConfiguration : IGeneralConfiguration
 {
-    public string SystemName { get; set; }
-    public string SystemUrl { get; set; }
+    public string SystemName { get; set; } = "";
+    public string SystemUrl { get; set; } = "";
 
     public GeneralConfiguration(IConfiguration configuration)
     {
@@ -24,6 +24,6 @@ public class GeneralConfiguration : IGeneralConfiguration
         return this;
     }
 
-    public string GetFileViewUrl(Guid fileId, string language = null, int width = 110, int height = 110) =>
+    public string GetFileViewUrl(Guid fileId, string? language = null, int width = 110, int height = 110) =>
         $"{SystemUrl}/file/display/public/{fileId}?culture={language ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}&Width={width}&Height={height}&Mode=stretch&useCache=false";
 }

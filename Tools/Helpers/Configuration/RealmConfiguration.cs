@@ -5,11 +5,11 @@ namespace Tools.Helpers.Configuration;
 
 public class RealmConfiguration : IRealmConfiguration
 {
-    public string Name { get; set; }
-    public bool AllowSelfSignUp { get; set; }
-    public bool AllowApiKeyAuthorization { get; set; }
-    public int IdentityTokenExpirationMinutes { get; set; }
-    public bool RequireEmailConfirmation { get; set; }
+    public string Name { get; set; } = "";
+    public bool AllowSelfSignUp { get; set; } = false;
+    public bool AllowApiKeyAuthorization { get; set; } = false;
+    public int IdentityTokenExpirationMinutes { get; set; } = 15;
+    public bool RequireEmailConfirmation { get; set; } = false;
 
     public RealmConfiguration(IConfiguration configuration)
     {

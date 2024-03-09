@@ -16,7 +16,7 @@ public class CategoryViewModel
         Active = true;
     }
 
-    public CategoryViewModel(Category? category)
+    public CategoryViewModel(Category category)
     {
         Active = category.Active;
         Id = category.Id;

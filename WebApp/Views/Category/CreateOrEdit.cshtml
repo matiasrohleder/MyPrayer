@@ -1,7 +1,7 @@
 ﻿@model WebApp.Models.CategoryViewModel;
 
 @{
-    string action = ViewData["Action"] as string; 
+    string? action = ViewData["Action"] as string;
 }
 
 <form class="floating-labels" method="POST" action="@Url.Action(action,"Category")" asp-antiforgery="true">
@@ -15,7 +15,7 @@
         <input type="number" class="form-control mb-3" id="Order" asp-for="Order">
     </div>
 
-    @if(action == "Edit")
+    @if (action == "Edit")
     {
         <div class="custom-control custom-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="activeSwitch" asp-for="Active">
@@ -23,13 +23,13 @@
         </div>
     }
     else
-    {        
+    {
         <input type="hidden" asp-for="Active" />
     }
 
     <div class="d-flex justify-content-end buttonFooter">
         <button id="btn-cancel" type="button" class="btn btn-cancel mr-2"
-                onclick="window.location.href='@Url.Action("Index","Category")'">
+            onclick="window.location.href='@Url.Action("Index","Category")'">
             Cancelar
         </button>
         <button id="btn-submit" type="submit" class="btn btn-themecolor">Guardar</button>

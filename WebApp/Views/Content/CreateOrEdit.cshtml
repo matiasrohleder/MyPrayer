@@ -1,8 +1,8 @@
 ﻿@model WebApp.Models.ContentViewModel;
 
 @{
-    string action = ViewData["Action"] as string; 
-    List<SelectListItem> categories = ViewData["Categories"] as List<SelectListItem>; 
+    string? action = ViewData["Action"] as string;
+    List<SelectListItem> categories = ViewData["Categories"] as List<SelectListItem> ?? new();
 }
 
 <form class="floating-labels" method="POST" action="@Url.Action(action,"Content")" asp-antiforgery="true">
@@ -16,9 +16,9 @@
         <select class="form-control mb-3" id="Category" asp-for="CategoryId">
             <option value="" disabled selected>Seleccione una opción</option>
             @foreach (SelectListItem item in categories)
-                {
-                    <option value="@item.Value">@item.Text</option>
-                }
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
         </select>
 
         <label for="Link">Link</label>
@@ -33,7 +33,7 @@
         @* imagen *@
     </div>
 
-    @if(action == "Edit")
+    @if (action == "Edit")
     {
         <div class="custom-control custom-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="activeSwitch" asp-for="Active">
@@ -41,13 +41,13 @@
         </div>
     }
     else
-    {        
+    {
         <input type="hidden" asp-for="Active" />
     }
 
     <div class="d-flex justify-content-end buttonFooter">
         <button id="btn-cancel" type="button" class="btn btn-cancel mr-2"
-                onclick="window.location.href='@Url.Action("Index","Content")'">
+            onclick="window.location.href='@Url.Action("Index","Content")'">
             Cancelar
         </button>
         <button id="btn-submit" type="submit" class="btn btn-themecolor">Guardar</button>

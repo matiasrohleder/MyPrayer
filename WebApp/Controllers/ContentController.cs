@@ -60,8 +60,10 @@ public class ContentController(
     #region Edit
     public async Task<IActionResult> Edit(Guid id)
     {
-        Content content = await contentService.GetAsync(id);
-        ContentViewModel contentViewModel = new ContentViewModel(content);
+        Content? content = await contentService.GetAsync(id);
+        if (content == null)
+            return NotFound("Contenido no encontrado");
+        ContentViewModel contentViewModel = new(content);
 
         await InitViewDatas("Edit");
 

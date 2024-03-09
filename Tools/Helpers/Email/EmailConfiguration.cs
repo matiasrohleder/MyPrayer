@@ -11,6 +11,6 @@ public class EmailConfiguration
 
     public List<string> Emails { get; set; }
     public string? Subject { get; set; }
-    public IEmailDTO? BodyTemplateModel { get; set; }
+    public IEmailDTO BodyTemplateModel { get; set; } = null!;
     public string? Body { get; set; }
 }

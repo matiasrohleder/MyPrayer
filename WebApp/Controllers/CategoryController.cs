@@ -59,6 +59,8 @@ public class CategoryController(
     public async Task<IActionResult> Edit(Guid id)
     {
         Category? category = await categoryService.GetAsync(id);
+        if (category == null)
+            return NotFound("Categoría no encontrada");
         CategoryViewModel categoryViewModel = new(category);
 
         ViewData["Action"] = "Edit";

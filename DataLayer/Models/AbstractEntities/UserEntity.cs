@@ -12,7 +12,7 @@ public abstract class UserEntity : IdentityUser<Guid>, IEntity
 
     [Required]
     [StringLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = nameof(UserEntity);
     public DateTime CreatedDate { get; set; }
     public DateTime LastEditedDate { get; set; }
     public Guid CreatorId { get; set; }
@@ -31,22 +31,26 @@ public abstract class UserEntity : IdentityUser<Guid>, IEntity
 
     public virtual bool Compare(IEntity entity)
     {
-        return this.Id == entity.Id;
+        return Id == entity.Id;
     }
 
     public virtual void CopyTo<TEntity>(TEntity target, params string[] excludeFields) where TEntity : class, IEntity
     {
         // Exclude properties that are not allowed to be modified by the user.
-        excludeFields = excludeFields.Concat(new string[] {
-                nameof(NormalizedUserName),
-                nameof(NormalizedEmail),
-                nameof(PasswordHash),
-                nameof(SecurityStamp),
-                nameof(LockoutEnd),
-                nameof(EmailConfirmed),
-                nameof(ConcurrencyStamp)
-            }).ToArray();
+        excludeFields =
+        [
+            .. excludeFields,
+            nameof(NormalizedUserName),
+            nameof(NormalizedEmail),
+            nameof(PasswordHash),
+            nameof(SecurityStamp),
+            nameof(LockoutEnd),
+            nameof(EmailConfirmed),
+            nameof(ConcurrencyStamp),
+        ];
 
+#pragma warning disable CS8604 // Possible null reference argument. // TODO
         EntityCopy<TEntity>.Copy(this as TEntity, target, excludeFields);
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 }
