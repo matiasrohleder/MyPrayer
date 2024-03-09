@@ -1,7 +1,7 @@
 ﻿@model WebApp.Models.CategoryViewModel;
 
 @{
-    var action = ViewData["Action"] as string; 
+    string action = ViewData["Action"] as string; 
 }
 
 <form class="floating-labels" method="POST" action="@Url.Action(action,"Category")" asp-antiforgery="true">
