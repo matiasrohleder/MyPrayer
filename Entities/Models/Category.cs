@@ -1,12 +1,13 @@
-﻿using DataLayer.Models.AbstractEntities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using DataLayer.Models.AbstractEntities;
 
 namespace Entities.Models;
 
+[Table("Categories")]
 public class Category : Entity
 {
     public Category()
     {
-        Name = nameof(Category);
         Active = true;
     }
 
