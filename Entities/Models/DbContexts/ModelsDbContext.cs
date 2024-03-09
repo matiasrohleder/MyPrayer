@@ -35,18 +35,12 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
             .HasMaxLength(64);
 
         modelBuilder.Entity<Category>()
-            .HasQueryFilter(c => c.Deleted);
+            .HasQueryFilter(c => !c.Deleted);
 
         modelBuilder.Entity<Content>()
-            .HasQueryFilter(c => c.Deleted);
+            .HasQueryFilter(c => !c.Deleted);
 
         modelBuilder.Entity<Reading>()
-            .HasQueryFilter(c => c.Deleted);
-
-        #region Identity
-        modelBuilder.Entity<IdentityRole<Guid>>().HasData(
-        Constants.Authentication.Roles.GetAllRoles().Select(role => new IdentityRole<Guid>() { Id = Guid.NewGuid(), Name = role, NormalizedName = role.ToUpper() })
-        #endregion
-    );
+            .HasQueryFilter(c => !c.Deleted);
     }
 }
