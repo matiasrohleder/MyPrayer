@@ -12,6 +12,7 @@ public class CategoryViewModel
     public CategoryViewModel()
     {
         Id = Guid.NewGuid();
+        Name = string.Empty;
         Active = true;
     }
 
@@ -25,7 +26,7 @@ public class CategoryViewModel
 
     public Category ToEntity()
     {
-        Category category = new Category
+        Category category = new()
         {
             Active = Active,
             Id = Id,

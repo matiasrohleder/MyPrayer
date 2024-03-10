@@ -1,3 +1,6 @@
+using Entities.Models;
+using Entities.Models.DbContexts;
+using Microsoft.AspNetCore.Identity;
 using WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureWebApp(builder.Configuration);
+
+#region Identity configuration
+builder.Services.AddRazorPages();
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
+    {
+        config.User.RequireUniqueEmail = true;
+        config.SignIn.RequireConfirmedEmail = false;
+    })
+    .AddEntityFrameworkStores<ModelsDbContext>()
+    .AddDefaultTokenProviders();
+#endregion
 
 var app = builder.Build();
 
@@ -20,12 +35,18 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
+
 app.UseRouting();
 
 app.UseAuthorization();
 
+#region Endpoint routing
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+#endregion
 
 app.Run();

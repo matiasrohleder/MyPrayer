@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models;
 
+[Table("Contents")]
 public class Content : Entity
 {
     public Content()
@@ -17,7 +18,7 @@ public class Content : Entity
     [ForeignKey(nameof(CategoryId))]
     public Category? Category { get; set; }
     public Guid CategoryId { get; set; }
-    
+
     public bool Active { get; set; }
 
     [StringLength(2000)]

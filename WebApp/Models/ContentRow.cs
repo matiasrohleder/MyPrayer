@@ -2,24 +2,11 @@ using Entities.Models;
 
 namespace WebApp.Models;
 
-public class ContentRow
+public class ContentRow(Content content)
 {
-    public bool Active { get; set; }
-    public string Category { get; set; }
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string ShowDate { get; set; }
-
-    public ContentRow()
-    {
-    }
-
-    public ContentRow(Content content)
-    {
-        Active = content.Active;
-        Category = content.Category.Name;
-        Id = content.Id;
-        Name = content.Name;
-        ShowDate = content.ShowDate.ToString("dd/MM/yyyy");
-    }
+    public bool Active { get; set; } = content.Active;
+    public string Category { get; set; } = content.Category!.Name;
+    public Guid Id { get; set; } = content.Id;
+    public string Name { get; set; } = content.Name;
+    public string ShowDate { get; set; } = content.ShowDate.ToString("dd/MM/yyyy");
 }

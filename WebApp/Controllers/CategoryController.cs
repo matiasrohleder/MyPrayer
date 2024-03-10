@@ -1,10 +1,12 @@
 using DataLayer.Interfaces;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
+#region Constructor and properties
 public class CategoryController(
     IService<Category> categoryService,
     IService<Content> contentService
@@ -12,24 +14,29 @@ public class CategoryController(
 {
     private readonly IService<Category> categoryService = categoryService;
     private readonly IService<Content> contentService = contentService;
+    #endregion
 
-    public IActionResult Index()
+    #region Index
+    public IActionResult Index() => View();
+    #endregion
+
+    #region Get all
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        return View();
-    }
+        List<CategoryViewModel> categories = await categoryService.GetAll()
+                                            .Select(c => new CategoryViewModel(c))
+                                            .ToListAsync();
 
+        return Json(new { data = categories });
+    }
+    #endregion
+
+    #region Create
     public IActionResult Create()
     {
         ViewData["Action"] = "Create";
         return View("CreateOrEdit", new CategoryViewModel());
-    }
-
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        List<CategoryViewModel> categories = categoryService.GetAll().Where(c => !c.Deleted).Select(c => new CategoryViewModel(c)).ToList();
-
-        return Json(new { data = categories });
     }
 
     [HttpPost]
@@ -45,11 +52,15 @@ public class CategoryController(
 
         return View("CreateOrEdit", category);
     }
+    #endregion
 
+    #region Edit
     public async Task<IActionResult> Edit(Guid id)
     {
-        Category category = await categoryService.GetAsync(id);
-        CategoryViewModel categoryViewModel = new CategoryViewModel(category);
+        Category? category = await categoryService.GetAsync(id);
+        if (category == null)
+            return NotFound("Categoría no encontrada");
+        CategoryViewModel categoryViewModel = new(category);
 
         ViewData["Action"] = "Edit";
 
@@ -69,7 +80,9 @@ public class CategoryController(
 
         return View("CreateOrEdit", category);
     }
+    #endregion
 
+    #region Delete
     public async Task<JsonResult> Delete(Guid id)
     {
         bool categoryInUse = contentService.GetAll().Any(c => c.CategoryId == id);
@@ -82,4 +95,5 @@ public class CategoryController(
         else
             throw new Exception();
     }
+    #endregion
 }
