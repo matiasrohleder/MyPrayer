@@ -26,9 +26,12 @@ public class ContentController(
 
     #region Get all
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        List<ContentRow> contents = contentService.GetAll().Include(c => c.Category).Where(c => !c.Deleted).Select(c => new ContentRow(c)).ToList();
+        List<ContentRow> contents = await contentService.GetAll()
+                                    .Include(c => c.Category)
+                                    .Select(c => new ContentRow(c))
+                                    .ToListAsync();
 
         return Json(new { data = contents });
     }

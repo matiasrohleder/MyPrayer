@@ -25,7 +25,6 @@ public class CategoryController(
     public async Task<IActionResult> GetAll()
     {
         List<CategoryViewModel> categories = await categoryService.GetAll()
-                                            .Where(c => !c.Deleted)
                                             .Select(c => new CategoryViewModel(c))
                                             .ToListAsync();
 
