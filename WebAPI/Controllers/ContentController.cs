@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         /// <param name="amount"></param>
         /// <returns></returns>
         [HttpGet("recent")]
-        public async Task<IActionResult> GetRecent(int amount = 5)
+        public async Task<ActionResult<List<RecentContentItem>>> GetRecent(int amount = 5)
         {
             if (amount <= 0)
                 return BadRequest("La cantidad debe ser un número positivo mayor a 0.");
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         /// <param name="categoryId"></param>
         /// <returns></returns>
         [HttpGet("category/{categoryId}")]
-        public async Task<IActionResult> GetByCategory(Guid categoryId)
+        public async Task<ActionResult<List<ContentRes>>> GetByCategory(Guid categoryId)
         {
             List<ContentRes> contents = await contentService.GetAll()
                                                             .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now && c.CategoryId == categoryId)
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<ActionResult<ContentRes>> Get(Guid id)
         {
             Content content = await contentService.GetAsync(id);
 

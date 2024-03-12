@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAllActive()
+        public ActionResult<List<CategoryRes>> GetAllActive()
         {
             List<CategoryRes> categories = categoryService.GetAll()
                                                            .Where(c => !c.Deleted && c.Active)
