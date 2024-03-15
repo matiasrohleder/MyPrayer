@@ -6,7 +6,7 @@ public class EmailConfiguration
 {
     public EmailConfiguration()
     {
-        Emails = [];
+        Emails = new();
     }
 
     public List<string> Emails { get; set; }
