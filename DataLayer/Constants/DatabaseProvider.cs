@@ -6,5 +6,5 @@ namespace DataLayer.Constants;
 public class DatabaseProviders
 {
     public const string SqlServer = "SqlServer";
-    public const string PostgreSql = "PostgreSql";
+    public const string PostgreSQL = "PostgreSQL";
 }
