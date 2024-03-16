@@ -6,18 +6,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Entities.Models.DbContexts;
 
-public class ModelsDbContextSQLContextFactory : IDesignTimeDbContextFactory<ModelsDbContextSQL>
+public class ModelsDbContextPostgreSQLContextFactory : IDesignTimeDbContextFactory<ModelsDbContextPostgreSQL>
 {
-    public ModelsDbContextSQL CreateDbContext(string[] args)
+    public ModelsDbContextPostgreSQL CreateDbContext(string[] args)
     {
         IConfigurationRoot configuration = DbContextFactoryHelper.GetConfiguration();
 
-        DbContextOptionsBuilder<ModelsDbContextSQL> optionsBuilder = new();
+        DbContextOptionsBuilder<ModelsDbContextPostgreSQL> optionsBuilder = new();
 
         DatabaseConfiguration dbConfig = new DatabaseConfiguration().Bind(configuration);
 
-        optionsBuilder.UseSqlServer(dbConfig.ModelConnection);
+        optionsBuilder.UseNpgsql(dbConfig.ModelConnection);
 
-        return new ModelsDbContextSQL(optionsBuilder.Options);
+        return new ModelsDbContextPostgreSQL(optionsBuilder.Options);
     }
 }
