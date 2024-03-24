@@ -22,6 +22,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     .AddDefaultTokenProviders();
 #endregion
 
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(5024);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
