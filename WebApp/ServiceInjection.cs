@@ -1,3 +1,6 @@
+using BusinessLayer.BusinessLogic;
+using BusinessLayer.Interfaces;
+using BusinessLayer.JobScheduler.Jobs;
 using DataLayer;
 using Tools.Helpers.Configuration;
 using Tools.Helpers.Email;
@@ -24,6 +27,7 @@ internal class ServiceInjection : AbstractServiceInjection
         AddServices();
         AddBusinessLogics();
         AddConfigurations();
+        AddJobs();
         AddEmailService();
         AddAuthentication();
 
@@ -35,6 +39,8 @@ internal class ServiceInjection : AbstractServiceInjection
 
     private void AddBusinessLogics()
     {
+        Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
+
     }
 
     private void AddConfigurations()
@@ -43,6 +49,11 @@ internal class ServiceInjection : AbstractServiceInjection
 
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
+    }
+
+    private void AddJobs()
+    {
+        Services.AddTransient<ReadingsJob>();
     }
 
     private void AddEmailService()

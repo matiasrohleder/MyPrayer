@@ -1,6 +1,5 @@
 using BusinessLayer.BusinessLogic;
 using BusinessLayer.Interfaces;
-using BusinessLayer.JobScheduler.JobConfiguration;
 using DataLayer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,22 +7,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Tools.Helpers.Configuration;
 using Tools.Interfaces.Configuration;
 
-namespace BusinessLayer;
+namespace BusinessLayer.JobScheduler.JobConfiguration;
 
 /// <summary>
-/// Business Layer's service injection.
+/// Quartz Job's service injection.
 /// </summary>
-internal class ServiceInjection(IServiceCollection services, IConfiguration configuration) : AbstractServiceInjection(services, configuration)
+internal class QuartzJobServiceInjection : ServiceInjection, IQuartzJobServiceInjection
 {
+    public QuartzJobServiceInjection(IConfiguration configuration) : base(new ServiceCollection(), configuration)
+    {
+
+    }
+
     public override IServiceCollection Initialize()
     {
+        Services.AddBusinessLayer(Configuration);
         Services.AddHttpClient();
 
         AddServices();
         AddBusinessLogics();
         AddConfigurations();
-
-        Services.AddTransient<IQuartzJobServiceInjection, QuartzJobServiceInjection>();
 
         return Services;
     }
@@ -34,7 +37,9 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddBusinessLogics()
     {
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
+
     }
+
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
