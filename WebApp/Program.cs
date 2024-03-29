@@ -25,7 +25,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
 //var sslPort = Environment.GetEnvironmentVariable("SSL_PORT") ?? "8082";
 //builder.WebHost.UseUrls($"http://*:{port}", $"https://*:{sslPort}");
-builder.WebHost.UseUrls($"http://*:{port}");
+builder.WebHost.UseUrls("http://*:8080");
 
 var app = builder.Build();
 
@@ -37,7 +37,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseAuthentication();
