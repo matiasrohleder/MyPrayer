@@ -27,10 +27,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
 // //builder.WebHost.UseUrls($"http://*:{port}", $"https://*:{sslPort}");
 // builder.WebHost.UseUrls($"http://0.0.0.0:5000");
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
+// builder.WebHost.ConfigureKestrel(serverOptions =>
+// {
+//     serverOptions.Listen(System.Net.IPAddress.Any, 5000); // Listen on all network interfaces on port 5000
+// });
+
+
+builder.WebHost.UseKestrel(options =>
 {
-    serverOptions.Listen(System.Net.IPAddress.Any, 5000); // Listen on all network interfaces on port 5000
+    options.ListenAnyIP(5000);
 });
+
 
 var app = builder.Build();
 
