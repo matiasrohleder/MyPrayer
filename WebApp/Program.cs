@@ -22,10 +22,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     .AddDefaultTokenProviders();
 #endregion
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenAnyIP(5024);
-});
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+//var sslPort = Environment.GetEnvironmentVariable("SSL_PORT") ?? "8082";
+//builder.WebHost.UseUrls($"http://*:{port}", $"https://*:{sslPort}");
+builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
 
