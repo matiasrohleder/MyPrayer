@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./WebApp/Dockerfile"
+
+[deploy]
+startCommand = "dotnet WebApp.dll"
+restartPolicyType = "never"
