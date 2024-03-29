@@ -2,5 +2,4 @@
 builder = "dockerfile"
 
 [deploy]
-startCommand = "dotnet WebApp.dll"
 restartPolicyType = "never"
