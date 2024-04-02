@@ -22,9 +22,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     .AddDefaultTokenProviders();
 #endregion
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseKestrel(options =>
 {
-    options.ListenAnyIP(5024);
+    options.ListenAnyIP(int.Parse(port));
 });
 
 var app = builder.Build();
@@ -37,7 +38,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseAuthentication();

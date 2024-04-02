@@ -36,6 +36,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
