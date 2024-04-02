@@ -1,3 +1,5 @@
+using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using DataLayer;
 
 namespace WebAPI;
@@ -25,6 +27,7 @@ internal class ServiceInjection : AbstractServiceInjection
     }
     private void AddServices()
     {
+        Services.AddScoped<IFileService, FileService>();
     }
 
     private void AddBusinessLogics()
