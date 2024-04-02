@@ -72,9 +72,9 @@ namespace BusinessLayer.Services
         private string GetEndpoint(string fileName)
         {
             string baseURL = configuration.GetSection("FileService:BaseURL").Value ?? throw new Exception("File Service BaseURL must have a value");
-            string action = configuration.GetSection("FileService:URL").Value ?? throw new Exception("File Service URL must have a value");
+            string storageResource = configuration.GetSection("FileService:StorageResource").Value ?? throw new Exception("File Service StorageResource must have a value");
             string bucket = configuration.GetSection("FileService:Bucket").Value ?? throw new Exception("File Service Bucket must have a value");
-            return string.Format(baseURL + action, bucket, fileName);
+            return string.Format(baseURL + storageResource, bucket, fileName);
         }
 
         private void AddAuthorization(HttpRequestMessage request) => request.Headers.Add("Authorization", $"Bearer {apiKey}");
