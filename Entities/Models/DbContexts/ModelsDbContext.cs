@@ -1,3 +1,4 @@
+using DataLayer.Interceptors;
 using Entities.Models.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -42,5 +43,11 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
 
         modelBuilder.Entity<Reading>()
             .HasQueryFilter(c => !c.Deleted);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .AddInterceptors(new UtcToLocalInterceptor());
     }
 }

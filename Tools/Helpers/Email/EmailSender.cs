@@ -50,10 +50,10 @@ public class EmailSender(
     #region Builder Methods
     public EmailSender To(string email)
     {
-        Emails =
-            [
-                email
-            ];
+        Emails = new() {
+            email
+        };
+
         return this;
     }
 

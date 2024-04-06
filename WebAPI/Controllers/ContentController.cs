@@ -1,14 +1,12 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.DTOs;
 
 namespace WebAPI.Controllers
 {
-    [AllowAnonymous]
-    [Route("api/[controller]")]
+    [Route("api/content")]
     [ApiController]
     public class ContentController : Controller
     {
@@ -19,42 +17,60 @@ namespace WebAPI.Controllers
             this.contentService = contentService;
         }
 
-        [HttpGet("getRecent")]
-        public IActionResult GetRecent(int amount = 5)
+        /// <summary>
+        /// Get recent contents grouped by category with param amount for each category
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        [HttpGet("recent")]
+        public async Task<ActionResult<List<RecentContentItem>>> GetRecent(int amount = 5)
         {
-            List<RecentContentItem> recents = contentService.GetAll()
+            if (amount <= 0)
+                return BadRequest("La cantidad debe ser un número positivo mayor a 0.");
+
+            List<RecentContentItem> recents = (await contentService.GetAll()
                                                             .Include(c => c.Category)
                                                             .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now)
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
-                                                                Contents = c.OrderByDescending(i => i.ShowDate).Take(amount).Select(i => new ContentDTO(i)).ToList()
+                                                                Contents = c.OrderByDescending(i => i.ShowDate).Take(amount).Select(i => new ContentRes(i)).ToList()
                                                             })
-                                                            .ToList()
-                                                            .OrderBy(c => c.Order)
+                                                            .ToListAsync())
+                                                            .OrderBy(c => c.Category.Order)
                                                             .ToList();
 
             return Ok(recents);
         }
 
-        [HttpGet("getByCategory")]
-        public IActionResult GetByCategory(Guid categoryId)
+        /// <summary>
+        /// Get all contents by category id
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        [HttpGet("category/{categoryId}")]
+        public async Task<ActionResult<List<ContentRes>>> GetByCategory(Guid categoryId)
         {
-            List<ContentDTO> contents = contentService.GetAll()
+            List<ContentRes> contents = await contentService.GetAll()
                                                             .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now && c.CategoryId == categoryId)
                                                             .OrderByDescending(c => c.ShowDate)
-                                                            .Select(c => new ContentDTO(c))
-                                                            .ToList();
+                                                            .Select(c => new ContentRes(c))
+                                                            .ToListAsync();
 
             return Ok(contents);
         }
 
-        [HttpGet("get")]
-        public async Task<IActionResult> Get(Guid id)
+        /// <summary>
+        /// Get content by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ContentRes>> Get(Guid id)
         {
             Content content = await contentService.GetAsync(id);
 
-            return Ok(new ContentDTO(content));
+            return Ok(new ContentRes(content));
         }
     }
 }
