@@ -16,7 +16,7 @@ public class EmailSender(
         ) : IEmailSender
 {
     #region Builder Properties
-    private List<string> Emails { get; set; } = [];
+    private List<string> Emails { get; set; } = new();
     private Func<string> SubjectProvider { get; set; } = () => "";
     private Func<IEmailDTO> BodyTemplateModelProvider { get; set; } = () => null!;
     private Func<string> HtmlBodyProvider { get; set; } = () => "";
@@ -50,10 +50,10 @@ public class EmailSender(
     #region Builder Methods
     public EmailSender To(string email)
     {
-        Emails =
-            [
-                email
-            ];
+        Emails = new() {
+            email
+        };
+
         return this;
     }
 

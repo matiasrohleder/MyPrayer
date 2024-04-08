@@ -2,6 +2,7 @@ using BusinessLayer.BusinessLogic;
 using BusinessLayer.Configurations;
 using BusinessLayer.Interfaces;
 using BusinessLayer.JobScheduler.Jobs;
+using BusinessLayer.Services;
 using DataLayer;
 using Tools.Helpers.Configuration;
 using Tools.Helpers.Email;
@@ -36,6 +37,7 @@ internal class ServiceInjection : AbstractServiceInjection
     }
     private void AddServices()
     {
+        Services.AddScoped<IFileService, FileService>();
     }
 
     private void AddBusinessLogics()

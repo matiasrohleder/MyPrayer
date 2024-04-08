@@ -2,13 +2,15 @@
 
 namespace WebAPI.DTOs
 {
-    public class CategoryItem
+    public class CategoryRes
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public int Order { get; set; }
-
-        public CategoryItem(Category category)
+        
+        public CategoryRes(Category category)
         {
+            Id = category.Id;
             Name = category.Name;
             Order = category.Order;
         }

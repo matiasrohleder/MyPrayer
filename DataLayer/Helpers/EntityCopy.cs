@@ -5,8 +5,8 @@ namespace DataLayer.Helpers;
 
 public static class EntityCopy<TEntity> where TEntity : class, IEntity
 {
-    private static readonly List<PropertyInfo> sourceProperties = [];
-    private static readonly List<PropertyInfo> targetProperties = [];
+    private static readonly List<PropertyInfo> sourceProperties = new();
+    private static readonly List<PropertyInfo> targetProperties = new();
 
     public static void Copy(TEntity source, TEntity target, params string[] excludeFields)
     {

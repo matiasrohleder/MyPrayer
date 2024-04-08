@@ -15,6 +15,9 @@ internal class MyPrayerConfigurationContext(string connectionString, string mode
             case DatabaseProviders.SqlServer:
                 optionsBuilder.UseSqlServer(connectionString);
                 break;
+            case DatabaseProviders.PostgreSQL:
+                optionsBuilder.UseNpgsql(connectionString);
+                break;
             default:
                 throw new NotImplementedException($"The database provider '{modelProvider}' specified for the Model is not supported. ");
         }

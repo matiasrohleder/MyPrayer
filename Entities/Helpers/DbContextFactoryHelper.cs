@@ -31,6 +31,9 @@ public static class DbContextFactoryHelper
             case DatabaseProviders.SqlServer:
                 RegisterDataBaseContext<ModelsDbContext, ModelsDbContextSQL>(services, options => options.UseSqlServer(dbConfig.ModelConnection));
                 break;
+            case DatabaseProviders.PostgreSQL:
+                RegisterDataBaseContext<ModelsDbContext, ModelsDbContextPostgreSQL>(services, options => options.UseNpgsql(dbConfig.ModelConnection));
+                break;
             default:
                 throw new NotImplementedException($"The database provider '{dbConfig.ModelProvider}' specified for the Model is not supported. ");
         }

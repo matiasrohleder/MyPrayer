@@ -1,13 +1,11 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 
 namespace WebAPI.Controllers
 {
-    [AllowAnonymous]
-    [Route("api/[controller]")]
+    [Route("api/category")]
     [ApiController]
     public class CategoryController : Controller
     {
@@ -18,13 +16,17 @@ namespace WebAPI.Controllers
             this.categoryService = categoryService;
         }
 
+        /// <summary>
+        /// Get all active categories in order
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult GetAllActive()
+        public ActionResult<List<CategoryRes>> GetAllActive()
         {
-            List<CategoryItem> categories = categoryService.GetAll()
+            List<CategoryRes> categories = categoryService.GetAll()
                                                            .Where(c => !c.Deleted && c.Active)
                                                            .OrderBy(c => c.Order)
-                                                           .Select(c => new CategoryItem(c))
+                                                           .Select(c => new CategoryRes(c))
                                                            .ToList();
 
             return Ok(categories);
