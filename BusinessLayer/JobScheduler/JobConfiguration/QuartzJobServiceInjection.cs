@@ -1,4 +1,5 @@
 using BusinessLayer.BusinessLogic;
+using BusinessLayer.Configurations;
 using BusinessLayer.Interfaces;
 using DataLayer;
 using Microsoft.AspNetCore.Hosting;
@@ -42,8 +43,9 @@ internal class QuartzJobServiceInjection : ServiceInjection, IQuartzJobServiceIn
 
     private void AddConfigurations()
     {
-        Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
+        Services.AddScoped(x => Configuration);
 
+        Services.AddScoped<IBibleConfiguration, BibleConfiguration>();
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
     }

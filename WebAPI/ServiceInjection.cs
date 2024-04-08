@@ -1,3 +1,5 @@
+using BusinessLayer.Configurations;
+using BusinessLayer.Interfaces;
 using DataLayer;
 
 namespace WebAPI;
@@ -34,5 +36,7 @@ internal class ServiceInjection : AbstractServiceInjection
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
+
+        Services.AddScoped<IBibleConfiguration, BibleConfiguration>();
     }
 }

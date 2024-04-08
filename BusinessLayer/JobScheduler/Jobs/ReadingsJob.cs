@@ -16,6 +16,8 @@ namespace BusinessLayer.JobScheduler.Jobs
             // Inject services from scope.
             var readingBusinessLogic = scope.ServiceProvider.GetRequiredService<IReadingBusinessLogic>();
 
+            await readingBusinessLogic.GetReadings();
+
         }
     }
 }

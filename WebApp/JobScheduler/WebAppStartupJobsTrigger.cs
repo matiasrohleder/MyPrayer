@@ -23,7 +23,7 @@ namespace WebApp.JobScheduler
 
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("readingsTrigger", "group1")
-                .WithCronSchedule("0 */1 * * * ?") // Every 1 minute
+                .WithCronSchedule("0 0 1 * * ?") // Everyday at 1 am
                 .Build();
 
             // Schedule the job with the trigger

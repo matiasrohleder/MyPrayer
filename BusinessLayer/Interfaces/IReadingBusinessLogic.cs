@@ -3,8 +3,8 @@
     public interface IReadingBusinessLogic
     {
         /// <summary>
-        /// Update Active Principle status.
+        /// Get daily bible readings and store in DB.
         /// </summary>
-        Task Get();
+        Task GetReadings();
     }
 }

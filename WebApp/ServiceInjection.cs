@@ -1,4 +1,5 @@
 using BusinessLayer.BusinessLogic;
+using BusinessLayer.Configurations;
 using BusinessLayer.Interfaces;
 using BusinessLayer.JobScheduler.Jobs;
 using DataLayer;
@@ -47,6 +48,7 @@ internal class ServiceInjection : AbstractServiceInjection
     {
         Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
 
+        Services.AddScoped<IBibleConfiguration, BibleConfiguration>();
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
     }
