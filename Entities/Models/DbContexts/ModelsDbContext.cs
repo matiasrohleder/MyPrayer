@@ -51,7 +51,6 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
     {
         SeedManager seedManager = new(modelBuilder, Database);
         seedManager.ExecuteSeed();
-        // seedManager.ExecuteIgniteDbObjectSeed();sarasa por ahora no
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -13,13 +13,16 @@ public class UserSeed : SeedBase
         string adminUser = "admin@myprayer.com";
         string adminPass = "qweQWE123!#";
 
-        DateTime createdDate = new(2019, 5, 7, 3, 20, 00);
+        DateTime createdDate = new(2022, 12, 17, 23, 30, 00, DateTimeKind.Utc);
 
         ApplicationUser[] usersToAdd =
         [
                 new()
                 {
                     CreatedDate = createdDate,
+                    LastEditedDate = createdDate,
+                    CreatorId = adminGuid,
+                    LastEditorId = adminGuid,
                     Email = adminUser,
                     EmailConfirmed = true,
                     Id = adminGuid,
