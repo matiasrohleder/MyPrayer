@@ -22,11 +22,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     .AddDefaultTokenProviders();
 #endregion
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenAnyIP(int.Parse(port));
-});
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+//builder.WebHost.UseKestrel(options =>
+//{
+//    options.ListenAnyIP(int.Parse(port));
+//});
 
 var app = builder.Build();
 

@@ -1,14 +1,14 @@
 /* Variables */
 :root {
-    --primary-color-dark: #4d4d4d;
-    --primary-color: #4BACCC;
-    --primary-color-light: #4BA9B1;
-    --primary-color-lightest: #4BACCC;
-    --secondary-color: #4BA9B1;
+    --primary-color-dark: #033861;
+    --primary-color: #0266b4;
+    --primary-color-light: #0266b4;
+    --primary-color-lightest: #0266b4;
+    --secondary-color: #033861;
     --warning-color: #B14B4B;
-    --success-color: #00D6DE;
+    --success-color: #4989ba;
     --sidebar-color: #ffffff;
-    --inactive-color: #4d4d4d;
+    --inactive-color: #033861;
 }
 
 /* Topbar styles */

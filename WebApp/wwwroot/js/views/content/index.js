@@ -26,7 +26,7 @@ $(document).ready(function () {
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-info" style="margin-right:1em" onclick="window.location.href='/Content/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
+                    return `<button class="btn btn-submit" style="margin-right:1em" onclick="window.location.href='/Content/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
                 }
             },
         ],
