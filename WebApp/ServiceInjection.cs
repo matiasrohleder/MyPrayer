@@ -27,7 +27,6 @@ internal class ServiceInjection : AbstractServiceInjection
         AddBusinessLogics();
         AddConfigurations();
         AddEmailService();
-        AddAuthentication();
 
         return Services;
     }
@@ -61,14 +60,5 @@ internal class ServiceInjection : AbstractServiceInjection
                 var smtpConfig = new SmtpConfiguration().Bind(Configuration);
                 return smtpConfig.GenerateSmtpClient();
             });
-    }
-
-    private void AddAuthentication()
-    {
-        Services.ConfigureApplicationCookie(config =>
-        {
-            config.LoginPath = "/Identity/Account/Login";
-            config.AccessDeniedPath = "/Identity/Account/AccessDenied";
-        });
     }
 }

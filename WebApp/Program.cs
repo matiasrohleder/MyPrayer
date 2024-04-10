@@ -3,7 +3,7 @@ using Entities.Models.DbContexts;
 using Microsoft.AspNetCore.Identity;
 using WebApp;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,15 +20,21 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     })
     .AddEntityFrameworkStores<ModelsDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 #endregion
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+string port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
