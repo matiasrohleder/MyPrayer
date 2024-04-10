@@ -19,7 +19,6 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     {
         Services.AddHttpClient();
 
-        AddServices();
         AddBusinessLogics();
         AddConfigurations();
 
@@ -27,10 +26,6 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
 
         return Services;
     }
-    private void AddServices()
-    {
-    }
-
     private void AddBusinessLogics()
     {
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
