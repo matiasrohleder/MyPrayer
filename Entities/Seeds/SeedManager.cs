@@ -17,10 +17,6 @@ public class SeedManager
 
     public void ExecuteSeed()
     {
-        //For Debugging the seed
-        //if (!System.Diagnostics.Debugger.IsAttached)
-        //    System.Diagnostics.Debugger.Launch();
-
         Dictionary<Type, IList<object>> addedElements = [];
         foreach (SeedBase seedClass in GetSeedFixture())
         {
