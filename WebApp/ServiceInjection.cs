@@ -22,7 +22,6 @@ internal class ServiceInjection : AbstractServiceInjection
     public override IServiceCollection Initialize()
     {
         Services.AddHttpClient();
-        Services.AddMvc().AddRazorRuntimeCompilation();
 
         AddServices();
         AddBusinessLogics();
