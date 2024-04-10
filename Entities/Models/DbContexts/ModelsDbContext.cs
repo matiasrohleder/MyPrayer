@@ -1,5 +1,6 @@
 using DataLayer.Interceptors;
 using Entities.Models.Enum;
+using Entities.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
         base.OnModelCreating(modelBuilder);
 
         ApplyCurrentLayerEntityConfigurations(modelBuilder);
+        GenerateSeedData(modelBuilder);
     }
 
     /// <summary>
@@ -43,6 +45,12 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
 
         modelBuilder.Entity<Reading>()
             .HasQueryFilter(c => !c.Deleted);
+    }
+
+    private void GenerateSeedData(ModelBuilder modelBuilder)
+    {
+        SeedManager seedManager = new(modelBuilder, Database);
+        seedManager.ExecuteSeed();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
