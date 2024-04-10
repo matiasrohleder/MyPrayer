@@ -1,13 +1,16 @@
 using DataLayer.Interfaces;
+using Entities.Constants.Authentication;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Tools.WebTools.Attributes;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
 #region Contructor and properties
+[AuthorizeAnyRoles(Roles.Admin)]
 public class ContentController(
     IService<Category> categoryService,
     IService<Content> contentService

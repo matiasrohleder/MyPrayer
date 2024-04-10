@@ -1,11 +1,12 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+using Entities.Constants.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Tools.WebTools.Attributes;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+[AuthorizeAnyRoles(Roles.Admin)]
 public class HomeController(ILogger<HomeController> logger) : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
