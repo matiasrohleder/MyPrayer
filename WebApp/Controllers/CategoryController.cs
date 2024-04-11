@@ -1,12 +1,15 @@
 using DataLayer.Interfaces;
+using Entities.Constants.Authentication;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tools.WebTools.Attributes;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
 #region Constructor and properties
+[AuthorizeAnyRoles(Roles.Admin, Roles.CategoryAdmin)]
 public class CategoryController(
     IService<Category> categoryService,
     IService<Content> contentService
