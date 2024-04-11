@@ -3,6 +3,7 @@ using System;
 using Entities.Models.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Entities.Migrations.ModelsDbPostgreSQL
 {
     [DbContext(typeof(ModelsDbContextPostgreSQL))]
-    partial class ModelsDbContextPostgreSQLModelSnapshot : ModelSnapshot
+    [Migration("20240408015721_AdminSeeds")]
+    partial class AdminSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +132,7 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                             Name = "Admin",
                             NormalizedEmail = "ADMIN@MYPRAYER.COM",
                             NormalizedUserName = "ADMIN@MYPRAYER.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAY/esc3I7UkMOZWzMgd+mYN6KMDrm6x6IY8bTSP+qg4gkwhauHytQ0BIsOuzEf1Mw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO2XGn21sz1CnicMZuf7QHjhKgq9GhW5/rm4WjtmOXeyyD78q74Nfl3K4GR17yEmTw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "3AA6005F-8E18-4A00-B9E2-C2539C60A8C1",
                             TwoFactorEnabled = false,
@@ -300,34 +303,6 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                             ConcurrencyStamp = "Admin",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("8d02c502-afbb-4e9b-9552-6c2cabbd6864"),
-                            ConcurrencyStamp = "CategoryAdmin",
-                            Name = "CategoryAdmin",
-                            NormalizedName = "CATEGORYADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("0d6490bf-fdfd-4a68-99ab-c0bb135b28f7"),
-                            ConcurrencyStamp = "ContentAdmin",
-                            Name = "ContentAdmin",
-                            NormalizedName = "CONTENTADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("f6c0b642-2ddb-42f5-8ba8-0ce9faeb3a4d"),
-                            ConcurrencyStamp = "ReadingAdmin",
-                            Name = "ReadingAdmin",
-                            NormalizedName = "READINGADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("b8be6280-b3e8-48a3-9b01-7a361961595a"),
-                            ConcurrencyStamp = "UserAdmin",
-                            Name = "UserAdmin",
-                            NormalizedName = "USERADMIN"
                         });
                 });
 
