@@ -1,7 +1,6 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tools.WebTools.Attributes;
 using WebAPI.DTOs;
