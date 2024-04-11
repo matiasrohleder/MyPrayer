@@ -10,7 +10,7 @@ using WebApp.Models;
 namespace WebApp.Controllers;
 
 #region Contructor and properties
-[AuthorizeAnyRoles(Roles.Admin)]
+[AuthorizeAnyRoles(Roles.Admin, Roles.ContentAdmin)]
 public class ContentController(
     IService<Category> categoryService,
     IService<Content> contentService
