@@ -9,7 +9,7 @@ using WebApp.Models;
 namespace WebApp.Controllers;
 
 #region Constructor and properties
-[AuthorizeAnyRoles(Roles.Admin)]
+[AuthorizeAnyRoles(Roles.Admin, Roles.CategoryAdmin)]
 public class CategoryController(
     IService<Category> categoryService,
     IService<Content> contentService
