@@ -1,6 +1,8 @@
+using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,13 @@ namespace WebApp.Controllers;
 [AuthorizeAnyRoles(Roles.Admin, Roles.ContentAdmin)]
 public class ContentController(
     IService<Category> categoryService,
-    IService<Content> contentService
+    IService<Content> contentService,
+    IFileService fileService
     ) : Controller
 {
     private readonly IService<Category> categoryService = categoryService;
     private readonly IService<Content> contentService = contentService;
+    private readonly IFileService fileService = fileService;
     #endregion
 
     #region Index
@@ -44,7 +48,7 @@ public class ContentController(
     public async Task<IActionResult> Create()
     {
         await InitViewDatas("Create");
-
+        
         return View("CreateOrEdit", new ContentViewModel());
     }
 
@@ -59,6 +63,8 @@ public class ContentController(
 
         await InitViewDatas("Create");
 
+        await GetContentSignedURLAsync(content);
+
         return View("CreateOrEdit", content);
     }
     #endregion
@@ -69,7 +75,10 @@ public class ContentController(
         Content? content = await contentService.GetAsync(id);
         if (content == null)
             return NotFound("Contenido no encontrado");
+            
         ContentViewModel contentViewModel = new(content);
+        
+        await GetContentSignedURLAsync(contentViewModel);
 
         await InitViewDatas("Edit");
 
@@ -84,6 +93,8 @@ public class ContentController(
             await contentService.UpdateAsync(content.ToEntity());
             return RedirectToAction("Index", "Content");
         }
+        
+        await GetContentSignedURLAsync(content);
 
         await InitViewDatas("Edit");
 
@@ -111,6 +122,12 @@ public class ContentController(
     {
         ViewData["Action"] = action;
         ViewData["Categories"] = await categoryService.GetAll().Where(c => c.Active && !c.Deleted).OrderBy(c => c.Order).Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToListAsync();
+    }
+
+    private async Task GetContentSignedURLAsync(ContentViewModel contentViewModel)
+    {
+        if(!string.IsNullOrEmpty(contentViewModel.FileUrl))
+            contentViewModel.SignedUrl = (await fileService.GetSignedURLAsync(contentViewModel.FileUrl))?.SignedUrl;
     }
     #endregion
 }

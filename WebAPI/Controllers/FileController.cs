@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 
 namespace WebAPI.Controllers
 {
@@ -17,15 +18,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task UploadAsync(IFormFile file)
+        public async Task<FileUploadRes> UploadAsync(IFormFile file)
         {
-			await this.fileService.UploadAsync(file);
+			return await this.fileService.UploadAsync(file);
         }
 
-        [HttpGet("download")]
-        public async Task<byte[]> DownloadAsync(string fileName)
+        [HttpGet("signed-url")]
+        public async Task<FileDownloadRes> GetURLAsync(string fileName)
         {
-			return await this.fileService.DownloadAsync(fileName);
+			return await this.fileService.GetSignedURLAsync(fileName);
         }
     }
 }

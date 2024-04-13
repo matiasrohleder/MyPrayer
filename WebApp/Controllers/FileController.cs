@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 
 namespace WebApp.Controllers;
 
@@ -14,13 +15,13 @@ public class FileController : Controller
         this.fileService = fileService;
     }
 
-    public async Task Upload(IFormFile file)
+    public async Task<FileUploadRes> Upload(IFormFile file)
     {
-        await this.fileService.UploadAsync(file);
+        return await this.fileService.UploadAsync(file);
     }
 
-    public async Task<byte[]> Download(string fileName)
+    public async Task<FileDownloadRes> SignedURL(string fileName)
     {
-        return await this.fileService.DownloadAsync(fileName);
+        return await this.fileService.GetSignedURLAsync(fileName);
     }
 }

@@ -1,9 +1,6 @@
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 
 namespace BusinessLayer.Services
@@ -12,71 +9,78 @@ namespace BusinessLayer.Services
     {
         private readonly IConfiguration configuration;
         private readonly IHttpClientFactory clientFactory;
-        private readonly string apiKey;
+        private string apiKey => configuration.GetSection("FileService:APIKey").Value ?? throw new Exception("File Service API key must have a value");
+        private string baseURL => this.configuration.GetSection("FileService:BaseURL").Value ?? throw new Exception("File Service BaseURL must have a value");
+        private string storageResource => configuration.GetSection("FileService:StorageResource").Value ?? throw new Exception("File Service StorageResource must have a value");
+        private string bucket => configuration.GetSection("FileService:Bucket").Value ?? throw new Exception("File Service Bucket must have a value");
+
+        private async Task<Supabase.Storage.Interfaces.IStorageFileApi<Supabase.Storage.FileObject>> GetStorage()
+        {
+            var url = this.baseURL;
+            var key = this.apiKey;
+
+            var options = new Supabase.SupabaseOptions
+            {
+                AutoConnectRealtime = true
+            };
+
+            var supabase = new Supabase.Client(url, key, options);
+            await supabase.InitializeAsync();
+
+            return supabase.Storage.From("TEST");
+        }
 
         public FileService(IConfiguration configuration, IHttpClientFactory clientFactory)
         {
-        this.configuration = configuration;
-        this.clientFactory = clientFactory;
-        this.apiKey = configuration.GetSection("FileService:APIKey").Value ?? throw new Exception("File Service API key must have a value");
+            this.configuration = configuration;
+            this.clientFactory = clientFactory;
         }
 
         /// <inheritdoc />
-        public async Task UploadAsync(IFormFile file)
+        public async Task<FileUploadRes> UploadAsync(IFormFile file)
         {
-            using (var client = clientFactory.CreateClient())
+            if (file == null || file.Length == 0)
+                throw new Exception("No file uploaded.");
+
+            var storage = await GetStorage();
+            
+            // Convert IFormFile to byte array
+            byte[] fileBytes;
+            using (var ms = new MemoryStream())
             {
-                string endpoint = GetEndpoint(file.FileName);
-                var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
-                AddAuthorization(request);
-                using (var content = new MultipartFormDataContent())
-                {
-                    content.Add(new StreamContent(file.OpenReadStream())
-                    {
-                        Headers =
-                        {
-                            ContentLength = file.Length,
-                            ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType)
-                        }
-                    }, "file", file.FileName);
-
-                    request.Content = content;
-                    var response = await client.SendAsync(request);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception($"Failed to upload file");
-                    }
-                }  
+                await file.CopyToAsync(ms);
+                fileBytes = ms.ToArray();
             }
+
+            // Create a unique file name to prevent overwriting existing files (optional)
+            var now = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            string fileName = $"{now}-{file.FileName}";
+
+            // Upload the file
+            string fileUrl = await storage.Upload(fileBytes, fileName);
+
+            return new FileUploadRes { FileUrl = fileName };
         }
 
         /// <inheritdoc />
-        public async Task<byte[]> DownloadAsync(string fileName)
+        public async Task<FileDownloadRes> GetSignedURLAsync(string fileName)
         {
-            using (var client = clientFactory.CreateClient())
-            {
-                string endpoint = GetEndpoint(fileName);
-                var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-                AddAuthorization(request);
-                var response = await client.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"Failed to download file");
-                }
+            var storage = await GetStorage();
 
-                return await response.Content.ReadAsByteArrayAsync();
-            }
+            // Generate a signed URL valid for 60 minutes
+            var result = await storage.CreateSignedUrl(fileName, 60 * 60);
+
+            return new FileDownloadRes { SignedUrl = result };
         }
+    }
 
-        private string GetEndpoint(string fileName)
-        {
-            string baseURL = configuration.GetSection("FileService:BaseURL").Value ?? throw new Exception("File Service BaseURL must have a value");
-            string storageResource = configuration.GetSection("FileService:StorageResource").Value ?? throw new Exception("File Service StorageResource must have a value");
-            string bucket = configuration.GetSection("FileService:Bucket").Value ?? throw new Exception("File Service Bucket must have a value");
-            return string.Format(baseURL + storageResource, bucket, fileName);
-        }
+    public class FileUploadRes
+    {
+        public string FileUrl { get; set; }
+    }
 
-        private void AddAuthorization(HttpRequestMessage request) => request.Headers.Add("Authorization", $"Bearer {apiKey}");
+    public class FileDownloadRes
+    {
+        public string SignedUrl { get; set; }
     }
 }
