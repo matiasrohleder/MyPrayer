@@ -20,25 +20,56 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 25px;
     transition: transform 0.2s ease;
+}
+
+.card h3 {
+    color: white;
+    font-size: xx-large;
+    font-weight: bold;
+    text-shadow: 2px 2px #000000;
 }
 
 .card:hover {
     transform: scale(1.05);
 }
 
-.card-yellow {
-    background-color: #ffff66;
+.card-users {
+    background-size: cover;
+    background-image: url('../../../images/users.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
-.card-blue {
-    background-color: #66b3ff;
+.card-readings {
+    background-size: cover;
+    background-image: url('../../../images/readings.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
-.card-green {
-    background-color: #85e085;
+.card-contents {
+    background-size: cover;
+    background-image: url('../../../images/contents.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
-.card-violet {
-    background-color: violet;
+.card-categories {
+    background-size: cover;
+    background-image: url('../../../images/categories.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.background-tint {
+    background-color: rgba(253, 153, 75, 0.7);
+    background-blend-mode: multiply;
+}
+.index-title {
+    margin-top: 50px;
+    color: #0266b4;
+    font-size: x-large;
+    font-weight: bold;
 }
