@@ -79,7 +79,7 @@ public class Service<TEntity> : IService<TEntity> where TEntity : class, IEntity
     {
         try
         {
-            entity.LastEditedDate = DateTime.Now;
+            entity.LastEditedDate = DateTime.UtcNow;
             // entity.LastEditorId = this.operationContext.GetUserId(); TODO
 
             repository.Update(entity);

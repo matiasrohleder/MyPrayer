@@ -3,6 +3,7 @@ using System;
 using Entities.Models.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Entities.Migrations.ModelsDbPostgreSQL
 {
     [DbContext(typeof(ModelsDbContextPostgreSQL))]
-    partial class ModelsDbContextPostgreSQLModelSnapshot : ModelSnapshot
+    [Migration("20240413190227_ContentFileUrl")]
+    partial class ContentFileUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

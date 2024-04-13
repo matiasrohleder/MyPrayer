@@ -1,3 +1,4 @@
+using BusinessLayer.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Interfaces
@@ -7,10 +8,10 @@ namespace BusinessLayer.Interfaces
         /// <summary>
         /// Upload file
         /// </summary>
-        Task UploadAsync(IFormFile file);
+        Task<FileUploadRes> UploadAsync(IFormFile file);
         /// <summary>
-        /// Download file by name
+        /// Get a Signed URL to acces a particular file by it's name. The link is valid for 60 minutes
         /// </summary>
-        Task<byte[]> DownloadAsync(string fileName);   
+        Task<FileDownloadRes> GetSignedURLAsync(string fileName);   
     }
 }

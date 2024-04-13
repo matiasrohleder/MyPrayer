@@ -31,7 +31,12 @@
         <label for="Description">Descripción</label>
         <textarea class="form-control mb-3" rows="5" id="Description" asp-for="Description"></textarea>
 
-        @* imagen *@
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="File">Upload</label>
+            <input type="file" class="form-control" id="File" asp-for="File" accept="image/*">
+            <input type="hidden" asp-for="FileUrl" id="FileUrl">
+        </div>
+        <img class="mb-3" id="FileDisplay" src="" alt="Uploaded Image" style="display:none; width: 300px; height: auto;">
     </div>
 
     @if (action == "Edit")
@@ -54,3 +59,10 @@
         </button>
     </div>
 </form>
+
+
+@section scripts {
+    <script>
+        const fileUploader = new FileUploader("File", "FileUrl", "FileDisplay");
+    </script>
+}

@@ -28,4 +28,7 @@ public class Content : Entity
     public string Link { get; set; }
 
     public DateTime ShowDate { get; set; }
+
+    [StringLength(500)]
+    public string? FileUrl { get; set; }
 }
