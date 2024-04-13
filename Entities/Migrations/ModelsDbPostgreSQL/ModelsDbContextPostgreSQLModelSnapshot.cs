@@ -110,6 +110,31 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10101010-3333-4b19-944f-eaaa655108fb"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "admin@myprayer.com",
+                            CreatedDate = new DateTime(2022, 12, 17, 23, 30, 0, 0, DateTimeKind.Utc),
+                            CreatorId = new Guid("10101010-3333-4b19-944f-eaaa655108fb"),
+                            Deleted = false,
+                            Email = "admin@myprayer.com",
+                            EmailConfirmed = true,
+                            LastEditedDate = new DateTime(2022, 12, 17, 23, 30, 0, 0, DateTimeKind.Utc),
+                            LastEditorId = new Guid("10101010-3333-4b19-944f-eaaa655108fb"),
+                            LastName = "MyPrayer",
+                            LockoutEnabled = false,
+                            Name = "Admin",
+                            NormalizedEmail = "ADMIN@MYPRAYER.COM",
+                            NormalizedUserName = "ADMIN@MYPRAYER.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFLeegm6H1aC+PJ8KJ5nPbc9vwkEOJKdI96KCyfeQnBa0lpFTctPiu/PXXXOCxNJ6g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3AA6005F-8E18-4A00-B9E2-C2539C60A8C1",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@myprayer.com"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Category", b =>
@@ -173,6 +198,10 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("FileUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("LastEditedDate")
                         .HasColumnType("timestamp with time zone");
@@ -267,6 +296,43 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3f3dd5b3-b480-4ea2-a477-101010101010"),
+                            ConcurrencyStamp = "Admin",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("8d02c502-afbb-4e9b-9552-6c2cabbd6864"),
+                            ConcurrencyStamp = "CategoryAdmin",
+                            Name = "CategoryAdmin",
+                            NormalizedName = "CATEGORYADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("0d6490bf-fdfd-4a68-99ab-c0bb135b28f7"),
+                            ConcurrencyStamp = "ContentAdmin",
+                            Name = "ContentAdmin",
+                            NormalizedName = "CONTENTADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("f6c0b642-2ddb-42f5-8ba8-0ce9faeb3a4d"),
+                            ConcurrencyStamp = "ReadingAdmin",
+                            Name = "ReadingAdmin",
+                            NormalizedName = "READINGADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("b8be6280-b3e8-48a3-9b01-7a361961595a"),
+                            ConcurrencyStamp = "UserAdmin",
+                            Name = "UserAdmin",
+                            NormalizedName = "USERADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -351,6 +417,13 @@ namespace Entities.Migrations.ModelsDbPostgreSQL
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("10101010-3333-4b19-944f-eaaa655108fb"),
+                            RoleId = new Guid("3f3dd5b3-b480-4ea2-a477-101010101010")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

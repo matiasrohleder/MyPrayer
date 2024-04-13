@@ -11,6 +11,9 @@ public class ContentViewModel
     public string Link { get; set; }
     public string Name { get; set; }
     public DateTime ShowDate { get; set; }
+    public string? File { get; set; }
+    public string? FileUrl { get; set; }
+    public string? SignedUrl { get; set; }
 
     public ContentViewModel()
     {
@@ -31,6 +34,7 @@ public class ContentViewModel
         Link = content.Link;
         Name = content.Name;
         ShowDate = content.ShowDate;
+        FileUrl = content.FileUrl;
     }
 
     public Content ToEntity()
@@ -43,7 +47,8 @@ public class ContentViewModel
             Id = Id,
             Link = Link,
             Name = Name,
-            ShowDate = ShowDate
+            ShowDate = ShowDate.ToUniversalTime(),
+            FileUrl = FileUrl
         };
 
         return content;

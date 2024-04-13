@@ -7,7 +7,7 @@ using Quartz.Impl;
 using WebApp;
 using WebApp.JobScheduler;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -24,13 +24,19 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(config =>
     })
     .AddEntityFrameworkStores<ModelsDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 #endregion
 
-//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-//builder.WebHost.UseKestrel(options =>
-//{
-//    options.ListenAnyIP(int.Parse(port));
-//});
+string port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
 
 // Add Quartz scheduler
 builder.Services.AddSingleton<IScheduler>(provider =>
@@ -42,7 +48,7 @@ builder.Services.AddSingleton<IScheduler>(provider =>
 builder.Services.AddHostedService<QuartzHostedService>();
 builder.Services.AddSingleton<WebAppStartupJobsTrigger>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -50,6 +56,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+
+    // add razon runtime compilation
+    builder.Services.AddMvc().AddRazorRuntimeCompilation();
 }
 
 app.UseStaticFiles();

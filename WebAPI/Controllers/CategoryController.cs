@@ -1,5 +1,6 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 
@@ -7,6 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/category")]
     [ApiController]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IService<Category> categoryService;
