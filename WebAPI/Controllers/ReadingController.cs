@@ -1,16 +1,15 @@
 ﻿using DataLayer.Interfaces;
-using Entities.Constants.Authentication;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Tools.WebTools.Attributes;
 using WebAPI.DTOs;
 
 namespace WebAPI.Controllers
 {
     [Route("api/reading")]
     [ApiController]
-    [AuthorizeAnyRoles(Roles.Admin, Roles.ReadingAdmin)]
+    [Authorize]
     public class ReadingController : Controller
     {
         private readonly IService<Reading> readingService;
