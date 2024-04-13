@@ -1,7 +1,11 @@
+using BusinessLayer.JobScheduler.JobConfiguration;
 using Entities.Models;
 using Entities.Models.DbContexts;
 using Microsoft.AspNetCore.Identity;
+using Quartz;
+using Quartz.Impl;
 using WebApp;
+using WebApp.JobScheduler;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +37,16 @@ builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));
 });
+
+// Add Quartz scheduler
+builder.Services.AddSingleton<IScheduler>(provider =>
+{
+    var schedulerFactory = new StdSchedulerFactory();
+    return schedulerFactory.GetScheduler().Result;
+});
+
+builder.Services.AddHostedService<QuartzHostedService>();
+builder.Services.AddSingleton<WebAppStartupJobsTrigger>();
 
 WebApplication app = builder.Build();
 
