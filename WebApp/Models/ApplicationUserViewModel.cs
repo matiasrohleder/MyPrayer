@@ -4,16 +4,14 @@ namespace WebApp.Models;
 
 public class ApplicationUserViewModel
 {
-    public bool Active { get; set; }
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public int Order { get; set; }
+    public List<Guid> RoleIds { get; set; }
 
     public ApplicationUserViewModel()
     {
         Id = Guid.NewGuid();
         Name = string.Empty;
-        Active = true;
     }
 
     public ApplicationUserViewModel(ApplicationUser applicationUser)

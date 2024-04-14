@@ -2,6 +2,7 @@ using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tools.WebTools.Attributes;
 using WebApp.Models;
@@ -38,7 +39,7 @@ public class ApplicationUserController(
     #region Create
     public IActionResult Create()
     {
-        ViewData["Action"] = "Create";
+        InitViewDatas("Create");
         return View("CreateOrEdit", new ApplicationUserViewModel());
     }
 
@@ -51,7 +52,7 @@ public class ApplicationUserController(
             return RedirectToAction("Index", "ApplicationUser");
         }
 
-        ViewData["Action"] = "Create";
+        InitViewDatas("Create");
 
         return View("CreateOrEdit", applicationuser);
     }
@@ -65,7 +66,7 @@ public class ApplicationUserController(
             return NotFound("Usuario no encontrado");
         ApplicationUserViewModel applicationuserViewModel = new(applicationuser);
 
-        ViewData["Action"] = "Edit";
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", applicationuserViewModel);
     }
@@ -79,7 +80,7 @@ public class ApplicationUserController(
             return RedirectToAction("Index", "ApplicationUser");
         }
 
-        ViewData["Action"] = "Edit";
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", applicationuser);
     }
@@ -97,6 +98,24 @@ public class ApplicationUserController(
         }
         else
             throw new Exception();
+    }
+    #endregion
+
+    #region Private methods
+    private void InitViewDatas(string action)
+    {
+        ViewData["Action"] = action;
+        ViewData["Roles"] = GetRoles();
+    }
+
+    public List<SelectListItem> GetRoles(IEnumerable<string>? selectedRoles = null)
+    {
+        ICollection<string> roles = Roles.GetAllRoles();
+
+        if (selectedRoles == null)
+            return roles.Select(r => new SelectListItem(r, r)).ToList();
+
+        return roles.Select(r => new SelectListItem(r, r, selectedRoles.Any(sr => sr == r))).ToList();
     }
     #endregion
 }
