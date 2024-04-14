@@ -52,7 +52,7 @@ public class ApplicationUserController(
             return RedirectToAction("Index", "ApplicationUser");
         }
 
-        InitViewDatas("Create");
+        InitViewDatas("Create", applicationuser.Roles);
 
         return View("CreateOrEdit", applicationuser);
     }
@@ -102,10 +102,10 @@ public class ApplicationUserController(
     #endregion
 
     #region Private methods
-    private void InitViewDatas(string action)
+    private void InitViewDatas(string action, IEnumerable<string>? selectedRoles = null)
     {
         ViewData["Action"] = action;
-        ViewData["Roles"] = GetRoles();
+        ViewData["Roles"] = GetRoles(selectedRoles);
     }
 
     public List<SelectListItem> GetRoles(IEnumerable<string>? selectedRoles = null)
@@ -113,9 +113,22 @@ public class ApplicationUserController(
         ICollection<string> roles = Roles.GetAllRoles();
 
         if (selectedRoles == null)
-            return roles.Select(r => new SelectListItem(r, r)).ToList();
+            return roles.Select(r => new SelectListItem(TranslateRole(r), r)).ToList();
 
-        return roles.Select(r => new SelectListItem(r, r, selectedRoles.Any(sr => sr == r))).ToList();
+        return roles.Select(r => new SelectListItem(TranslateRole(r), r, selectedRoles.Any(sr => sr == r))).ToList();
+    }
+
+    public string TranslateRole(string role)
+    {
+        return role switch
+        {
+            Roles.Admin => "Administrador general",
+            Roles.CategoryAdmin => "Administrador de categorías",
+            Roles.ContentAdmin => "Administrador de contenido",
+            Roles.ReadingAdmin => "Administrador de lecturas",
+            Roles.UserAdmin => "Administrador de usuarios",
+            _ => role,
+        };
     }
     #endregion
 }

@@ -6,12 +6,13 @@ public class ApplicationUserViewModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public List<Guid> RoleIds { get; set; }
+    public List<string> Roles { get; set; }
 
     public ApplicationUserViewModel()
     {
         Id = Guid.NewGuid();
         Name = string.Empty;
+        Roles = [];
     }
 
     public ApplicationUserViewModel(ApplicationUser applicationUser)

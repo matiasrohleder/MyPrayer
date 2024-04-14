@@ -14,8 +14,7 @@
         <input class="form-control mb-3" id="Name" asp-for="Name">
 
         <label for="Role">Rol</label>
-        <select class="form-control mb-3" id="Role" asp-for="RoleIds" multiple>
-            <option value="" disabled selected>Seleccione un rol</option>
+        <select class="form-control mb-3" id="Roles" asp-for="Roles" multiple size="5">
             @foreach (SelectListItem item in roles)
             {
                 <option value="@item.Value" selected="@item.Selected">@item.Text</option>
