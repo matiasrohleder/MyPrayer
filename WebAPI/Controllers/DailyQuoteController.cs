@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/dailyQuote")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DailyQuoteController : Controller
     {
         private readonly IService<DailyQuote> dailyQuoteService;
