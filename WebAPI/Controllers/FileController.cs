@@ -6,7 +6,6 @@ using BusinessLayer.Services;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("file")]
     public class FileController : Controller
     {
