@@ -7,17 +7,17 @@ namespace WebAPI.DTOs
     {
         public DateTime Date { get; set; }
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public ReadingEnum ReadingEnum { get; set; }
+        public ReadingEnum Lecture { get; set; }
         public string Text { get; set; }
+        public string Title { get; set; }
         
         public ReadingRes(Reading reading)
         {
             Date = reading.Date;
             Id = reading.Id;
-            Name = reading.Name;
-            ReadingEnum = reading.ReadingEnum;
+            Lecture = reading.ReadingEnum;
             Text = reading.Text;
+            Title = reading.Name;
         }
     }
 }

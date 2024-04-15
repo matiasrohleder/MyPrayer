@@ -25,10 +25,13 @@ namespace WebAPI.Controllers
         /// <param name="date"></param>
         /// <returns></returns>
         [HttpGet("get")]
-        public async Task<ActionResult<List<DailyQuoteRes>>> GetByDate(DateTime date)
+        public async Task<ActionResult<List<DailyQuoteRes>>> GetByDate(DateTime? date)
         {
+            if (!date.HasValue)
+                date = DateTime.Today;
+
             DailyQuoteRes? quote = await dailyQuoteService.GetAll()
-                                                            .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.ToUniversalTime().Date)
+                                                            .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.Value.ToUniversalTime().Date)
                                                             .Select(r => new DailyQuoteRes(r))
                                                             .FirstOrDefaultAsync();
 
