@@ -44,11 +44,11 @@ builder.Services.AddAuthentication(ApiKeySchemeOptions.Scheme)
 
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
-//var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-//builder.WebHost.UseKestrel(options =>
-//{
-//    options.ListenAnyIP(int.Parse(port));
-//});
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
 
 var app = builder.Build();
 

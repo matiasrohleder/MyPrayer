@@ -56,6 +56,7 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
+            .AddInterceptors(new LocalToUtcInterceptor())
             .AddInterceptors(new UtcToLocalInterceptor());
     }
 }

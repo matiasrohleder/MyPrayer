@@ -39,7 +39,7 @@ public class ContentViewModel
 
     public Content ToEntity()
     {
-        Content content = new Content
+        Content content = new()
         {
             Active = Active,
             CategoryId = CategoryId,
@@ -47,7 +47,7 @@ public class ContentViewModel
             Id = Id,
             Link = Link,
             Name = Name,
-            ShowDate = ShowDate.ToUniversalTime(),
+            ShowDate = ShowDate,
             FileUrl = FileUrl
         };
 

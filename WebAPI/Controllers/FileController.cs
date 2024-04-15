@@ -6,8 +6,8 @@ using BusinessLayer.Services;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("file")]
+    [Authorize]
     public class FileController : Controller
     {
         private readonly IFileService fileService;
