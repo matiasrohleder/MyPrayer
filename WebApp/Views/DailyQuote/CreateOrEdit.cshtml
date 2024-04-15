@@ -1,0 +1,29 @@
+﻿@model WebApp.Models.DailyQuoteViewModel;
+
+@{
+    ViewData["Title"] = "Frase diaria";
+    string? action = ViewData["Action"] as string;
+}
+
+<form class="floating-labels" method="POST" action="@Url.Action(action,"DailyQuote")" asp-antiforgery="true">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="Date">Fecha</label>
+            <input type="datetime-local" class="form-control" id="Date" asp-for="Date">
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <label for="Name">Frase</label>
+        <textarea class="form-control mb-3" rows="3" id="Name" asp-for="Name"></textarea>
+    </div>
+
+    <div class="d-flex justify-content-end buttonFooter">
+        <button id="btn-submit" type="submit" class="btn btn-themecolor" style="margin-right:10px">Guardar</button>
+        <button id="btn-cancel" type="button" class="btn btn-cancel"
+                onclick="window.location.href='@Url.Action("Index","DailyQuote")'">
+            Cancelar
+        </button>
+    </div>
+</form>

@@ -63,6 +63,13 @@ a:hover {
     background-position: center center;
 }
 
+.card-quotes {
+    background-size: cover;
+    background-image: url('../../../images/quotes.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 .background-tint {
     background-color: rgba(253, 153, 75, 0.7);
     background-blend-mode: multiply;

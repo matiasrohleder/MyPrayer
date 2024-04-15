@@ -14,6 +14,9 @@ public static class Roles
     public const string ContentAdmin = "ContentAdmin";
     private static readonly Guid contentAdminId = Guid.Parse("0d6490bf-fdfd-4a68-99ab-c0bb135b28f7");
 
+    public const string DailyQuoteAdmin = "DailyQuoteAdmin";
+    private static readonly Guid dailyQuoteAdminId = Guid.Parse("166800F3-0CB9-4B19-9465-D63DEDD2608B");
+
     public const string ReadingAdmin = "ReadingAdmin";
     private static readonly Guid readingAdminId = Guid.Parse("f6c0b642-2ddb-42f5-8ba8-0ce9faeb3a4d");
 
