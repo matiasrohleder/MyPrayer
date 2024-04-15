@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Description = "ApiKey must appear in header",
         Type = SecuritySchemeType.ApiKey,
-        Name = "X-Api-Key",
+        Name = "X-API-KEY",
         In = ParameterLocation.Header,
         Scheme = "ApiKeyScheme"
     });
@@ -34,13 +34,21 @@ builder.Services.AddSwaggerGen(c =>
                     };
     c.AddSecurityRequirement(requirement);
 });
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(ApiKeySchemeOptions.Scheme)
+    .AddScheme<ApiKeySchemeOptions, ApiKeySchemeHandler>(
+        ApiKeySchemeOptions.Scheme, options =>
+        {
+            options.HeaderName = "X-API-KEY";
+        });
+
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenAnyIP(int.Parse(port));
-});
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+//builder.WebHost.UseKestrel(options =>
+//{
+//    options.ListenAnyIP(int.Parse(port));
+//});
 
 var app = builder.Build();
 
@@ -55,9 +63,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseMiddleware<ApiKeyAuthMiddleware>();
-
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
