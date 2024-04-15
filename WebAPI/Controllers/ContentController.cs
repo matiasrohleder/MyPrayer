@@ -9,7 +9,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/content")]
     [ApiController]
-    [Authorize]
     public class ContentController : Controller
     {
         private readonly IService<Content> contentService;
