@@ -9,7 +9,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/reading")]
     [ApiController]
-    [Authorize]
     public class ReadingController : Controller
     {
         private readonly IService<Reading> readingService;

@@ -55,9 +55,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseMiddleware<ApiKeyAuthMiddleware>();
+// TODO: Replace this middleware with an authentication schema
+// app.UseMiddleware<ApiKeyAuthMiddleware>();
 
-app.UseAuthentication();
+// TODO: Uncomment this line when authentication schema is developed
+// app.UseAuthentication();
 
 app.MapControllers();
 
