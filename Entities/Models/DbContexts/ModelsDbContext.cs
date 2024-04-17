@@ -43,6 +43,9 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
         modelBuilder.Entity<Content>()
             .HasQueryFilter(c => !c.Deleted);
 
+        modelBuilder.Entity<DailyQuote>()
+            .HasQueryFilter(c => !c.Deleted);
+
         modelBuilder.Entity<Reading>()
             .HasQueryFilter(c => !c.Deleted);
     }
