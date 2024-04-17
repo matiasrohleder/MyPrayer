@@ -1,15 +1,13 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.DTOs;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/dailyQuote")]
+    [Route("api/daily-quote")]
     [ApiController]
-    [Authorize]
     public class DailyQuoteController : Controller
     {
         private readonly IService<DailyQuote> dailyQuoteService;
@@ -24,15 +22,15 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        [HttpGet("get")]
-        public async Task<ActionResult<List<DailyQuoteRes>>> GetByDate(DateTime date)
+        [HttpGet("daily")]
+        public async Task<DailyQuoteRes> GetByDate(DateTime date)
         {
             DailyQuoteRes? quote = await dailyQuoteService.GetAll()
                                                             .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.ToUniversalTime().Date)
                                                             .Select(r => new DailyQuoteRes(r))
                                                             .FirstOrDefaultAsync();
 
-            return quote != null ? Ok(quote) : BadRequest("No hay frase diaria para el día ingresado");
+            return quote;
         }
     }
 }
