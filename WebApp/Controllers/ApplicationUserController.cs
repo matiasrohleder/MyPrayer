@@ -1,3 +1,4 @@
+using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
@@ -12,11 +13,11 @@ namespace WebApp.Controllers;
 #region Constructor and properties
 [AuthorizeAnyRoles(Roles.Admin, Roles.UserAdmin)]
 public class ApplicationUserController(
-    IService<ApplicationUser> applicationUserService,
+    IApplicationUserService applicationUserService,
     IService<Content> contentService
     ) : Controller
 {
-    private readonly IService<ApplicationUser> applicationUserService = applicationUserService;
+    private readonly IApplicationUserService applicationUserService = applicationUserService;
     private readonly IService<Content> contentService = contentService;
     #endregion
 
@@ -44,17 +45,17 @@ public class ApplicationUserController(
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(ApplicationUserViewModel applicationuser)
+    public async Task<IActionResult> Create(ApplicationUserViewModel applicationUser)
     {
         if (ModelState.IsValid)
         {
-            await applicationUserService.AddAsync(applicationuser.ToEntity());
+            await applicationUserService.AddAsync(applicationUser.ToEntity(), applicationUser.Roles);
             return RedirectToAction("Index", "ApplicationUser");
         }
 
-        InitViewDatas("Create", applicationuser.Roles);
+        InitViewDatas("Create", applicationUser.Roles);
 
-        return View("CreateOrEdit", applicationuser);
+        return View("CreateOrEdit", applicationUser);
     }
     #endregion
 
