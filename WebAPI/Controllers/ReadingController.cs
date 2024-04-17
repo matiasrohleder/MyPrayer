@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
                                                             .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.Value.ToUniversalTime().Date)
                                                             .Select(r => new ReadingRes(r))
                                                             .ToListAsync())
-                                                            .OrderBy(r => r.ReadingEnum)
+                                                            .OrderBy(r => r.Lecture)
                                                             .ToList();
 
             return dailyReadings.Any() ? Ok(dailyReadings) : BadRequest("No hay lecturas para el día ingresado");
