@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
 
             List<RecentContentItem> recents = (await contentService.GetAll()
                                                             .Include(c => c.Category)
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now)
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime())
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ContentRes>>> GetByCategory(Guid categoryId)
         {
             List<ContentRes> contents = await contentService.GetAll()
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now && c.CategoryId == categoryId)
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
                                                             .OrderByDescending(c => c.ShowDate)
                                                             .Select(c => new ContentRes(c))
                                                             .ToListAsync();
