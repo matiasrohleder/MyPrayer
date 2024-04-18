@@ -26,7 +26,7 @@ public class DailyQuoteViewModel
     {
         DailyQuote dailyQuote = new()
         {
-            Date = Date,
+            Date = Date.ToUniversalTime(),
             Id = Id,
             Name = Name
         };
