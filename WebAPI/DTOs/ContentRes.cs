@@ -19,7 +19,7 @@ namespace WebAPI.DTOs
             Id = content.Id.ToString();
             Date = content.ShowDate;
             Link = content.Link;
-            Image = "https://lastfm.freetls.fastly.net/i/u/ar0/251f6b43bb78fcc9d01e7cd8c20337a0.jpg";
+            Image = content.FileUrl;
         }
     }
 }
