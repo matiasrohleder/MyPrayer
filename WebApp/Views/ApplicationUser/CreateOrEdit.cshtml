@@ -13,6 +13,9 @@
         <label for="Name">Nombre</label>
         <input class="form-control mb-3" id="Name" asp-for="Name">
 
+        <label for="Email">Email</label>
+        <input type="email" class="form-control mb-3" id="Email" asp-for="Email">
+
         <label for="Role">Rol</label>
         <select class="form-control mb-3" id="Roles" asp-for="Roles" multiple size="5">
             @foreach (SelectListItem item in roles)

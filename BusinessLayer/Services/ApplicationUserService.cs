@@ -19,12 +19,12 @@ public class ApplicationUserService(
     public async Task AddAsync(ApplicationUser user, IEnumerable<string> roles)
     {
         // Set a sequential id.
-        // user.Id = Guid.NewGuid(); //sarasa sacar
+        user.Id = Guid.NewGuid(); //sarasa sacar
 
-        // user.CreatedDate = DateTime.Now;sarasa sacar
-        // user.LastEditedDate = user.CreatedDate;
-        // user.CreatorId = this.operationContext.GetUserId();
-        // user.LastEditorId = user.CreatorId;
+        user.CreatedDate = DateTime.UtcNow;
+        user.LastEditedDate = user.CreatedDate;
+        user.CreatorId = Guid.NewGuid();
+        user.LastEditorId = user.CreatorId;
 
         IdentityResult createResult = await userManager.CreateAsync(user);
 
