@@ -47,7 +47,7 @@ public class ContentViewModel
             Id = Id,
             Link = Link,
             Name = Name,
-            ShowDate = ShowDate,
+            ShowDate = ShowDate.ToUniversalTime(),
             FileUrl = FileUrl
         };
 

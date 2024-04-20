@@ -5,7 +5,6 @@ using BusinessLayer.Services;
 
 namespace WebApp.Controllers;
 
-[Authorize]
 public class FileController : Controller
 {
     private readonly IFileService fileService;

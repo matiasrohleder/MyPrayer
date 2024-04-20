@@ -9,7 +9,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/reading")]
     [ApiController]
-    [Authorize]
     public class ReadingController : Controller
     {
         private readonly IService<Reading> readingService;
@@ -25,13 +24,16 @@ namespace WebAPI.Controllers
         /// <param name="date"></param>
         /// <returns></returns>
         [HttpGet("daily")]
-        public async Task<ActionResult<List<ReadingRes>>> GetDailyReadings(DateTime date)
+        public async Task<ActionResult<List<ReadingRes>>> GetDailyReadings(DateTime? date)
         {
+            if (!date.HasValue)
+                date = DateTime.Today;
+
             List<ReadingRes> dailyReadings = (await readingService.GetAll()
-                                                            .Where(r => !r.Deleted && r.Date.Date == date.Date)
+                                                            .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.Value.ToUniversalTime().Date)
                                                             .Select(r => new ReadingRes(r))
                                                             .ToListAsync())
-                                                            .OrderBy(r => r.ReadingEnum)
+                                                            .OrderBy(r => r.Lecture)
                                                             .ToList();
 
             return dailyReadings.Any() ? Ok(dailyReadings) : BadRequest("No hay lecturas para el día ingresado");
