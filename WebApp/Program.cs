@@ -1,4 +1,3 @@
-using BusinessLayer.JobScheduler.JobConfiguration;
 using Entities.Models;
 using Entities.Models.DbContexts;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +5,8 @@ using Quartz;
 using Quartz.Impl;
 using WebApp;
 using WebApp.JobScheduler;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ builder.Services.AddSingleton<WebAppStartupJobsTrigger>();
 
 // add razon runtime compilation
 #if DEBUG
-    builder.Services.AddMvc().AddRazorRuntimeCompilation();
+builder.Services.AddMvc().AddRazorRuntimeCompilation();
 #endif
 
 WebApplication app = builder.Build();
