@@ -19,9 +19,6 @@ public class ApplicationUserService(
     /// <inheritdoc/>
     public async Task AddAsync(ApplicationUser user, IEnumerable<string> roles)
     {
-        // Set a sequential id.
-        user.Id = Guid.NewGuid(); //sarasa sacar
-
         user.CreatedDate = DateTime.Now;
         user.LastEditedDate = user.CreatedDate;
         user.CreatorId = Guid.NewGuid();
