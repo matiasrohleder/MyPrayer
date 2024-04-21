@@ -2,6 +2,7 @@ using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,13 @@ namespace WebApp.Controllers;
 [AuthorizeAnyRoles(Roles.Admin, Roles.UserAdmin)]
 public class ApplicationUserController(
     IApplicationUserService applicationUserService,
-    IService<Content> contentService
+    IService<Content> contentService,
+    UserManager<ApplicationUser> userManager
     ) : Controller
 {
     private readonly IApplicationUserService applicationUserService = applicationUserService;
     private readonly IService<Content> contentService = contentService;
+    private readonly UserManager<ApplicationUser> userManager = userManager;
     #endregion
 
     #region Index
@@ -29,8 +32,9 @@ public class ApplicationUserController(
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+        List<string> roles = [];
         List<ApplicationUserViewModel> applicationUsers = await applicationUserService.GetAll()
-                                            .Select(c => new ApplicationUserViewModel(c))
+                                            .Select(c => new ApplicationUserViewModel(c, roles))
                                             .ToListAsync();
 
         return Json(new { data = applicationUsers });
@@ -65,9 +69,11 @@ public class ApplicationUserController(
         ApplicationUser? applicationuser = await applicationUserService.GetAsync(id);
         if (applicationuser == null)
             return NotFound("Usuario no encontrado");
-        ApplicationUserViewModel applicationuserViewModel = new(applicationuser);
 
-        InitViewDatas("Edit");
+        IList<string> roles = await userManager.GetRolesAsync(applicationuser);
+        ApplicationUserViewModel applicationuserViewModel = new(applicationuser, [.. roles]);
+
+        InitViewDatas("Edit", applicationuserViewModel.Roles);
 
         return View("CreateOrEdit", applicationuserViewModel);
     }
@@ -77,11 +83,11 @@ public class ApplicationUserController(
     {
         if (ModelState.IsValid)
         {
-            await applicationUserService.UpdateAsync(applicationuser.ToEntity());
+            await applicationUserService.UpdateAsync(applicationuser.ToEntity(), applicationuser.Roles);
             return RedirectToAction("Index", "ApplicationUser");
         }
 
-        InitViewDatas("Edit");
+        InitViewDatas("Edit", applicationuser.Roles);
 
         return View("CreateOrEdit", applicationuser);
     }
@@ -126,6 +132,7 @@ public class ApplicationUserController(
             Roles.Admin => "Administrador general",
             Roles.CategoryAdmin => "Administrador de categorías",
             Roles.ContentAdmin => "Administrador de contenido",
+            Roles.DailyQuoteAdmin => "Administrador de frases diárias",
             Roles.ReadingAdmin => "Administrador de lecturas",
             Roles.UserAdmin => "Administrador de usuarios",
             _ => role,

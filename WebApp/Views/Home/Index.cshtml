@@ -8,41 +8,56 @@
     </div>
     <div class="container-fluid h-100">
         <div class="row align-items-center h-100">
-            <div class="col-md-6 mb-3 mt-3">
-                <a href="/Reading">
-                    <div class="card card-readings background-tint">
-                        <h3>Lecturas</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 mb-3 mt-3">
-                <a href="/DailyQuote">
-                    <div class="card card-quotes background-tint">
-                        <h3>Frases diarias</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 mb-3 mt-3">
-                <a href="/Content">
-                    <div class="card card-contents background-tint">
-                        <h3>Contenidos</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 mb-3 mt-3">
-                <a href="/Category">
-                    <div class="card card-categories background-tint">
-                        <h3>Categorías</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 mb-3 mt-3">
-                <a href="/ApplicationUser">
-                    <div class="card card-users background-tint">
-                        <h3>Usuarios</h3>
-                    </div>
-                </a>
-            </div>
+            @if (User.IsInRole("Admin") || User.IsInRole("ReadingAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/Reading">
+                        <div class="card card-readings background-tint">
+                            <h3>Lecturas</h3>
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("DailyQuoteAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/DailyQuote">
+                        <div class="card card-quotes background-tint">
+                            <h3>Frases diarias</h3>
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("ContentAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/Content">
+                        <div class="card card-contents background-tint">
+                            <h3>Contenidos</h3>
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("CategoryAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/Category">
+                        <div class="card card-categories background-tint">
+                            <h3>Categorías</h3>
+                        </div>
+                    </a>
+                </div>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("ApplicationUserAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/ApplicationUser">
+                        <div class="card card-users background-tint">
+                            <h3>Usuarios</h3>
+                        </div>
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>

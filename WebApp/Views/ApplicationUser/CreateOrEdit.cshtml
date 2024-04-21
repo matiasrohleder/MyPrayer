@@ -13,16 +13,28 @@
         <label for="Name">Nombre</label>
         <input class="form-control mb-3" id="Name" asp-for="Name">
 
+        <label for="LastName">Nombre</label>
+        <input class="form-control mb-3" id="LastName" asp-for="LastName">
+
         <label for="Email">Email</label>
         <input type="email" class="form-control mb-3" id="Email" asp-for="Email">
 
         <label for="Role">Rol</label>
-        <select class="form-control mb-3" id="Roles" asp-for="Roles" multiple size="5">
+        <select class="form-control mb-3" id="Roles" asp-for="Roles" multiple size="6">
             @foreach (SelectListItem item in roles)
             {
                 <option value="@item.Value" selected="@item.Selected">@item.Text</option>
             }
         </select>
+
+        @if (action == "Create")
+        {
+            <label for="Password">Contraseña</label>
+            <input type="password" class="form-control mb-3" id="Password" asp-for="Password">
+
+            <label for="ConfirmPassword">Confirmar contraseña</label>
+            <input type="password" class="form-control mb-3" id="ConfirmPassword" asp-for="ConfirmPassword">
+        }
     </div>
 
     <div class="d-flex justify-content-end buttonFooter">

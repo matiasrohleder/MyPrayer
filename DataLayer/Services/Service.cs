@@ -58,7 +58,7 @@ public class Service<TEntity> : IService<TEntity> where TEntity : class, IEntity
     {
         try
         {
-            entity.CreatedDate = DateTime.UtcNow;
+            entity.CreatedDate = DateTime.Now;
             entity.LastEditedDate = entity.CreatedDate;
             // entity.CreatorId = operationContext.GetUserId(); TODO
             entity.CreatorId = Guid.NewGuid();
@@ -79,7 +79,7 @@ public class Service<TEntity> : IService<TEntity> where TEntity : class, IEntity
     {
         try
         {
-            entity.LastEditedDate = DateTime.UtcNow;
+            entity.LastEditedDate = DateTime.Now;
             // entity.LastEditorId = this.operationContext.GetUserId(); TODO
 
             repository.Update(entity);

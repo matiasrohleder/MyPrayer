@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
                 throw new Exception("No file uploaded.");
 
             var storage = await GetStorage();
-            
+
             // Convert IFormFile to byte array
             byte[] fileBytes;
             using (var ms = new MemoryStream())
@@ -50,7 +50,7 @@ namespace BusinessLayer.Services
             }
 
             // Create a unique file name to prevent overwriting existing files (optional)
-            var now = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var now = DateTime.Now.ToString("yyyyMMddHHmmss");
             string fileName = $"{now}-{file.FileName}";
 
             // Upload the file

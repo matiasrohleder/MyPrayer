@@ -3,6 +3,7 @@ using DataLayer.Interfaces;
 using DataLayer.Services;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Services;
 
@@ -21,7 +22,7 @@ public class ApplicationUserService(
         // Set a sequential id.
         user.Id = Guid.NewGuid(); //sarasa sacar
 
-        user.CreatedDate = DateTime.UtcNow;
+        user.CreatedDate = DateTime.Now;
         user.LastEditedDate = user.CreatedDate;
         user.CreatorId = Guid.NewGuid();
         user.LastEditorId = user.CreatorId;
@@ -36,7 +37,45 @@ public class ApplicationUserService(
 
         if (!addRolesResult.Succeeded)
             throw new Exception("Error al añadir roles");
+    }
 
-        // this.RegisterOperation(user, DALOperations.Create); sarasa sacar
+    /// <inheritdoc/>
+    public async Task UpdateAsync(ApplicationUser user, IEnumerable<string> roles)
+    {
+        ApplicationUser dbUser = await base.GetAll()
+                    .Where(u => u.Id == user.Id)
+                    .FirstAsync();
+
+        dbUser.Name = user.Name;
+        dbUser.LastName = user.LastName;
+        dbUser.Email = user.Email;
+        dbUser.UserName = user.Email;
+        dbUser.LastEditedDate = DateTime.Now;
+
+        IdentityResult updateResult = await userManager.UpdateAsync(dbUser);
+
+        if (!updateResult.Succeeded)
+            throw new Exception("Error al actualizar usuario");
+
+        // Update user roles
+        IList<string> currentRoles = await userManager.GetRolesAsync(dbUser);
+
+        // Calculate roles to remove.
+        IEnumerable<string> rolesToRemove = currentRoles.Except(roles);
+
+        // Remove user from roles.
+        IdentityResult removeRolesResult = await userManager.RemoveFromRolesAsync(dbUser, rolesToRemove);
+
+        if (!removeRolesResult.Succeeded)
+            throw new Exception("Error al eliminar roles");
+
+        // Calculate roles to add.
+        IEnumerable<string> rolesToAdd = roles.Except(currentRoles);
+
+        // Add user to their new roles.
+        IdentityResult addRolesResult = await userManager.AddToRolesAsync(dbUser, rolesToAdd);
+
+        if (!addRolesResult.Succeeded)
+            throw new Exception("Error al agregar nuevos roles");
     }
 }

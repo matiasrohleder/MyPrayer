@@ -9,4 +9,9 @@ public interface IApplicationUserService : IService<ApplicationUser>
     /// Creates a new user.
     /// </summary>
     Task AddAsync(ApplicationUser user, IEnumerable<string> roles);
+
+    /// <summary>
+    /// Updates an existing user.
+    /// </summary>
+    Task UpdateAsync(ApplicationUser user, IEnumerable<string> roles);
 }
