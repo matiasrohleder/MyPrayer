@@ -9,6 +9,6 @@ public class ApplicationUser : UserEntity
 
     [Required]
     [StringLength(50)]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = "";
     #endregion
 }
