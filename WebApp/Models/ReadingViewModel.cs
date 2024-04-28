@@ -31,7 +31,7 @@ public class ReadingViewModel
     {
         Reading reading = new()
         {
-            Date = Date,
+            Date = Date.ToUniversalTime(),
             Id = Id,
             Name = Name,
             ReadingEnum = ReadingEnum,
