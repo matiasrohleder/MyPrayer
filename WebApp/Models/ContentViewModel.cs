@@ -1,18 +1,32 @@
 using Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models;
 
 public class ContentViewModel
 {
     public bool Active { get; set; }
+
+    [Required(ErrorMessage = "La categoría es requerida")]
     public Guid CategoryId { get; set; }
+
+    [Required(ErrorMessage = "La descripción es requerida")]
     public string Description { get; set; }
+
     public Guid Id { get; set; }
-    public string Link { get; set; }
+
+    public string? Link { get; set; }
+
+    [Required(ErrorMessage = "El nombre del contenido es requerido")]
     public string Name { get; set; }
+
+    [Required(ErrorMessage = "La fecha de inicio es requerida")]
     public DateTime ShowDate { get; set; }
+
     public string? File { get; set; }
+
     public string? FileUrl { get; set; }
+
     public string? SignedUrl { get; set; }
 
     public ContentViewModel()

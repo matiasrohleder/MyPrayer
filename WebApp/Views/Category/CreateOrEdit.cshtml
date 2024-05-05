@@ -9,11 +9,17 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label for="Name">Nombre</label>
-        <input class="form-control mb-3" id="Name" asp-for="Name">
+        <div class="mb-3">
+            <label for="Name">Nombre</label>
+            <input class="form-control" id="Name" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
-        <label for="Order">Orden</label>
-        <input type="number" class="form-control mb-3" id="Order" asp-for="Order">
+        <div class="mb-3">
+            <label for="Order">Orden</label>
+            <input type="number" class="form-control" id="Order" asp-for="Order">
+            <span asp-validation-for="Order" class="text-danger"></span>
+        </div>
     </div>
 
     @if (action == "Edit")
