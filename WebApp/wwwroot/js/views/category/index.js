@@ -37,23 +37,34 @@ $(document).ready(function () {
 
 function Delete(id)
 {
-    $.ajax({
-        url: `/Category/Delete/${id}`,
-        type: 'GET',
-        success: function (result) {
-            Swal.fire({
-                title: "\xc9xito",
-                text: "Categor\xeda eliminada",
-                type: "success"
-            }).then((result) => {
-                window.location.reload();
-            });
-        },
-        error: function () {
-            Swal.fire({
-                title: "No es posible eliminar",
-                text: "Hay contenidos pertenecientes a esta categor\xeda",
-                type: "error"
+    Swal.fire({
+        title: "\xbfDesea eliminar la categor\xeda?",
+        text: "Esta acci\xf3n es irreversible",
+        type: "info",
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonText: "S\xed",
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `/Category/Delete/${id}`,
+                type: 'GET',
+                success: function (result) {
+                    Swal.fire({
+                        title: "\xc9xito",
+                        text: "Categor\xeda eliminada",
+                        type: "success"
+                    }).then((result) => {
+                        window.location.reload();
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "No es posible eliminar",
+                        text: "Hay contenidos pertenecientes a esta categor\xeda",
+                        type: "error"
+                    });
+                }
             });
         }
     });

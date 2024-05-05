@@ -59,7 +59,7 @@ public class ContentViewModel
             CategoryId = CategoryId,
             Description = Description,
             Id = Id,
-            Link = Link,
+            Link = string.IsNullOrEmpty(Link) ? string.Empty : Link,
             Name = Name,
             ShowDate = ShowDate.ToUniversalTime(),
             FileUrl = FileUrl
