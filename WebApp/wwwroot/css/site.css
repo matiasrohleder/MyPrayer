@@ -752,3 +752,19 @@ Custom
     margin: 5px;
     width: 50px;
 }
+
+select option{
+    padding: 0.2em;
+    margin: 0.2em;
+    border-radius: 25px;
+}
+select option:hover,
+select option:focus {
+    background-color: lightgray !important;
+}
+
+select option:active,
+select option:checked {
+    background-color: var(--primary-color) !important;
+    color: white
+}
