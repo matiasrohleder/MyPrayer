@@ -16,12 +16,19 @@
                 <label asp-for="Username" class="form-label">Usuario</label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Ingrese su número de teléfono."/>
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Ingrese su número de teléfono." />
                 <label asp-for="Input.PhoneNumber" class="form-label">Teléfono</label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-themecolor">Guardar</button>
+            <div class="form-floating mb-3">
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-themecolor">Guardar</button>
+            </div>
         </form>
+        <div class="form-floating mb-3">
+            <button id="change-password-button" onclick="window.location.href='@Url.Page("./ChangePassword")';"
+                class="w-100 btn btn-lg btn-secondary" style="background-color: #5cb85c; border-color: #5cb85c;">Cambiar
+                contraseña</button>
+        </div>
     </div>
 </div>
 
