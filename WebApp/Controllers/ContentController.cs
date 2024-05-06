@@ -55,6 +55,9 @@ public class ContentController(
     [HttpPost]
     public async Task<IActionResult> Create(ContentViewModel content)
     {
+        if (content.CategoryId == Guid.Empty)
+            ModelState.AddModelError("CategoryId", "La categoría es requerida");
+
         if (ModelState.IsValid)
         {
             await contentService.AddAsync(content.ToEntity());

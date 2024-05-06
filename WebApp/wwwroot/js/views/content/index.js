@@ -38,23 +38,34 @@ $(document).ready(function () {
 
 function Delete(id)
 {
-    $.ajax({
-        url: `/Content/Delete/${id}`,
-        type: 'GET',
-        success: function (result) {
-            Swal.fire({
-                title: "\xc9xito",
-                text: "Contentido eliminado",
-                type: "success"
-            }).then((result) => {
-                window.location.reload();
-            });
-        },
-        error: function () {
-            Swal.fire({
-                title: "No fue posible eliminar",
-                text: "Ocurri\xf3 un error inesperado. Intentar nuevamente.",
-                type: "error"
+    Swal.fire({
+        title: "\xbfDesea eliminar el contenido?",
+        text: "Esta acci\xf3n es irreversible",
+        type: "info",
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonText: "S\xed",
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `/Content/Delete/${id}`,
+                type: 'GET',
+                success: function (result) {
+                    Swal.fire({
+                        title: "\xc9xito",
+                        text: "Contentido eliminado",
+                        type: "success"
+                    }).then((result) => {
+                        window.location.reload();
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "No fue posible eliminar",
+                        text: "Ocurri\xf3 un error inesperado. Intentar nuevamente.",
+                        type: "error"
+                    });
+                }
             });
         }
     });

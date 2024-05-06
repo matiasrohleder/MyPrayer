@@ -22,9 +22,6 @@
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                     <label asp-for="Input.Password" class="form-label">Contraseña</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    <p style="text-align:right">
-                        <a id="forgot-password" asp-page="./ForgotPassword">Olvidé la contraseña</a>
-                    </p>
                 </div>
                 <div class="checkbox mb-3">
                     <label asp-for="Input.RememberMe" class="form-label">
@@ -34,11 +31,6 @@
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-themecolor">Iniciar sesión</button>
-                </div>
-                <div>
-                    <p style="text-align:center">
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">¿No tienes una cuenta? Regístrate</a>
-                    </p>
                 </div>
             </form>
         </div>

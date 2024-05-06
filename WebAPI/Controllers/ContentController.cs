@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
                                                             .ToList();
             // Build public URLs for files
             foreach (var carousel in recents){
-                foreach (var item in carousel.Contents){
+                foreach (var item in carousel.Contents.Where(c => !string.IsNullOrEmpty(c.Image))){
                     item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
                 }
             }
@@ -66,7 +66,8 @@ namespace WebAPI.Controllers
                                                             .Select(c => new ContentRes(c))
                                                             .ToListAsync();
             // Build public URLs for files
-            foreach (var item in contents){
+            foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
+            {
                 item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
             }
 
@@ -84,7 +85,8 @@ namespace WebAPI.Controllers
             Content content = await contentService.GetAsync(id);
             ContentRes response = new ContentRes(content);
             // Build public URLs for file
-            response.Image = (await fileService.GetSignedURLAsync(response.Image)).SignedUrl;
+            if (!string.IsNullOrEmpty(response.Image))
+                response.Image = (await fileService.GetSignedURLAsync(response.Image)).SignedUrl;
             return Ok(response);
         }
     }

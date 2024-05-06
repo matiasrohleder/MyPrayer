@@ -15,8 +15,11 @@
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
 
-        <label for="Name">Frase</label>
-        <textarea class="form-control mb-3" rows="3" id="Name" asp-for="Name"></textarea>
+        <div class="mb-3">
+            <label for="Name">Frase</label>
+            <textarea class="form-control" rows="3" id="Name" asp-for="Name"></textarea>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
     </div>
 
     <div class="d-flex justify-content-end buttonFooter">
