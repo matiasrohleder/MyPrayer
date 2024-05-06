@@ -1,3 +1,5 @@
+using BusinessLayer.BusinessLogic;
+using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Models;
 using Entities.Models.Enum;
@@ -12,9 +14,11 @@ namespace WebApp.Controllers;
 
 #region Constructor and properties
 public class ReadingController(
+    IReadingBusinessLogic readingBusinessLogic,
     IService<Reading> readingService
     ) : Controller
 {
+    private readonly IReadingBusinessLogic readingBusinessLogic = readingBusinessLogic;
     private readonly IService<Reading> readingService = readingService;
     #endregion
 
@@ -34,6 +38,31 @@ public class ReadingController(
     }
     #endregion
 
+    #region Create
+    public async Task<IActionResult> Create()
+    {
+        await InitViewDatas("Create");
+        return View("CreateOrEdit", new ReadingViewModel());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(ReadingViewModel readingViewModel)
+    {
+        Reading reading = readingViewModel.ToEntity();
+        await readingBusinessLogic.ValidateReading(reading, ModelState);
+
+        if (ModelState.IsValid)
+        {
+            await readingService.AddAsync(reading);
+            return RedirectToAction("Index", "Reading");
+        }
+
+        await InitViewDatas("Create");
+
+        return View("CreateOrEdit", readingViewModel);
+    }
+    #endregion
+
     #region Edit
     public async Task<IActionResult> Edit(Guid id)
     {
@@ -48,17 +77,20 @@ public class ReadingController(
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(ReadingViewModel reading)
+    public async Task<IActionResult> Edit(ReadingViewModel readingViewModel)
     {
+        Reading reading = readingViewModel.ToEntity();
+        await readingBusinessLogic.ValidateReading(reading, ModelState);
+
         if (ModelState.IsValid)
         {
-            await readingService.UpdateAsync(reading.ToEntity());
+            await readingService.UpdateAsync(reading);
             return RedirectToAction("Index", "Reading");
         }
 
         await InitViewDatas("Edit");
 
-        return View("CreateOrEdit", reading);
+        return View("CreateOrEdit", readingViewModel);
     }
     #endregion
 

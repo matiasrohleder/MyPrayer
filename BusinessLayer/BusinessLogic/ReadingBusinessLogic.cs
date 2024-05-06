@@ -3,6 +3,8 @@ using DataLayer.Interfaces;
 using Entities.Models;
 using Entities.Models.Enum;
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BusinessLayer.BusinessLogic
@@ -55,6 +57,16 @@ namespace BusinessLayer.BusinessLogic
 
                 await readingService.AddAsync(reading);
             }
+        }
+
+        public async Task ValidateReading(Reading reading, ModelStateDictionary modelState)
+        {
+            bool existingReading = (await readingService.GetAll().ToListAsync()).Any(r => r.Date.ToUniversalTime().Date == reading.Date.ToUniversalTime().Date && 
+                                                                                          r.ReadingEnum == reading.ReadingEnum && 
+                                                                                          r.Id != reading.Id);
+
+            if (existingReading)
+                modelState.AddModelError("date", "Ya existe una lectura para el día y tipo ingresado");
         }
 
         private async Task<string> GetFromBible(string endpoint)
