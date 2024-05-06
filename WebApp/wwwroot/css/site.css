@@ -734,6 +734,12 @@ Custom
     transition: 0.2s ease-in;
 }
 
+.btn-back {
+    background: lightgray;
+    color: #ffffff;
+    transition: 0.2s ease-in;
+}
+
 .navbar-custom {
     background-color: #0266b4;
     color: #ffffff;
