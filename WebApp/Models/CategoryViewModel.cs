@@ -1,12 +1,18 @@
 using Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models;
 
 public class CategoryViewModel
 {
     public bool Active { get; set; }
+
     public Guid Id { get; set; }
+
+    [Required(ErrorMessage = "El nombre de la categoría es requerido")]
     public string Name { get; set; }
+
+    [Required(ErrorMessage = "El orden de la categoría es requerido")]
     public int Order { get; set; }
 
     public CategoryViewModel()

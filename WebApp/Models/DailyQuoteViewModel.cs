@@ -1,11 +1,16 @@
 using Entities.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models;
 
 public class DailyQuoteViewModel
 {
+    [Required(ErrorMessage = "La fecha es requerida")]
     public DateTime Date { get; set; }
+
     public Guid Id { get; set; }
+
+    [Required(ErrorMessage = "La frase diaria es requerida")]
     public string Name { get; set; }
 
     public DailyQuoteViewModel()

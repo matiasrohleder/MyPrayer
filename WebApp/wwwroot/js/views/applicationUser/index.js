@@ -21,23 +21,34 @@ $(document).ready(function () {
 });
 
 function Delete(id) {
-    $.ajax({
-        url: `/ApplicationUser/Delete/${id}`,
-        type: 'GET',
-        success: function () {
-            Swal.fire({
-                title: "\xc9xito",
-                text: "Usuario eliminado",
-                type: "success"
-            }).then(() => {
-                window.location.reload();
-            });
-        },
-        error: function () {
-            Swal.fire({
-                title: "No es posible eliminar",
-                text: "No se puede eliminar al usuario administrador",
-                type: "error"
+    Swal.fire({
+        title: "\xbfDesea eliminar el usuario?",
+        text: "Esta acci\xf3n es irreversible",
+        type: "info",
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonText: "S\xed",
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `/ApplicationUser/Delete/${id}`,
+                type: 'GET',
+                success: function () {
+                    Swal.fire({
+                        title: "\xc9xito",
+                        text: "Usuario eliminado",
+                        type: "success"
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "No es posible eliminar",
+                        text: "No se puede eliminar al usuario administrador",
+                        type: "error"
+                    });
+                }
             });
         }
     });
