@@ -33,11 +33,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 #endregion
 
-string port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseKestrel(options =>
-{
-    options.ListenAnyIP(int.Parse(port));
-});
+//string port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+//builder.WebHost.UseKestrel(options =>
+//{
+//    options.ListenAnyIP(int.Parse(port));
+//});
 
 // Add Quartz scheduler
 builder.Services.AddSingleton<IScheduler>(provider =>

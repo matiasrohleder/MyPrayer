@@ -17,7 +17,6 @@ public class ReadingViewModel
     [Required(ErrorMessage = "El tipo de lectura es requerido")]
     public ReadingEnum ReadingEnum { get; set; }
 
-    [Required(ErrorMessage = "El texto de la lectura es requerido")]
     public string Text { get; set; }
 
     public ReadingViewModel()

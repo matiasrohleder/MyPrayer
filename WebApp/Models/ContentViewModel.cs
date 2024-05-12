@@ -7,10 +7,10 @@ public class ContentViewModel
 {
     public bool Active { get; set; }
 
-    [Required(ErrorMessage = "La categoría es requerida")]
+    [Required(ErrorMessage = "La categor\xeda es requerida")]
     public Guid CategoryId { get; set; }
 
-    [Required(ErrorMessage = "La descripción es requerida")]
+    [Required(ErrorMessage = "La descripci\xf3n es requerida")]
     public string Description { get; set; }
 
     public Guid Id { get; set; }

@@ -53,7 +53,7 @@ function Delete(id)
                 success: function (result) {
                     Swal.fire({
                         title: "\xc9xito",
-                        text: "Contentido eliminado",
+                        text: "Contenido eliminado",
                         type: "success"
                     }).then((result) => {
                         window.location.reload();
