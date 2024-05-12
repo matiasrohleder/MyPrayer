@@ -1,6 +1,5 @@
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 
 namespace BusinessLayer.Services
@@ -11,8 +10,6 @@ namespace BusinessLayer.Services
         private readonly IHttpClientFactory clientFactory;
         private string apiKey => configuration.GetSection("FileService:APIKey").Value ?? throw new Exception("File Service API key must have a value");
         private string baseURL => this.configuration.GetSection("FileService:BaseURL").Value ?? throw new Exception("File Service BaseURL must have a value");
-        private string storageResource => configuration.GetSection("FileService:StorageResource").Value ?? throw new Exception("File Service StorageResource must have a value");
-        private string bucket => configuration.GetSection("FileService:Bucket").Value ?? throw new Exception("File Service Bucket must have a value");
 
         private async Task<Supabase.Storage.Interfaces.IStorageFileApi<Supabase.Storage.FileObject>> GetStorage()
         {
@@ -21,7 +18,7 @@ namespace BusinessLayer.Services
 
             var options = new Supabase.SupabaseOptions
             {
-                AutoConnectRealtime = true
+                AutoConnectRealtime = false
             };
 
             var supabase = new Supabase.Client(url, key, options);
@@ -43,7 +40,7 @@ namespace BusinessLayer.Services
                 throw new Exception("No file uploaded.");
 
             var storage = await GetStorage();
-            
+
             // Convert IFormFile to byte array
             byte[] fileBytes;
             using (var ms = new MemoryStream())
@@ -53,7 +50,7 @@ namespace BusinessLayer.Services
             }
 
             // Create a unique file name to prevent overwriting existing files (optional)
-            var now = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var now = DateTime.Now.ToString("yyyyMMddHHmmss");
             string fileName = $"{now}-{file.FileName}";
 
             // Upload the file

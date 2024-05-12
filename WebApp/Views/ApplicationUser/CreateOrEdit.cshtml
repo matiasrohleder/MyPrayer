@@ -1,0 +1,47 @@
+﻿@model WebApp.Models.ApplicationUserViewModel;
+
+@{
+    ViewData["Title"] = "Usuarios";
+    string? action = ViewData["Action"] as string;
+    List<SelectListItem> roles = ViewData["Roles"] as List<SelectListItem> ?? new();
+}
+
+<form class="floating-labels" method="POST" action="@Url.Action(action,"ApplicationUser")" asp-antiforgery="true">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label for="Name">Nombre</label>
+        <input class="form-control mb-3" id="Name" asp-for="Name">
+
+        <label for="LastName">Apellido</label>
+        <input class="form-control mb-3" id="LastName" asp-for="LastName">
+
+        <label for="Email">Email</label>
+        <input type="email" class="form-control mb-3" id="Email" asp-for="Email">
+
+        <label for="Role">Rol</label>
+        <select class="form-control mb-3" id="Roles" asp-for="Roles" multiple size="7">
+            @foreach (SelectListItem item in roles)
+            {
+                <option value="@item.Value" selected="@item.Selected">@item.Text</option>
+            }
+        </select>
+
+        @if (action == "Create")
+        {
+            <label for="Password">Contraseña</label>
+            <input type="password" class="form-control mb-3" id="Password" asp-for="Password">
+
+            <label for="ConfirmPassword">Confirmar contraseña</label>
+            <input type="password" class="form-control mb-3" id="ConfirmPassword" asp-for="ConfirmPassword">
+        }
+    </div>
+
+    <div class="d-flex justify-content-end buttonFooter">
+        <button id="btn-submit" type="submit" class="btn btn-themecolor" style="margin-right:10px">Guardar</button>
+        <button id="btn-cancel" type="button" class="btn btn-cancel"
+            onclick="window.location.href='@Url.Action("Index","ApplicationUser")'">
+            Cancelar
+        </button>
+    </div>
+</form>

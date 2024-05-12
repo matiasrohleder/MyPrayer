@@ -1,31 +1,17 @@
 $(document).ready(function () {
-    $('#categoryTable').DataTable({
+    $('#quoteTable').DataTable({
         "ajax": {
-            "url": "/Category/GetAll",
+            "url": "/DailyQuote/GetAll",
             "type": "Get",
             "datatype": "json"
         },
         columns: [
+            { data: "date" },
             { data: "name" },
-            { data: "order" },
-            {
-                data: "active",
-                render: function (data, type, row) {
-                    if (type === 'myExport') {
-                        return data === 'Active' ? "S\xed" : "No";
-                    }
-                    if (data) {
-                        return "S\xed";
-                    } else {
-                        return "No";
-                    }
-                    return data;
-                },
-            },
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-submit" style="margin-right:1em" onclick="window.location.href='/Category/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
+                    return `<button class="btn btn-submit" style="margin-right:1em" onclick="window.location.href='/DailyQuote/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
                 }
             },
         ],
@@ -38,7 +24,7 @@ $(document).ready(function () {
 function Delete(id)
 {
     Swal.fire({
-        title: "\xbfDesea eliminar la categor\xeda?",
+        title: "\xbfDesea eliminar la frase diaria?",
         text: "Esta acci\xf3n es irreversible",
         type: "info",
         showCancelButton: true,
@@ -47,12 +33,12 @@ function Delete(id)
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: `/Category/Delete/${id}`,
+                url: `/DailyQuote/Delete/${id}`,
                 type: 'GET',
                 success: function (result) {
                     Swal.fire({
                         title: "\xc9xito",
-                        text: "Categor\xeda eliminada",
+                        text: "Frase diaria eliminado",
                         type: "success"
                     }).then((result) => {
                         window.location.reload();
@@ -60,8 +46,8 @@ function Delete(id)
                 },
                 error: function () {
                     Swal.fire({
-                        title: "No es posible eliminar",
-                        text: "Hay contenidos pertenecientes a esta categor\xeda",
+                        title: "No fue posible eliminar",
+                        text: "Ocurri\xf3 un error inesperado. Intentar nuevamente.",
                         type: "error"
                     });
                 }

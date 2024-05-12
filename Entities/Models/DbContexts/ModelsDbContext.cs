@@ -31,11 +31,8 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
     /// </summary>
     private static void ApplyCurrentLayerEntityConfigurations(ModelBuilder modelBuilder)
     {
-        EnumToStringConverter<ReadingEnum> readingEnumConverter = new();
-        modelBuilder.Entity<Reading>()
-            .Property(r => r.ReadingEnum)
-            .HasConversion(readingEnumConverter)
-            .HasMaxLength(64);
+        modelBuilder.Entity<ApplicationUser>()
+            .HasQueryFilter(c => !c.Deleted);
 
         modelBuilder.Entity<Category>()
             .HasQueryFilter(c => !c.Deleted);
@@ -43,6 +40,14 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
         modelBuilder.Entity<Content>()
             .HasQueryFilter(c => !c.Deleted);
 
+        modelBuilder.Entity<DailyQuote>()
+            .HasQueryFilter(c => !c.Deleted);
+
+        EnumToStringConverter<ReadingEnum> readingEnumConverter = new();
+        modelBuilder.Entity<Reading>()
+            .Property(r => r.ReadingEnum)
+            .HasConversion(readingEnumConverter)
+            .HasMaxLength(64);
         modelBuilder.Entity<Reading>()
             .HasQueryFilter(c => !c.Deleted);
     }
@@ -55,8 +60,8 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .AddInterceptors(new LocalToUtcInterceptor())
-            .AddInterceptors(new UtcToLocalInterceptor());
+        // optionsBuilder
+        //     .AddInterceptors(new LocalToUtcInterceptor())
+        //     .AddInterceptors(new UtcToLocalInterceptor());
     }
 }

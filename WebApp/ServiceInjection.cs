@@ -36,11 +36,13 @@ internal class ServiceInjection : AbstractServiceInjection
     }
     private void AddServices()
     {
+        Services.AddScoped<IApplicationUserService, ApplicationUserService>();
         Services.AddScoped<IFileService, FileService>();
     }
 
     private void AddBusinessLogics()
     {
+        Services.AddScoped<IDailyQuoteBusinessLogic, DailyQuoteBusinessLogic>();
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
 
     }

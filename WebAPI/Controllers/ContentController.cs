@@ -1,6 +1,6 @@
-﻿using DataLayer.Interfaces;
+﻿using BusinessLayer.Interfaces;
+using DataLayer.Interfaces;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.DTOs;
@@ -13,10 +13,12 @@ namespace WebAPI.Controllers
     public class ContentController : Controller
     {
         private readonly IService<Content> contentService;
+        private readonly IFileService fileService;
 
-        public ContentController(IService<Content> contentService)
+        public ContentController(IService<Content> contentService, IFileService fileService)
         {
             this.contentService = contentService;
+            this.fileService = fileService;
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace WebAPI.Controllers
 
             List<RecentContentItem> recents = (await contentService.GetAll()
                                                             .Include(c => c.Category)
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now)
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime())
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
@@ -41,6 +43,12 @@ namespace WebAPI.Controllers
                                                             .ToListAsync())
                                                             .OrderBy(c => c.Category.Order)
                                                             .ToList();
+            // Build public URLs for files
+            foreach (var carousel in recents){
+                foreach (var item in carousel.Contents.Where(c => !string.IsNullOrEmpty(c.Image))){
+                    item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
+                }
+            }
 
             return Ok(recents);
         }
@@ -54,10 +62,15 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ContentRes>>> GetByCategory(Guid categoryId)
         {
             List<ContentRes> contents = await contentService.GetAll()
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now && c.CategoryId == categoryId)
+                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
                                                             .OrderByDescending(c => c.ShowDate)
                                                             .Select(c => new ContentRes(c))
                                                             .ToListAsync();
+            // Build public URLs for files
+            foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
+            {
+                item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
+            }
 
             return Ok(contents);
         }
@@ -71,8 +84,11 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<ContentRes>> Get(Guid id)
         {
             Content content = await contentService.GetAsync(id);
-
-            return Ok(new ContentRes(content));
+            ContentRes response = new ContentRes(content);
+            // Build public URLs for file
+            if (!string.IsNullOrEmpty(response.Image))
+                response.Image = (await fileService.GetSignedURLAsync(response.Image)).SignedUrl;
+            return Ok(response);
         }
     }
 }

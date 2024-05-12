@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function ShowLoadingModal() {
+    swal({
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        html: '<img src="/images/loading-gif.gif" style="width:100px">',
+        showConfirmButton: false,
+        width: '200px'
+    });
+}
 
-// Write your JavaScript code.
+$('option').mousedown(function (e) {
+    e.preventDefault();
+    $(this).prop('selected', !$(this).prop('selected'));
+    return false;
+});

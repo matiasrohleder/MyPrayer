@@ -9,22 +9,34 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label for="Name">Nombre</label>
-        <input class="form-control mb-3" id="Name" asp-for="Name">
+        <div class="mb-3">
+            <label for="Name">Nombre</label>
+            <input class="form-control" id="Name" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
-        <label for="Date">Fecha</label>
-        <input type="datetime-local" class="form-control mb-3" id="Date" asp-for="Date">
+        <div class="mb-3">
+            <label for="Date">Fecha</label>
+            <input type="datetime-local" class="form-control" id="Date" asp-for="Date">
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
 
-        <label for="ReadingEnum">Tipo de lectura</label>
-        <select class="form-control mb-3" id="ReadingEnum" asp-for="ReadingEnum">
-            @foreach (SelectListItem item in types)
-            {
-                <option value="@item.Value">@item.Text</option>
-            }
-        </select>
+        <div class="mb-3">
+            <label for="ReadingEnum">Tipo de lectura</label>
+            <select class="form-control" id="ReadingEnum" asp-for="ReadingEnum">
+                @foreach (SelectListItem item in types)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+            <span asp-validation-for="ReadingEnum" class="text-danger"></span>
+        </div>
 
-        <label for="Text">Lectura</label>
-        <textarea class="form-control mb-3" rows="15" id="Text" asp-for="Text"></textarea>
+        <div class="mb-3">
+            <label for="Text">Lectura</label>
+            <textarea class="form-control" rows="15" id="Text" asp-for="Text"></textarea>
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
     </div>
 
     <div class="d-flex justify-content-end buttonFooter">

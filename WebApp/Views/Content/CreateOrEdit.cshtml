@@ -10,26 +10,40 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label for="Name">Nombre</label>
-        <input class="form-control mb-3" id="Name" asp-for="Name">
+        <div class="mb-3">
+            <label for="Name">Nombre</label>
+            <input class="form-control" id="Name" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
-        <label for="Category">Categoría</label>
-        <select class="form-control mb-3" id="Category" asp-for="CategoryId">
-            <option value="" disabled selected>Seleccione una opción</option>
-            @foreach (SelectListItem item in categories)
-            {
-                <option value="@item.Value">@item.Text</option>
-            }
-        </select>
+        <div class="mb-3">
+            <label for="Category">Categoría</label>
+            <select class="form-control" id="Category" asp-for="CategoryId">
+                <option value="" disabled selected>Seleccione una opción</option>
+                @foreach (SelectListItem item in categories)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
 
-        <label for="Link">Link</label>
-        <input class="form-control mb-3" id="Link" asp-for="Link">
+        <div class="mb-3">
+            <label for="Link">Link</label>
+            <input class="form-control" id="Link" asp-for="Link">
+        </div>
 
-        <label for="ShowDate">Fecha de inicio</label>
-        <input type="datetime-local" class="form-control mb-3" id="ShowDate" asp-for="ShowDate">
+        <div class="mb-3">
+            <label for="ShowDate">Fecha de inicio</label>
+            <input type="datetime-local" class="form-control" id="ShowDate" asp-for="ShowDate">
+            <span asp-validation-for="ShowDate" class="text-danger"></span>
+        </div>
 
-        <label for="Description">Descripción</label>
-        <textarea class="form-control mb-3" rows="5" id="Description" asp-for="Description"></textarea>
+        <div class="mb-3">
+            <label for="Description">Descripción</label>
+            <textarea class="form-control" rows="5" id="Description" asp-for="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
         <div class="input-group mb-3">
             <label class="input-group-text" for="File">Upload</label>

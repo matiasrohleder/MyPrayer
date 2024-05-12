@@ -1,31 +1,16 @@
 $(document).ready(function () {
-    $('#categoryTable').DataTable({
+    $('#user-table').DataTable({
         "ajax": {
-            "url": "/Category/GetAll",
+            "url": "/ApplicationUser/GetAll",
             "type": "Get",
             "datatype": "json"
         },
         columns: [
             { data: "name" },
-            { data: "order" },
-            {
-                data: "active",
-                render: function (data, type, row) {
-                    if (type === 'myExport') {
-                        return data === 'Active' ? "S\xed" : "No";
-                    }
-                    if (data) {
-                        return "S\xed";
-                    } else {
-                        return "No";
-                    }
-                    return data;
-                },
-            },
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-submit" style="margin-right:1em" onclick="window.location.href='/Category/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
+                    return `<button class="btn btn-submit" style="margin-right:1em" onclick="window.location.href='/ApplicationUser/Edit/${full.id}'">Editar</button><button class="btn btn-cancel" onclick="Delete('${full.id}')">Borrar</button>`;
                 }
             },
         ],
@@ -35,10 +20,9 @@ $(document).ready(function () {
     });
 });
 
-function Delete(id)
-{
+function Delete(id) {
     Swal.fire({
-        title: "\xbfDesea eliminar la categor\xeda?",
+        title: "\xbfDesea eliminar el usuario?",
         text: "Esta acci\xf3n es irreversible",
         type: "info",
         showCancelButton: true,
@@ -47,21 +31,21 @@ function Delete(id)
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: `/Category/Delete/${id}`,
+                url: `/ApplicationUser/Delete/${id}`,
                 type: 'GET',
-                success: function (result) {
+                success: function () {
                     Swal.fire({
                         title: "\xc9xito",
-                        text: "Categor\xeda eliminada",
+                        text: "Usuario eliminado",
                         type: "success"
-                    }).then((result) => {
+                    }).then(() => {
                         window.location.reload();
                     });
                 },
                 error: function () {
                     Swal.fire({
                         title: "No es posible eliminar",
-                        text: "Hay contenidos pertenecientes a esta categor\xeda",
+                        text: "No se puede eliminar al usuario administrador",
                         type: "error"
                     });
                 }

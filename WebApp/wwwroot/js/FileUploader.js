@@ -29,6 +29,7 @@ class FileUploader
     }
 
     uploadImage(self, event) {
+        ShowLoadingModal();
         var formData = new FormData();
         formData.append('file', event.target.files[0]);
     
@@ -43,10 +44,14 @@ class FileUploader
                 // Now fetch the display URL from the download endpoint
                 self.fetchImage(self, data.fileUrl, self._imgDisplayTagId);
             } else {
+                swal.close();
                 alert('Failed to upload image.');
             }
         })
-        .catch(error => console.error('Error uploading file:', error));
+        .catch(error => {
+            swal.close();
+            console.error('Error uploading file:', error)
+        });
     };
     
     fetchImage(self, fileName) {
@@ -57,11 +62,14 @@ class FileUploader
                 var uploadedImage = document.getElementById(self._imgDisplayTagId);
                 uploadedImage.src = data.signedUrl;
                 uploadedImage.style.display = 'block'; // Show the image element
+                swal.close();
             } else {
+                swal.close();
                 alert('Failed to retrieve image.');
             }
         })
         .catch(error => {
+            swal.close();
             console.error('Error fetching file:', error);
             alert('Error fetching file.');
         });
