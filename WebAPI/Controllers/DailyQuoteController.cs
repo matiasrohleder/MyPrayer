@@ -1,5 +1,6 @@
 ﻿using DataLayer.Interfaces;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.DTOs;
@@ -8,6 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/daily-quote")]
     [ApiController]
+    [Authorize]
     public class DailyQuoteController : Controller
     {
         private readonly IService<DailyQuote> dailyQuoteService;

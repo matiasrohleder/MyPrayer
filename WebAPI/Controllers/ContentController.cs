@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.DTOs;
@@ -9,6 +10,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/content")]
     [ApiController]
+    [Authorize]
     public class ContentController : Controller
     {
         private readonly IService<Content> contentService;
