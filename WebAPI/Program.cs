@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Description = "ApiKey must appear in header",
         Type = SecuritySchemeType.ApiKey,
-        Name = "X-API-KEY",
+        Name = "X-Api-Key",
         In = ParameterLocation.Header,
         Scheme = "ApiKeyScheme"
     });
@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(ApiKeySchemeOptions.Scheme)
     .AddScheme<ApiKeySchemeOptions, ApiKeySchemeHandler>(
         ApiKeySchemeOptions.Scheme, options =>
         {
-            options.HeaderName = "X-API-KEY";
+            options.HeaderName = "X-Api-Key";
         });
 
 builder.Services.ConfigureWebAPI(builder.Configuration);
