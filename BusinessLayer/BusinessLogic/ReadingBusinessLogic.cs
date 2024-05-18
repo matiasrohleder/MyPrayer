@@ -3,69 +3,78 @@ using DataLayer.Interfaces;
 using Entities.Models;
 using Entities.Models.Enum;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BusinessLayer.BusinessLogic
 {
-    public class ReadingBusinessLogic : IReadingBusinessLogic
+    public class ReadingBusinessLogic(IService<Reading> readingService,
+                                IBibleConfiguration bibleConfiguration,
+                                IHttpClientFactory clientFactory) : IReadingBusinessLogic
     {
         #region Properties
-        private readonly IService<Reading> readingService;
-        private readonly IBibleConfiguration bibleConfiguration;
-        private readonly IHttpClientFactory clientFactory;
-        #endregion
+        private readonly IService<Reading> readingService = readingService;
+        private readonly IBibleConfiguration bibleConfiguration = bibleConfiguration;
+        private readonly IHttpClientFactory clientFactory = clientFactory;
 
+        #endregion
         #region Constructor
-        public ReadingBusinessLogic(IService<Reading> readingService,
-                                    IBibleConfiguration bibleConfiguration,
-                                    IHttpClientFactory clientFactory)
-        {
-            this.readingService = readingService;
-            this.bibleConfiguration = bibleConfiguration;
-            this.clientFactory = clientFactory;
-        }
         #endregion
 
         public async Task GetReadings()
         {
-            DateTime date = DateTime.Today.AddDays(5);
-            string dateString = date.ToString("yyyy") + date.ToString("MM") + date.ToString("dd");
-            
-            string baseAddress = bibleConfiguration.BaseAddress;
-            string titleEndpoint = bibleConfiguration.ReadingTitleEndpoint;
-            string textEndpoint = bibleConfiguration.ReadingEndpoint;
+            DateTime startDate = DateTime.Today;
+            DateTime endDate = startDate.AddDays(5);
 
-            List<ReadingEnum> readingEnums = Enum.GetValues(typeof(ReadingEnum)).Cast<ReadingEnum>().ToList();
-            foreach (ReadingEnum readingEnum in readingEnums)
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
-                string content = GetContentFromEnum(readingEnum);
-                string titleURL = string.Format(baseAddress + titleEndpoint, dateString, content);
-                string title = await GetFromBible(titleURL);
+                string dateString = date.ToString("yyyy") + date.ToString("MM") + date.ToString("dd");
 
-                string textURL = string.Format(baseAddress + textEndpoint, dateString, content);
-                string text = await GetFromBible(textURL);
-
-                Reading reading = new Reading()
+                List<ReadingEnum> readingEnums = Enum.GetValues(typeof(ReadingEnum)).Cast<ReadingEnum>().ToList();
+                foreach (ReadingEnum readingEnum in readingEnums)
                 {
-                    Date = date,
-                    Text = text,
-                    Name = title,
-                    ReadingEnum = readingEnum
-                };
+                    string content = GetContentFromEnum(readingEnum);
+                    string titleURL = string.Format(bibleConfiguration.BaseAddress + bibleConfiguration.ReadingTitleEndpoint, dateString, content);
+                    string title = await GetFromBible(titleURL);
 
-                await readingService.AddAsync(reading);
+                    string textURL = string.Format(bibleConfiguration.BaseAddress + bibleConfiguration.ReadingEndpoint, dateString, content);
+                    string text = await GetFromBible(textURL);
+
+                    Reading reading = new()
+                    {
+                        Date = date,
+                        Text = text,
+                        Name = title,
+                        ReadingEnum = readingEnum
+                    };
+
+                    Reading? dbReading = await readingService.GetAll()
+                                        .FirstOrDefaultAsync(r => r.Date == reading.Date && r.ReadingEnum == reading.ReadingEnum);
+
+                    if (dbReading != null)
+                    {
+                        if (dbReading.Text != reading.Text || dbReading.Name != reading.Name)
+                        {
+                            dbReading.Text = reading.Text;
+                            dbReading.Name = reading.Name;
+                            await readingService.UpdateAsync(dbReading);
+                        }
+                    }
+                    else
+                        await readingService.AddAsync(reading);
+                }
             }
         }
 
         private async Task<string> GetFromBible(string endpoint)
         {
-            using (var client = this.clientFactory.CreateClient())
+            using (var client = clientFactory.CreateClient())
             {
                 var response = await client.GetAsync(endpoint);
                 var resContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    HtmlDocument doc = new HtmlDocument();
+                    HtmlDocument doc = new();
                     doc.LoadHtml(resContent);
 
                     // Get the text without HTML formatting and decode HTML entities
@@ -77,26 +86,15 @@ namespace BusinessLayer.BusinessLogic
             }
         }
 
-        private string GetContentFromEnum(ReadingEnum value)
+        private static string GetContentFromEnum(ReadingEnum value)
         {
-            string content = string.Empty;
-
-            switch (value)
+            string content = value switch
             {
-                case ReadingEnum.FirstReading:
-                    content = "FR";
-                    break;
-                case ReadingEnum.Psalm:
-                    content = "PS";
-                    break;
-                case ReadingEnum.SecondReading:
-                    content = "SR";
-                    break;
-                default:
-                    content = "GSP";
-                    break;
-            }
-
+                ReadingEnum.FirstReading => "FR",
+                ReadingEnum.Psalm => "PS",
+                ReadingEnum.SecondReading => "SR",
+                _ => "GSP",
+            };
             return content;
         }
     }
