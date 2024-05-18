@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(ApiKeySchemeOptions.Scheme)
 
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+var port = Environment.GetEnvironmentVariable("PORT") ?? builder.Configuration.GetSection("ServerConfiguration")["Port"] ?? "8081";
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));
