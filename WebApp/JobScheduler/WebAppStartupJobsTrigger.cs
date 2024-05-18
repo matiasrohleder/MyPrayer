@@ -21,9 +21,18 @@ namespace WebApp.JobScheduler
                 .WithIdentity("readingsJob", "group1")
                 .Build();
 
+            // ITrigger trigger = TriggerBuilder.Create()
+            //     .WithIdentity("readingsTrigger", "group1")
+            //     .WithSimpleSchedule(x => x
+            //         .WithIntervalInHours(2)
+            //         .RepeatForever())
+            //     .Build();
+
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("readingsTrigger", "group1")
-                .WithCronSchedule("0 0 1 * * ?") // Everyday at 1 am
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInMinutes(5)
+                    .RepeatForever())
                 .Build();
 
             // Schedule the job with the trigger

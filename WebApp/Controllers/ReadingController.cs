@@ -1,16 +1,18 @@
 using DataLayer.Interfaces;
+using Entities.Constants.Authentication;
 using Entities.Models;
 using Entities.Models.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Web.Mvc.Html;
+using Tools.WebTools.Attributes;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
 #region Constructor and properties
+[AuthorizeAnyRoles(Roles.Admin, Roles.ReadingAdmin)]
 public class ReadingController(
     IService<Reading> readingService
     ) : Controller
