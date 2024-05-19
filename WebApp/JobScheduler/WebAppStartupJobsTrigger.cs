@@ -20,18 +20,10 @@ namespace WebApp.JobScheduler
             IJobDetail jobDetail = JobBuilder.Create<ReadingsJob>()
                 .WithIdentity("readingsJob", "group1")
                 .Build();
-
-            // ITrigger trigger = TriggerBuilder.Create()
-            //     .WithIdentity("readingsTrigger", "group1")
-            //     .WithSimpleSchedule(x => x
-            //         .WithIntervalInHours(2)
-            //         .RepeatForever())
-            //     .Build();
-
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("readingsTrigger", "group1")
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInMinutes(5)
+                    .WithIntervalInHours(2)
                     .RepeatForever())
                 .Build();
 

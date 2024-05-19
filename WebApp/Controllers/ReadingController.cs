@@ -44,7 +44,7 @@ public class ReadingController(
             return NotFound("Lectura no encontrada");
         ReadingViewModel readingViewModel = new(reading);
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", readingViewModel);
     }
@@ -58,14 +58,14 @@ public class ReadingController(
             return RedirectToAction("Index", "Reading");
         }
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", reading);
     }
     #endregion
 
     #region Private methods
-    private async Task InitViewDatas(string action)
+    private void InitViewDatas(string action)
     {
         ViewData["Action"] = action;
 

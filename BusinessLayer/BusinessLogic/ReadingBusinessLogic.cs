@@ -26,6 +26,11 @@ namespace BusinessLayer.BusinessLogic
             DateTime startDate = DateTime.Today;
             DateTime endDate = startDate.AddDays(5);
 
+            List<Reading> readings = await readingService.GetAll()
+                                            .Where(r => r.Date >= startDate && r.Date <= endDate)
+                                            .OrderBy(r => r.Date).ThenBy(r => r.ReadingEnum)
+                                            .ToListAsync();
+
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 string dateString = date.ToString("yyyy") + date.ToString("MM") + date.ToString("dd");
@@ -33,12 +38,21 @@ namespace BusinessLayer.BusinessLogic
                 List<ReadingEnum> readingEnums = Enum.GetValues(typeof(ReadingEnum)).Cast<ReadingEnum>().ToList();
                 foreach (ReadingEnum readingEnum in readingEnums)
                 {
+                    if (readings.Any(r => r.Date.Date == date.Date && r.ReadingEnum == readingEnum))
+                        continue;
+
                     string content = GetContentFromEnum(readingEnum);
                     string titleURL = string.Format(bibleConfiguration.BaseAddress + bibleConfiguration.ReadingTitleEndpoint, dateString, content);
                     string title = await GetFromBible(titleURL);
 
                     string textURL = string.Format(bibleConfiguration.BaseAddress + bibleConfiguration.ReadingEndpoint, dateString, content);
                     string text = await GetFromBible(textURL);
+
+                    if (!string.IsNullOrWhiteSpace(text) && text.Contains("Extraído de"))
+                    {
+                        int index = text.IndexOf("Extraído de");
+                        text = text[..index];
+                    }
 
                     Reading reading = new()
                     {
@@ -48,20 +62,7 @@ namespace BusinessLayer.BusinessLogic
                         ReadingEnum = readingEnum
                     };
 
-                    Reading? dbReading = await readingService.GetAll()
-                                        .FirstOrDefaultAsync(r => r.Date == reading.Date && r.ReadingEnum == reading.ReadingEnum);
-
-                    if (dbReading != null)
-                    {
-                        if (dbReading.Text != reading.Text || dbReading.Name != reading.Name)
-                        {
-                            dbReading.Text = reading.Text;
-                            dbReading.Name = reading.Name;
-                            await readingService.UpdateAsync(dbReading);
-                        }
-                    }
-                    else
-                        await readingService.AddAsync(reading);
+                    await readingService.AddAsync(reading);
                 }
             }
         }
