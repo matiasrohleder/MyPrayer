@@ -9,10 +9,10 @@ public class CategoryViewModel
 
     public Guid Id { get; set; }
 
-    [Required(ErrorMessage = "El nombre de la categoría es requerido")]
+    [Required(ErrorMessage = "El nombre de la categor\xeda es requerido")]
     public string Name { get; set; }
 
-    [Required(ErrorMessage = "El orden de la categoría es requerido")]
+    [Required(ErrorMessage = "El orden de la categor\xeda es requerido")]
     public int Order { get; set; }
 
     public CategoryViewModel()

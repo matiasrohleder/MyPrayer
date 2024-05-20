@@ -34,9 +34,17 @@ builder.Services.AddSwaggerGen(c =>
                     };
     c.AddSecurityRequirement(requirement);
 });
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(ApiKeySchemeOptions.Scheme)
+    .AddScheme<ApiKeySchemeOptions, ApiKeySchemeHandler>(
+        ApiKeySchemeOptions.Scheme, options =>
+        {
+            options.HeaderName = "X-Api-Key";
+        });
+
 builder.Services.ConfigureWebAPI(builder.Configuration);
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+var port = Environment.GetEnvironmentVariable("PORT") ?? builder.Configuration.GetSection("ServerConfiguration")["Port"] ?? "8081";
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));
@@ -55,11 +63,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// TODO: Replace this middleware with an authentication schema
-// app.UseMiddleware<ApiKeyAuthMiddleware>();
-
-// TODO: Uncomment this line when authentication schema is developed
-// app.UseAuthentication();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

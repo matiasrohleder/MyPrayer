@@ -8,6 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/category")]
     [ApiController]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IService<Category> categoryService;

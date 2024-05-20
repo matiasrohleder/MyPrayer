@@ -38,7 +38,7 @@ function Delete(id)
                 success: function (result) {
                     Swal.fire({
                         title: "\xc9xito",
-                        text: "Frase diaria eliminado",
+                        text: "Frase diaria eliminada",
                         type: "success"
                     }).then((result) => {
                         window.location.reload();

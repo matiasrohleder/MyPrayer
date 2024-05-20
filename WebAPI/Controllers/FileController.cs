@@ -7,6 +7,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("file")]
+    [Authorize]
     public class FileController : Controller
     {
         private readonly IFileService fileService;

@@ -33,7 +33,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 #endregion
 
-string port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+var port = Environment.GetEnvironmentVariable("PORT") ?? builder.Configuration.GetSection("ServerConfiguration")["Port"] ?? "8080";
 builder.WebHost.UseKestrel(options =>
 {
     options.ListenAnyIP(int.Parse(port));

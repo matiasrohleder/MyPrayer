@@ -1,18 +1,20 @@
 using BusinessLayer.BusinessLogic;
 using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
+using Entities.Constants.Authentication;
 using Entities.Models;
 using Entities.Models.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Web.Mvc.Html;
+using Tools.WebTools.Attributes;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
 
 #region Constructor and properties
+[AuthorizeAnyRoles(Roles.Admin, Roles.ReadingAdmin)]
 public class ReadingController(
     IReadingBusinessLogic readingBusinessLogic,
     IService<Reading> readingService
@@ -41,7 +43,7 @@ public class ReadingController(
     #region Create
     public async Task<IActionResult> Create()
     {
-        await InitViewDatas("Create");
+        InitViewDatas("Create");
         return View("CreateOrEdit", new ReadingViewModel());
     }
 
@@ -57,7 +59,7 @@ public class ReadingController(
             return RedirectToAction("Index", "Reading");
         }
 
-        await InitViewDatas("Create");
+        InitViewDatas("Create");
 
         return View("CreateOrEdit", readingViewModel);
     }
@@ -71,7 +73,7 @@ public class ReadingController(
             return NotFound("Lectura no encontrada");
         ReadingViewModel readingViewModel = new(reading);
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", readingViewModel);
     }
@@ -88,14 +90,14 @@ public class ReadingController(
             return RedirectToAction("Index", "Reading");
         }
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", readingViewModel);
     }
     #endregion
 
     #region Private methods
-    private async Task InitViewDatas(string action)
+    private void InitViewDatas(string action)
     {
         ViewData["Action"] = action;
 
