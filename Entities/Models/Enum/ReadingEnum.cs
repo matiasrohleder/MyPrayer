@@ -12,5 +12,7 @@ namespace Entities.Models.Enum
         SecondReading = 2,
         [Display(Name = "Evangelio")]
         Gospel = 3,
+        [Display(Name = "Meditación")]
+        Meditation = 4,
     }
 }
