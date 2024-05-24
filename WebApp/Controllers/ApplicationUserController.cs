@@ -66,6 +66,9 @@ public class ApplicationUserController(
     #region Edit
     public async Task<IActionResult> Edit(Guid id)
     {
+        if (id == Users.AdminId)
+            return BadRequest("No se puede editar al administrador");
+
         ApplicationUser? applicationuser = await applicationUserService.GetAsync(id);
         if (applicationuser == null)
             return NotFound("Usuario no encontrado");
