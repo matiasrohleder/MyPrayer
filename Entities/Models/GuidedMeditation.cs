@@ -4,28 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models;
 
-[Table("Contents")]
-public class Content : Entity
+[Table("GuidedMeditations")]
+public class GuidedMeditation : Entity
 {
-    public Content()
+    public GuidedMeditation()
     {
         Description = string.Empty;
-        Link = string.Empty;
     }
-
-    [ForeignKey(nameof(CategoryId))]
-    public Category? Category { get; set; }
-    public Guid CategoryId { get; set; }
 
     public bool Active { get; set; }
 
     [StringLength(2000)]
     public string Description { get; set; }
 
-    [StringLength(100)]
-    public string Link { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public DateTime ShowDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     [StringLength(500)]
     public string? FileUrl { get; set; }
