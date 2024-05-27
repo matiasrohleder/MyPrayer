@@ -133,6 +133,7 @@ public class ApplicationUserController(
             Roles.CategoryAdmin => "Administrador de categorías",
             Roles.ContentAdmin => "Administrador de contenido",
             Roles.DailyQuoteAdmin => "Administrador de frases diarias",
+            Roles.GuidedMeditationAdmin => "Administrador de meditaciones guiadas",
             Roles.ReadingAdmin => "Administrador de lecturas",
             Roles.UserAdmin => "Administrador de usuarios",
             _ => role,
