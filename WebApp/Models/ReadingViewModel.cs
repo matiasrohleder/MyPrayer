@@ -24,6 +24,7 @@ public class ReadingViewModel
         Id = Guid.NewGuid();
         Name = string.Empty;
         Text = string.Empty;
+        Date = DateTime.Today;
     }
 
     public ReadingViewModel(Reading reading)

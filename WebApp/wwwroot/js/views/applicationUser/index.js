@@ -7,6 +7,8 @@ $(document).ready(function () {
         },
         columns: [
             { data: "name" },
+            { data: "lastName" },
+            { data: "email" },
             {
                 orderable: false,
                 "render": function (data, type, full, meta) {
