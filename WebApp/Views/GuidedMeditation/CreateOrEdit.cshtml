@@ -1,0 +1,72 @@
+﻿@model WebApp.Models.GuidedMeditationViewModel;
+
+@{
+    ViewData["Title"] = "Meditación Guiada";
+    string? action = ViewData["Action"] as string;
+}
+
+<form class="floating-labels" method="POST" action="@Url.Action(action,"GuidedMeditation")" asp-antiforgery="true">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <div class="mb-3">
+            <label for="Name">Nombre</label>
+            <input class="form-control" id="Name" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="ShowDate">Fecha de inicio</label>
+                <input type="datetime-local" class="form-control" id="ShowDate" asp-for="StartDate">
+            </div>
+
+            <div class="col-6">
+                <label for="ShowDate">Fecha de fin</label>
+                <input type="datetime-local" class="form-control" id="ShowDate" asp-for="EndDate">
+            </div>
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Description">Descripción</label>
+            <textarea class="form-control" rows="5" id="Description" asp-for="Description"></textarea>
+        </div>
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="File">Upload</label>
+            <input type="file" class="form-control" id="File" asp-for="File" accept="audio/*">
+            <input type="hidden" asp-for="FileUrl" id="FileUrl">
+        </div>
+        <img class="mb-3" id="FileDisplay" src="" alt="Uploaded Audio" style="display:none; width: 300px; height: auto;">
+        <span asp-validation-for="FileUrl" class="text-danger"></span>
+    </div>
+
+    @if (action == "Edit")
+    {
+        <div class="custom-control custom-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="activeSwitch" asp-for="Active">
+            <label class="custom-control-label" for="activeSwitch">Activo</label>
+        </div>
+    }
+    else
+    {
+        <input type="hidden" asp-for="Active" />
+    }
+
+    <div class="d-flex justify-content-end buttonFooter">
+        <button id="btn-submit" type="submit" class="btn btn-themecolor" style="margin-right:10px">Guardar</button>
+        <button id="btn-cancel" type="button" class="btn btn-cancel"
+                onclick="window.location.href='@Url.Action("Index","GuidedMeditation")'">
+            Cancelar
+        </button>
+    </div>
+</form>
+
+
+@section scripts {
+    <script>
+        const fileUploader = new FileUploader("File", "FileUrl", "FileDisplay");
+    </script>
+}

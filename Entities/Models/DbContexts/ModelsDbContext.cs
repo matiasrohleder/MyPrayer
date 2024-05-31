@@ -43,6 +43,9 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
         modelBuilder.Entity<DailyQuote>()
             .HasQueryFilter(c => !c.Deleted);
 
+        modelBuilder.Entity<GuidedMeditation>()
+            .HasQueryFilter(c => !c.Deleted);
+
         EnumToStringConverter<ReadingEnum> readingEnumConverter = new();
         modelBuilder.Entity<Reading>()
             .Property(r => r.ReadingEnum)

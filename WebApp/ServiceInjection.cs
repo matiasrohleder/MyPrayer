@@ -43,6 +43,7 @@ internal class ServiceInjection : AbstractServiceInjection
     private void AddBusinessLogics()
     {
         Services.AddScoped<IDailyQuoteBusinessLogic, DailyQuoteBusinessLogic>();
+        Services.AddScoped<IGuidedMeditationBusinessLogic, GuidedMeditationBusinessLogic>();
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
 
     }

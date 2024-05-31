@@ -58,6 +58,16 @@
                     </a>
                 </div>
             }
+            @if (User.IsInRole("Admin") || User.IsInRole("GuidedMeditationAdmin"))
+            {
+                <div class="col-md-6 mb-3 mt-3">
+                    <a href="/GuidedMeditation">
+                        <div class="card card-meditations background-tint">
+                            <h3>Meditaciones guiadas</h3>
+                        </div>
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>
