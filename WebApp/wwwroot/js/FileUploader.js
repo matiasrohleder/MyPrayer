@@ -3,12 +3,14 @@ class FileUploader
     _imgInputId;
     _imgValueId;
     _imgDisplayTagId;
+    _maxSizeMB;
 
-    constructor(imgInputId, imgValueId, imgDisplayTagId){
+    constructor(imgInputId, imgValueId, imgDisplayTagId, maxSizeMB){
         this._imgInputId = !imgInputId ? 'File' : imgInputId;
         this._imgValueId = !imgValueId ? 'FileUrl' : imgValueId;
         this._imgDisplayTagId = !imgDisplayTagId ? 'FileDisplay' : imgDisplayTagId;
-        
+        this._maxSizeMB = maxSizeMB;
+
         this.initializeListener();
         this.initializeImageDisplay();
     }
@@ -30,6 +32,20 @@ class FileUploader
 
     uploadImage(self, event) {
         ShowLoadingModal();
+
+        if (self._maxSizeMB) {
+            // Check file max size
+            if (event.target.files.length > 0 && event.target.files[0].size > self._maxSizeMB * 1000000) {
+                swal.close();
+                Swal.fire({
+                    title: "La imagen es demasiado grande",
+                    text: `El tama\u00F1o m\xe1ximo permitido es de ${self._maxSizeMB} MB.`,
+                    type: "error"
+                });
+                return;
+            }
+        }
+
         var formData = new FormData();
         formData.append('file', event.target.files[0]);
     
@@ -45,12 +61,12 @@ class FileUploader
                 self.fetchImage(self, data.fileUrl, self._imgDisplayTagId);
             } else {
                 swal.close();
-                alert('Failed to upload image.');
+                alert('Error al subir la imagen.');
             }
         })
         .catch(error => {
             swal.close();
-            console.error('Error uploading file:', error)
+            console.error('Error al subir el archivo:', error)
         });
     };
     
@@ -65,13 +81,13 @@ class FileUploader
                 swal.close();
             } else {
                 swal.close();
-                alert('Failed to retrieve image.');
+                alert('Error al obtener la imagen.');
             }
         })
         .catch(error => {
             swal.close();
-            console.error('Error fetching file:', error);
-            alert('Error fetching file.');
+            console.error('Error buscando el archivo:', error);
+            alert('Error buscando el archivo.');
         });
     }
 }
