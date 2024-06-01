@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using DataLayer.Interfaces;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,12 @@ namespace WebAPI.Controllers
         /// <param name="amount"></param>
         /// <returns></returns>
         [HttpGet("recent")]
-        public async Task<ActionResult<List<RecentContentItem>>> GetRecent(int amount = 5)
+        public async Task<ActionResult<List<RecentContentItem>>> GetRecent(
+            int amount = 5,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
         {
             if (amount <= 0)
                 return BadRequest("La cantidad debe ser un número positivo mayor a 0.");
@@ -44,13 +50,19 @@ namespace WebAPI.Controllers
                                                             .ToListAsync())
                                                             .OrderBy(c => c.Category.Order)
                                                             .ToList();
+                
             // Build public URLs for files
-            foreach (var carousel in recents){
-                foreach (var item in carousel.Contents.Where(c => !string.IsNullOrEmpty(c.Image))){
-                    item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
-                }
-            }
+            var tasks = recents.SelectMany(carousel =>
+                    carousel.Contents
+                        .Where(c => !string.IsNullOrEmpty(c.Image))
+                        .Select(async item =>
+                        {
+                            item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
+                        })
+                ).ToList();
 
+            await Task.WhenAll(tasks);
+            
             return Ok(recents);
         }
 
@@ -60,7 +72,12 @@ namespace WebAPI.Controllers
         /// <param name="categoryId"></param>
         /// <returns></returns>
         [HttpGet("category/{categoryId}")]
-        public async Task<ActionResult<List<ContentRes>>> GetByCategory(Guid categoryId)
+        public async Task<ActionResult<List<ContentRes>>> GetByCategory(
+            Guid categoryId,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
         {
             List<ContentRes> contents = await contentService.GetAll()
                                                             .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
@@ -69,9 +86,7 @@ namespace WebAPI.Controllers
                                                             .ToListAsync();
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
-            {
-                item.Image = (await fileService.GetSignedURLAsync(item.Image)).SignedUrl;
-            }
+                item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
 
             return Ok(contents);
         }
@@ -82,13 +97,23 @@ namespace WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<ContentRes>> Get(Guid id)
+        public async Task<ActionResult<ContentRes>> Get(
+            Guid id,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
         {
-            Content content = await contentService.GetAsync(id);
-            ContentRes response = new ContentRes(content);
+            Content? content = await contentService.GetAsync(id);
+            if(content is null)
+                return NoContent();
+
+            ContentRes response = new ContentRes(content!);
+
             // Build public URLs for file
             if (!string.IsNullOrEmpty(response.Image))
-                response.Image = (await fileService.GetSignedURLAsync(response.Image)).SignedUrl;
+                response.Image = fileService.GetPublicURL(response.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
+
             return Ok(response);
         }
     }

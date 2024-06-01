@@ -71,7 +71,7 @@ class FileUploader
     };
     
     fetchImage(self, fileName) {
-        fetch(`/File/SignedURL?fileName=${encodeURIComponent(fileName)}`)
+        fetch(`/File/PublicURL?fileName=${encodeURIComponent(fileName)}`)
         .then(response => response.json())
         .then(data => {
             if (data.signedUrl) {

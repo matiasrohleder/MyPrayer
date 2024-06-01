@@ -24,9 +24,25 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("signed-url")]
-        public async Task<FileDownloadRes> GetURLAsync(string fileName)
+        public async Task<FileDownloadRes> GetSignedURLAsync(
+            string fileName,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
         {
-			return await this.fileService.GetSignedURLAsync(fileName);
+			return await this.fileService.GetSignedURLAsync(fileName, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality));
+        }
+
+        [HttpGet("public-url")]
+        public FileDownloadRes GetPublicURL(
+            string fileName,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
+        {
+			return this.fileService.GetPublicURL(fileName, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality));
         }
     }
 }

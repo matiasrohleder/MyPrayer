@@ -1,3 +1,5 @@
+using System.Collections.Specialized;
+using System.Web;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
@@ -10,8 +12,10 @@ namespace BusinessLayer.Services
         private readonly IConfiguration configuration;
         private string apiKey => this.configuration.GetSection("FileService:APIKey")?.Value ?? throw new Exception("File Service API key must have a value");
         private string baseURL => this.configuration.GetSection("FileService:BaseURL")?.Value ?? throw new Exception("File Service BaseURL must have a value");
+        private string storageResource => this.configuration.GetSection("FileService:StorageResource")?.Value ?? throw new Exception("File Service StorageResource must have a value");
         private string imageBucket => this.configuration.GetSection("FileService:ImageBucket")?.Value ?? throw new Exception("File Service ImageBucket must have a value");
         private string audioBucket => this.configuration.GetSection("FileService:AudioBucket")?.Value ?? throw new Exception("File Service AudioBucket must have a value");
+        private string defaultBucket => this.configuration.GetSection("FileService:Bucket")?.Value ?? throw new Exception("File Service Bucket must have a value");
         private string behaviourOnBucketMissing => this.configuration.GetSection("FileService:BehaviourOnBucketMissing")?.Value ?? throw new Exception("File Service BehaviourOnBucketMissing must have a value");
 
         private async Task<Supabase.Storage.Interfaces.IStorageFileApi<Supabase.Storage.FileObject>> GetStorage(string bucket = "TEST")
@@ -73,7 +77,7 @@ namespace BusinessLayer.Services
         }
 
         /// <inheritdoc />
-        public async Task<FileDownloadRes> GetSignedURLAsync(string fileName)
+        public async Task<FileDownloadRes> GetSignedURLAsync(string fileName, FileDownloadReqOptions? options = null)
         {
             var provider = new FileExtensionContentTypeProvider();
 
@@ -88,11 +92,42 @@ namespace BusinessLayer.Services
             var list = await storage.List(options: new Supabase.Storage.SearchOptions(){
                 Search = fileName
             });
+
             if(list != null && list.Count > 0 && list.Any(f => f.Name == fileName))
                 // Generate a signed URL valid for 60 minutes
-                result = await storage.CreateSignedUrl(fileName, 60 * 60);
+                result = await storage.CreateSignedUrl(fileName, 60 * 60, options ?? FileDownloadReqOptions.Initialize());
 
             return new FileDownloadRes { SignedUrl = result };
+        }
+
+        /// <inheritdoc />
+        public FileDownloadRes GetPublicURL(string fileName, FileDownloadReqOptions? options = null)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(fileName, out string contentType))
+                contentType = "";
+
+            string bucket = contentType.Contains("image") ? imageBucket
+                          : contentType.Contains("audio") ? audioBucket
+                                                          : defaultBucket;            
+            options = options ?? FileDownloadReqOptions.Initialize();
+                
+            var queryParams = options!.ToNameValueCollection();
+
+            var uriBuilder = new UriBuilder(this.baseURL)
+            {
+                Path = string.Format(this.storageResource, bucket, fileName)
+            };
+
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+
+            foreach (string key in queryParams)
+                query[key] = queryParams[key];
+
+            uriBuilder.Query = query.ToString();
+
+            return new FileDownloadRes { SignedUrl = uriBuilder.ToString() };
         }
     }
 
@@ -104,5 +139,44 @@ namespace BusinessLayer.Services
     public class FileDownloadRes
     {
         public string SignedUrl { get; set; }
+    }
+
+    public class FileDownloadReqOptions : Supabase.Storage.TransformOptions
+    {
+        private new string Format = "origin";
+
+        public FileDownloadReqOptions(int width, int height, int resize, int quality) : base()
+        {
+            Width = width;
+            Height = height;
+            Resize = (ResizeType) resize;
+            Quality = quality;
+        }
+
+        public FileDownloadReqOptions(){
+            base.Format = this.Format;
+        }
+
+        public static FileDownloadReqOptions Initialize() =>
+            new FileDownloadReqOptions(720, 1280, 1, 80);
+        
+        public static FileDownloadReqOptions InitializeFromQueryParams(
+            int width,
+            int height,
+            int resize,
+            int quality
+        ) =>
+            new FileDownloadReqOptions(width, height, resize, quality);
+
+        public string ToQueryParams() => $"?width={Width}&height={Height}&resize={Resize}&format={Format}&quality={Quality}";
+        public NameValueCollection ToNameValueCollection() =>
+            new NameValueCollection
+            {
+                { "width", Width.ToString() },
+                { "height", Height.ToString() },
+                { "resize", Resize.ToString() },
+                { "format", Format },
+                { "quality", Quality.ToString() }
+            };
     }
 }
