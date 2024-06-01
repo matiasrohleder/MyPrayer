@@ -77,30 +77,6 @@ namespace BusinessLayer.Services
         }
 
         /// <inheritdoc />
-        public async Task<FileDownloadRes> GetSignedURLAsync(string fileName, FileDownloadReqOptions? options = null)
-        {
-            var provider = new FileExtensionContentTypeProvider();
-
-            if (!provider.TryGetContentType(fileName, out string contentType))
-                contentType = "";
-
-            var storage = contentType.Contains("image") ? await GetStorage(imageBucket)
-                        : contentType.Contains("audio") ? await GetStorage(audioBucket)
-                                                             : await GetStorage();
-
-            string result = "";
-            var list = await storage.List(options: new Supabase.Storage.SearchOptions(){
-                Search = fileName
-            });
-
-            if(list != null && list.Count > 0 && list.Any(f => f.Name == fileName))
-                // Generate a signed URL valid for 60 minutes
-                result = await storage.CreateSignedUrl(fileName, 60 * 60, options ?? FileDownloadReqOptions.Initialize());
-
-            return new FileDownloadRes { SignedUrl = result };
-        }
-
-        /// <inheritdoc />
         public FileDownloadRes GetPublicURL(string fileName, FileDownloadReqOptions? options = null)
         {
             var provider = new FileExtensionContentTypeProvider();

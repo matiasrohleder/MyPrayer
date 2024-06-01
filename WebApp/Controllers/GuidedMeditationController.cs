@@ -1,5 +1,5 @@
-using BusinessLayer.BusinessLogic;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
@@ -45,7 +45,7 @@ public class GuidedMeditationController(
     #region Create
     public async Task<IActionResult> Create()
     {
-        await InitViewDatas("Create");
+        InitViewDatas("Create");
         
         return View("CreateOrEdit", new GuidedMeditationViewModel());
     }
@@ -62,9 +62,9 @@ public class GuidedMeditationController(
             return RedirectToAction("Index", "GuidedMeditation");
         }
 
-        await InitViewDatas("Create");
+        InitViewDatas("Create");
 
-        await GetContentSignedURLAsync(guidedMeditationViewModel);
+        GetContentPublicURL(guidedMeditationViewModel);
 
         return View("CreateOrEdit", guidedMeditationViewModel);
     }
@@ -75,13 +75,13 @@ public class GuidedMeditationController(
     {
         GuidedMeditation? guidedMeditation = await guidedMeditationService.GetAsync(id);
         if (guidedMeditation == null)
-            return NotFound("Meditación guiada no encontrada");
+            return NotFound("MeditaciÃ³n guiada no encontrada");
             
         GuidedMeditationViewModel guidedMeditationViewModel = new(guidedMeditation);
         
-        await GetContentSignedURLAsync(guidedMeditationViewModel);
+        GetContentPublicURL(guidedMeditationViewModel);
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", guidedMeditationViewModel);
     }
@@ -98,9 +98,9 @@ public class GuidedMeditationController(
             return RedirectToAction("Index", "GuidedMeditation");
         }
         
-        await GetContentSignedURLAsync(guidedMeditationViewModel);
+        GetContentPublicURL(guidedMeditationViewModel);
 
-        await InitViewDatas("Edit");
+        InitViewDatas("Edit");
 
         return View("CreateOrEdit", guidedMeditationViewModel);
     }
@@ -122,15 +122,15 @@ public class GuidedMeditationController(
     #endregion
 
     #region Private methods
-    private async Task InitViewDatas(string action)
+    private void InitViewDatas(string action)
     {
         ViewData["Action"] = action;
     }
 
-    private async Task GetContentSignedURLAsync(GuidedMeditationViewModel guidedMeditationViewModel)
+    private void GetContentPublicURL(GuidedMeditationViewModel guidedMeditationViewModel, FileDownloadReqOptions? options = null)
     {
         if(!string.IsNullOrEmpty(guidedMeditationViewModel.FileUrl))
-            guidedMeditationViewModel.SignedUrl = (await fileService.GetSignedURLAsync(guidedMeditationViewModel.FileUrl))?.SignedUrl;
+            guidedMeditationViewModel.SignedUrl = fileService.GetPublicURL(guidedMeditationViewModel.FileUrl)?.SignedUrl;
     }
     #endregion
 }
