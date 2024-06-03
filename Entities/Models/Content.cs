@@ -22,7 +22,7 @@ public class Content : Entity
     [StringLength(2000)]
     public string Description { get; set; }
 
-    [StringLength(100)]
+    [StringLength(2000)]
     public string Link { get; set; }
 
     public DateTime ShowDate { get; set; }
