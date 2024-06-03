@@ -1,4 +1,4 @@
-namespace BusinessLayer.Services.DTOs.FileServiceDTOs;
+namespace BusinessLayer.Services.FileService;
 
 /// <summary>
 /// Recently uploaded file metadata.

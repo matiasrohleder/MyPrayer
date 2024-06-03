@@ -1,6 +1,4 @@
-﻿using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
-using BusinessLayer.Services.DTOs.FileServiceDTOs;
+﻿using BusinessLayer.Services.FileService;
 using DataLayer.Interfaces;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;

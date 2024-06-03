@@ -1,4 +1,4 @@
-namespace BusinessLayer.Services.DTOs.FileServiceDTOs;
+namespace BusinessLayer.Services.FileService;
 
 /// <summary>
 /// Object returned when retrieving a file.
@@ -9,7 +9,10 @@ public class FileDownloadRes
     /// Publicly accesible file url.
     /// </summary>
     public string? PublicUrl { get; set; }
-
+    public FileDownloadRes()
+    {
+        
+    }
     public FileDownloadRes(string publicUrl)
     {
         this.PublicUrl = publicUrl;

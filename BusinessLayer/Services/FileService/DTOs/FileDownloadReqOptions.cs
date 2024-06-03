@@ -1,7 +1,7 @@
 using System.Collections.Specialized;
 using Supabase.Storage;
 
-namespace BusinessLayer.Services.DTOs.FileServiceDTOs;
+namespace BusinessLayer.Services.FileService;
 /// <summary>
 /// Object to pass options when requesting a download URL for a media file.
 /// This options give directions on how the media file should be transformed

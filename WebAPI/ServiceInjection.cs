@@ -28,7 +28,6 @@ internal class ServiceInjection : AbstractServiceInjection
     }
     private void AddServices()
     {
-        Services.AddScoped<IFileService, FileService>();
     }
 
     private void AddBusinessLogics()

@@ -1,22 +1,16 @@
 using System.Web;
-using BusinessLayer.Interfaces;
-using BusinessLayer.Services.DTOs.FileServiceDTOs;
-using BusinessLayer.Services.Helpers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
-namespace BusinessLayer.Services;
+namespace BusinessLayer.Services.FileService;
 
 /// <inheritdoc />
 public class FileService : IFileService
 {
-    private readonly IConfiguration configuration;
-    private readonly FileServiceHelper fileServiceHelper;
+    private readonly IFileServiceHelper fileServiceHelper;
 
-    public FileService(IConfiguration configuration)
+    public FileService(IFileServiceHelper fileServiceHelper)
     {
-        this.configuration = configuration;
-        this.fileServiceHelper = new FileServiceHelper(configuration);
+        this.fileServiceHelper = fileServiceHelper;
     }
 
     /// <inheritdoc />
@@ -48,6 +42,8 @@ public class FileService : IFileService
     /// <inheritdoc />
     public FileDownloadRes GetPublicURL(string fileName, FileDownloadReqOptions? options = null)
     {
+        if(string.IsNullOrEmpty(fileName))
+            return new FileDownloadRes();
         var uriBuilder = this.fileServiceHelper.GetUriForfile(fileName);
 
         var query = HttpUtility.ParseQueryString(uriBuilder.Query);

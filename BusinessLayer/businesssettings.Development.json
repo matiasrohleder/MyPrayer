@@ -1,0 +1,11 @@
+{
+    "FileServiceConfiguration": {
+        "BaseURL": "https://cemxfzuzgnijspeblhvr.supabase.co",
+        "StorageResource": "/storage/v1/object/public/{0}/{1}",
+        "Bucket": "TEST",
+        "APIKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlbXhmenV6Z25panNwZWJsaHZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAxMDM5ODIsImV4cCI6MjAyNTY3OTk4Mn0.ePGOhwMbqIHPgRCrcxKaS-AzEGrJ9nwA31IBAQbBnYg",
+        "ImageBucket": "TEST",
+        "AudioBucket": "Audio",
+        "BehaviourOnBucketMissing": "Create"
+    }
+}

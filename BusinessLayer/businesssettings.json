@@ -1,0 +1,11 @@
+{
+    "FileServiceConfiguration": {
+        "BaseURL": "",
+        "StorageResource": "",
+        "Bucket": "",
+        "APIKey": "",
+        "ImageBucket": "",
+        "AudioBucket": "",
+        "BehaviourOnBucketMissing": ""
+    }
+}

@@ -1,7 +1,6 @@
-using BusinessLayer.Services.DTOs.FileServiceDTOs;
 using Microsoft.AspNetCore.Http;
 
-namespace BusinessLayer.Interfaces;
+namespace BusinessLayer.Services.FileService;
 /// <summary>
 /// Service to handle file transactions
 /// </summary>

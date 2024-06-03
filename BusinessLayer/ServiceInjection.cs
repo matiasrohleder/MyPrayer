@@ -1,6 +1,7 @@
 using BusinessLayer.BusinessLogic;
 using BusinessLayer.Interfaces;
 using BusinessLayer.JobScheduler.JobConfiguration;
+using BusinessLayer.Services.FileService;
 using DataLayer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     {
         Services.AddHttpClient();
 
+        AddServices();
         AddBusinessLogics();
         AddConfigurations();
 
@@ -26,6 +28,11 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
 
         return Services;
     }
+    private void AddServices()
+    {
+        Services.AddScoped<IFileService, FileService>();
+    }
+
     private void AddBusinessLogics()
     {
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
@@ -33,8 +40,9 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
-
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
+        services.AddSingleton<IFileServiceHelper, FileServiceHelper>();
+        services.AddSingleton<IFileServiceConfiguration, FileServiceConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
     }
 }
