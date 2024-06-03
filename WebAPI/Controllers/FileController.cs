@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
             int resize = 1,
             int quality = 80)
         {
-			return this.fileService.GetPublicURL(fileName, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality));
+			return this.fileService.GetPublicURL(fileName, new FileDownloadReqOptions(width, height, resize, quality));
         }
     }
 }

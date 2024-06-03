@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
                         .Where(c => !string.IsNullOrEmpty(c.Image))
                         .Select(async item =>
                         {
-                            item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
+                            item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
                         })
                 ).ToList();
 
@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
                                                             .ToListAsync();
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
-                item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
+                item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
             return Ok(contents);
         }
@@ -113,7 +113,7 @@ namespace WebAPI.Controllers
 
             // Build public URLs for file
             if (!string.IsNullOrEmpty(response.Image))
-                response.Image = fileService.GetPublicURL(response.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
+                response.Image = fileService.GetPublicURL(response.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
             return Ok(response);
         }

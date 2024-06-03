@@ -67,6 +67,9 @@ internal class FileServiceHelper
         return supabase.Storage.From(bucket);
     }
 
+    /// <summary>
+    /// Get the public URL that should be used to acces a given file according to the provider configuration
+    /// </summary>
     public UriBuilder GetUriForfile(string fileName){
 
         var provider = new FileExtensionContentTypeProvider();

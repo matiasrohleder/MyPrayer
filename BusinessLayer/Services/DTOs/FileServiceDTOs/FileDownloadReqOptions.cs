@@ -1,8 +1,17 @@
 using System.Collections.Specialized;
+using Supabase.Storage;
 
 namespace BusinessLayer.Services.DTOs.FileServiceDTOs;
-public class FileDownloadReqOptions : Supabase.Storage.TransformOptions
+/// <summary>
+/// Object to pass options when requesting a download URL for a media file.
+/// This options give directions on how the media file should be transformed
+/// so as to optimize it for the current use case.
+/// </summary>
+public class FileDownloadReqOptions : TransformOptions
 {
+    /// <summary>
+    /// Format should never change. Hide provider property from API clients.
+    /// </summary>
     private new string Format = "origin";
 
     public FileDownloadReqOptions(int width, int height, int resize, int quality) : base()
@@ -17,18 +26,6 @@ public class FileDownloadReqOptions : Supabase.Storage.TransformOptions
         base.Format = this.Format;
     }
 
-    public static FileDownloadReqOptions Initialize() =>
-        new FileDownloadReqOptions(720, 1280, 1, 80);
-    
-    public static FileDownloadReqOptions InitializeFromQueryParams(
-        int width,
-        int height,
-        int resize,
-        int quality
-    ) =>
-        new FileDownloadReqOptions(width, height, resize, quality);
-
-    public string ToQueryParams() => $"?width={Width}&height={Height}&resize={Resize}&format={Format}&quality={Quality}";
     public NameValueCollection ToNameValueCollection() =>
         new NameValueCollection
         {
