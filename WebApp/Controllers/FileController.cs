@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 
 namespace WebApp.Controllers;
 
@@ -25,6 +25,6 @@ public class FileController : Controller
             int resize = 1,
             int quality = 80)
     {
-        return this.fileService.GetPublicURL(fileName, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality));
+        return this.fileService.GetPublicURL(fileName, new FileDownloadReqOptions(width, height, resize, quality));
     }
 }

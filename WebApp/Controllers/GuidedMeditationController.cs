@@ -1,5 +1,5 @@
 using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
@@ -130,7 +130,7 @@ public class GuidedMeditationController(
     private void GetContentPublicURL(GuidedMeditationViewModel guidedMeditationViewModel, FileDownloadReqOptions? options = null)
     {
         if(!string.IsNullOrEmpty(guidedMeditationViewModel.FileUrl))
-            guidedMeditationViewModel.SignedUrl = fileService.GetPublicURL(guidedMeditationViewModel.FileUrl)?.SignedUrl;
+            guidedMeditationViewModel.PublicUrl = fileService.GetPublicURL(guidedMeditationViewModel.FileUrl)?.PublicUrl;
     }
     #endregion
 }

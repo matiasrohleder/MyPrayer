@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 
 namespace WebAPI.Controllers
 {

@@ -1,5 +1,5 @@
 using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
@@ -130,7 +130,7 @@ public class ContentController(
     private void GetContentPublicURL(ContentViewModel contentViewModel, FileDownloadReqOptions? options = null)
     {
         if(!string.IsNullOrEmpty(contentViewModel.FileUrl))
-            contentViewModel.SignedUrl = fileService.GetPublicURL(contentViewModel.FileUrl, options ?? FileDownloadReqOptions.Initialize())?.SignedUrl;
+            contentViewModel.PublicUrl = fileService.GetPublicURL(contentViewModel.FileUrl, options ?? new FileDownloadReqOptions())?.PublicUrl;
     }
     #endregion
 }

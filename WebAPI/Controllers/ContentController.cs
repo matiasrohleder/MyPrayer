@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 using DataLayer.Interfaces;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -57,7 +58,7 @@ namespace WebAPI.Controllers
                         .Where(c => !string.IsNullOrEmpty(c.Image))
                         .Select(async item =>
                         {
-                            item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
+                            item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
                         })
                 ).ToList();
 
@@ -86,7 +87,7 @@ namespace WebAPI.Controllers
                                                             .ToListAsync();
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
-                item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
+                item.Image = fileService.GetPublicURL(item.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
 
             return Ok(contents);
         }
@@ -112,7 +113,7 @@ namespace WebAPI.Controllers
 
             // Build public URLs for file
             if (!string.IsNullOrEmpty(response.Image))
-                response.Image = fileService.GetPublicURL(response.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.SignedUrl;
+                response.Image = fileService.GetPublicURL(response.Image!, FileDownloadReqOptions.InitializeFromQueryParams(width, height, resize, quality))?.PublicUrl;
 
             return Ok(response);
         }
