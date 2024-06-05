@@ -18,4 +18,12 @@
     <PackageReference Include="supabase-csharp" Version="0.16.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="businesssettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="businesssettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ namespace WebAPI.DTOs
         public string Id { get; set; }
         public DateTime Date { get; set; }
         public string Link { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         
         public ContentRes(Content content)
         {

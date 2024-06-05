@@ -1,8 +1,8 @@
 using BusinessLayer.Interfaces;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +56,7 @@ public class ContentController(
     public async Task<IActionResult> Create(ContentViewModel content)
     {
         if (content.CategoryId == Guid.Empty)
-            ModelState.AddModelError("CategoryId", "La categoría es requerida");
+            ModelState.AddModelError("CategoryId", "La categorÃ­a es requerida");
 
         if (ModelState.IsValid)
         {
@@ -66,7 +66,7 @@ public class ContentController(
 
         await InitViewDatas("Create");
 
-        await GetContentSignedURLAsync(content);
+        GetContentPublicURL(content);
 
         return View("CreateOrEdit", content);
     }
@@ -81,7 +81,7 @@ public class ContentController(
             
         ContentViewModel contentViewModel = new(content);
         
-        await GetContentSignedURLAsync(contentViewModel);
+        GetContentPublicURL(contentViewModel);
 
         await InitViewDatas("Edit");
 
@@ -97,7 +97,7 @@ public class ContentController(
             return RedirectToAction("Index", "Content");
         }
         
-        await GetContentSignedURLAsync(content);
+        GetContentPublicURL(content);
 
         await InitViewDatas("Edit");
 
@@ -127,10 +127,10 @@ public class ContentController(
         ViewData["Categories"] = await categoryService.GetAll().Where(c => c.Active && !c.Deleted).OrderBy(c => c.Order).Select(c => new SelectListItem(c.Name, c.Id.ToString())).ToListAsync();
     }
 
-    private async Task GetContentSignedURLAsync(ContentViewModel contentViewModel)
+    private void GetContentPublicURL(ContentViewModel contentViewModel, FileDownloadReqOptions? options = null)
     {
         if(!string.IsNullOrEmpty(contentViewModel.FileUrl))
-            contentViewModel.SignedUrl = (await fileService.GetSignedURLAsync(contentViewModel.FileUrl))?.SignedUrl;
+            contentViewModel.PublicUrl = fileService.GetPublicURL(contentViewModel.FileUrl, options ?? new FileDownloadReqOptions())?.PublicUrl;
     }
     #endregion
 }

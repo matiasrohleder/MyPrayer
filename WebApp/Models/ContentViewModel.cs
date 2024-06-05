@@ -27,7 +27,7 @@ public class ContentViewModel
 
     public string? FileUrl { get; set; }
 
-    public string? SignedUrl { get; set; }
+    public string? PublicUrl { get; set; }
 
     public ContentViewModel()
     {

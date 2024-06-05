@@ -71,12 +71,12 @@ class FileUploader
     };
     
     fetchImage(self, fileName) {
-        fetch(`/File/SignedURL?fileName=${encodeURIComponent(fileName)}`)
+        fetch(`/File/PublicURL?fileName=${encodeURIComponent(fileName)}`)
         .then(response => response.json())
         .then(data => {
-            if (data.signedUrl) {
+            if (data.publicUrl) {
                 var uploadedImage = document.getElementById(self._imgDisplayTagId);
-                uploadedImage.src = data.signedUrl;
+                uploadedImage.src = data.publicUrl;
                 uploadedImage.style.display = 'block'; // Show the image element
                 swal.close();
             } else {

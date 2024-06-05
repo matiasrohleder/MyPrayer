@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
+using BusinessLayer.Services.DTOs.FileServiceDTOs;
 
 namespace WebApp.Controllers;
 
@@ -19,8 +18,13 @@ public class FileController : Controller
         return await this.fileService.UploadAsync(file);
     }
 
-    public async Task<FileDownloadRes> SignedURL(string fileName)
+    public FileDownloadRes PublicURL(
+            string fileName,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
     {
-        return await this.fileService.GetSignedURLAsync(fileName);
+        return this.fileService.GetPublicURL(fileName, new FileDownloadReqOptions(width, height, resize, quality));
     }
 }

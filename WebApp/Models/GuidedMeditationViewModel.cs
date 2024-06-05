@@ -25,7 +25,7 @@ public class GuidedMeditationViewModel
     [Required(ErrorMessage = "El archivo de audio es requerido")]
     public string? FileUrl { get; set; }
 
-    public string? SignedUrl { get; set; }
+    public string? PublicUrl { get; set; }
 
     public GuidedMeditationViewModel()
     {

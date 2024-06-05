@@ -1,7 +1,6 @@
+using BusinessLayer.Services.FileService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLayer.Interfaces;
-using BusinessLayer.Services;
 
 namespace WebAPI.Controllers
 {
@@ -23,10 +22,15 @@ namespace WebAPI.Controllers
 			return await this.fileService.UploadAsync(file);
         }
 
-        [HttpGet("signed-url")]
-        public async Task<FileDownloadRes> GetURLAsync(string fileName)
+        [HttpGet("public-url")]
+        public FileDownloadRes GetPublicURL(
+            string fileName,
+            int width = 720,
+            int height = 1280,
+            int resize = 1,
+            int quality = 80)
         {
-			return await this.fileService.GetSignedURLAsync(fileName);
+			return this.fileService.GetPublicURL(fileName, new FileDownloadReqOptions(width, height, resize, quality));
         }
     }
 }
