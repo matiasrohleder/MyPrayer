@@ -17,12 +17,12 @@ internal class FileServiceConfiguration : IFileServiceConfiguration
         
     }
 
-    public FileServiceConfiguration(IConfiguration configuration)
+    public FileServiceConfiguration(IConfigurationRoot configuration)
     {
         Bind(configuration);
     }
 
-    public FileServiceConfiguration Bind(IConfiguration configuration)
+    public FileServiceConfiguration Bind(IConfigurationRoot configuration)
     {
         Console.WriteLine($"Binding FileServiceConfiguration");
         string baseURL = configuration.GetSection("FileServiceConfiguration:BaseURL")?.Value;

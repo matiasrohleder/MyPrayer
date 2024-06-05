@@ -31,7 +31,8 @@ public static class BusinessLayerExtension
 
         var businessSettings = businessSettingsBuilder.Build();
 
-        services.Configure<FileServiceConfiguration>(businessSettings.GetSection(nameof(FileServiceConfiguration)));
+        services.AddSingleton<IFileServiceConfiguration, FileServiceConfiguration>(provider => new FileServiceConfiguration(businessSettings));
+        services.AddSingleton<IFileServiceHelper, FileServiceHelper>();
 
         return new ServiceInjection(services, configuration).Initialize();
     }
