@@ -1,5 +1,5 @@
 {
-    "FileServiceConfiguration": {
+    "FileService": {
         "BaseURL": "https://cemxfzuzgnijspeblhvr.supabase.co",
         "StorageResource": "/storage/v1/object/public/{0}/{1}",
         "Bucket": "TEST",

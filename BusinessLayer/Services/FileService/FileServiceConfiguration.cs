@@ -24,8 +24,7 @@ internal class FileServiceConfiguration : IFileServiceConfiguration
 
     public FileServiceConfiguration Bind(IConfigurationRoot configuration)
     {
-        string baseURL = configuration.GetSection("FileServiceConfiguration:BaseURL")?.Value;
-        configuration.GetSection(nameof(FileServiceConfiguration)).Bind(this);
+        configuration.GetSection("FileService").Bind(this);
         return this;
     }
 }

@@ -1,5 +1,5 @@
 {
-    "FileServiceConfiguration": {
+    "FileService": {
         "BaseURL": "",
         "StorageResource": "",
         "Bucket": "",
