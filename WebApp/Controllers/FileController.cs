@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using BusinessLayer.Interfaces;
-using BusinessLayer.Services.DTOs.FileServiceDTOs;
+using BusinessLayer.Services.FileService;
 
 namespace WebApp.Controllers;
 

@@ -1,5 +1,4 @@
-using BusinessLayer.Interfaces;
-using BusinessLayer.Services.DTOs.FileServiceDTOs;
+using BusinessLayer.Services.FileService;
 using DataLayer.Interfaces;
 using Entities.Constants.Authentication;
 using Entities.Models;
