@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Services.FileService;
 using DataLayer.Interfaces;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
 
             // Build public URLs for files
             if (!string.IsNullOrEmpty(guidedMeditation.FileUrl))
-                guidedMeditationRes.Audio = (await fileService.GetSignedURLAsync(guidedMeditationRes.Audio)).SignedUrl;
+                guidedMeditationRes.Audio = fileService.GetPublicURL(guidedMeditationRes.Audio).PublicUrl;
 
             return Ok(guidedMeditationRes);
         }
