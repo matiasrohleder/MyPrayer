@@ -17,12 +17,12 @@ internal class FileServiceConfiguration : IFileServiceConfiguration
         
     }
 
-    public FileServiceConfiguration(IConfigurationRoot configuration)
+    public FileServiceConfiguration(IConfiguration configuration)
     {
         Bind(configuration);
     }
 
-    public FileServiceConfiguration Bind(IConfigurationRoot configuration)
+    public FileServiceConfiguration Bind(IConfiguration configuration)
     {
         configuration.GetSection("FileService").Bind(this);
         return this;
