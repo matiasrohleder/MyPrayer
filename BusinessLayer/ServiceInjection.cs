@@ -31,6 +31,7 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddServices()
     {
         Services.AddScoped<IFileService, FileService>();
+        services.AddSingleton<IFileServiceHelper, FileServiceHelper>();
     }
 
     private void AddBusinessLogics()
@@ -40,6 +41,7 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new MyPrayerConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
+        services.AddSingleton<IFileServiceConfiguration, FileServiceConfiguration>();
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
     }
