@@ -71,8 +71,10 @@ namespace WebAPI.Controllers
         /// <param name="categoryId"></param>
         /// <returns></returns>
         [HttpGet("category/{categoryId}")]
-        public async Task<ActionResult<List<ContentRes>>> GetByCategory(
+        public async Task<ActionResult<PaginatedContentRes>> GetByCategory(
             Guid categoryId,
+            int skip = 0,
+            int take = 5,
             int width = 720,
             int height = 1280,
             int resize = 1,
@@ -81,13 +83,17 @@ namespace WebAPI.Controllers
             List<ContentRes> contents = await contentService.GetAll()
                                                             .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
                                                             .OrderByDescending(c => c.ShowDate)
+                                                            .Skip(skip).Take(take)
                                                             .Select(c => new ContentRes(c))
                                                             .ToListAsync();
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
                 item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
-            return Ok(contents);
+            // Get total pages
+            int totalPages = ((await contentService.GetAll().CountAsync()) / take) + 1;
+
+            return Ok(new PaginatedContentRes(contents, totalPages));
         }
 
         /// <summary>
