@@ -94,7 +94,8 @@ namespace WebAPI.Controllers
                 item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
             // Get total pages
-            int totalPages = (int)Math.Ceiling((double)((await query.CountAsync()) / take));
+            int totalContent = await query.CountAsync();
+            int totalPages = (totalContent % take) == 0 ? (totalContent / take) + 1 : (totalContent / take);
 
             return Ok(new PaginatedContentRes(contents, totalPages));
         }
