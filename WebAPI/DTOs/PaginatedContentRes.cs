@@ -7,7 +7,7 @@ namespace WebAPI.DTOs
         public List<ContentRes> Content { get; set; }
         public int TotalPages { get; set; }
         
-        public ContentRes(List<ContentRes> content, int totalPages)
+        public PaginatedContentRes(List<ContentRes> content, int totalPages)
         {
             Content = content;
             TotalPages = totalPages;

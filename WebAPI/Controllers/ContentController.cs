@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
             int resize = 1,
             int quality = 80)
         {
-            IQueryable<ContentRes> query = contentService.GetAll()
+            IQueryable<Content> query = contentService.GetAll()
                                         .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId);
 
             List<ContentRes> contents = await query
