@@ -80,18 +80,21 @@ namespace WebAPI.Controllers
             int resize = 1,
             int quality = 80)
         {
-            List<ContentRes> contents = await contentService.GetAll()
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
-                                                            .OrderByDescending(c => c.ShowDate)
-                                                            .Skip(skip).Take(take)
-                                                            .Select(c => new ContentRes(c))
-                                                            .ToListAsync();
+            IQueryable<ContentRes> query = contentService.GetAll()
+                                        .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId);
+
+            List<ContentRes> contents = await query
+                                        .OrderByDescending(c => c.ShowDate)
+                                        .Skip(skip).Take(take)
+                                        .Select(c => new ContentRes(c))
+                                        .ToListAsync();
+
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
                 item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
             // Get total pages
-            int totalPages = ((await contentService.GetAll().CountAsync()) / take) + 1;
+            int totalPages = (int)Math.Ceiling((double)((await query.CountAsync()) / take));
 
             return Ok(new PaginatedContentRes(contents, totalPages));
         }
