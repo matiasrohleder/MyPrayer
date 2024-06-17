@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
 
             // Get total pages
             int totalContent = await query.CountAsync();
-            int totalPages = (totalContent % take) == 0 ? (totalContent / take) + 1 : (totalContent / take);
+            int totalPages = (totalContent % take) == 0 ? (totalContent / take) : (totalContent / take) + 1;
 
             return Ok(new PaginatedContentRes(contents, totalPages));
         }
