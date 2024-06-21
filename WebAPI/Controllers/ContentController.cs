@@ -71,23 +71,37 @@ namespace WebAPI.Controllers
         /// <param name="categoryId"></param>
         /// <returns></returns>
         [HttpGet("category/{categoryId}")]
-        public async Task<ActionResult<List<ContentRes>>> GetByCategory(
+        public async Task<ActionResult<PaginatedContentRes>> GetByCategory(
             Guid categoryId,
+            int skip = 0,
+            int take = 5,
+            bool asc = false,
             int width = 720,
             int height = 1280,
             int resize = 1,
             int quality = 80)
         {
-            List<ContentRes> contents = await contentService.GetAll()
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
-                                                            .OrderByDescending(c => c.ShowDate)
-                                                            .Select(c => new ContentRes(c))
-                                                            .ToListAsync();
+            IQueryable<Content> query = contentService.GetAll()
+                                        .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId);
+
+            IQueryable<Content> contentQuery = asc ? query.OrderBy(c => c.ShowDate) : query.OrderByDescending(c => c.ShowDate);
+
+            if(take > 0)
+                contentQuery = contentQuery.Skip(skip).Take(take);
+
+            List<ContentRes> contents = await contentQuery
+                                        .Select(c => new ContentRes(c))
+                                        .ToListAsync();
+
             // Build public URLs for files
             foreach (var item in contents.Where(c => !string.IsNullOrEmpty(c.Image)))
                 item.Image = fileService.GetPublicURL(item.Image!, new FileDownloadReqOptions(width, height, resize, quality))?.PublicUrl;
 
-            return Ok(contents);
+            // Get total pages
+            int totalContent = await query.CountAsync();
+            int totalPages = (totalContent % take) == 0 ? (totalContent / take) : (totalContent / take) + 1;
+
+            return Ok(new PaginatedContentRes(contents, totalPages));
         }
 
         /// <summary>
