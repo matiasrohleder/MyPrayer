@@ -75,6 +75,7 @@ namespace WebAPI.Controllers
             Guid categoryId,
             int skip = 0,
             int take = 5,
+            bool asc = false,
             int width = 720,
             int height = 1280,
             int resize = 1,
@@ -83,9 +84,12 @@ namespace WebAPI.Controllers
             IQueryable<Content> query = contentService.GetAll()
                                         .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId);
 
-            List<ContentRes> contents = await query
-                                        .OrderByDescending(c => c.ShowDate)
-                                        .Skip(skip).Take(take)
+            IQueryable<Content> contentQuery = asc ? query.OrderBy(c => c.ShowDate) : query.OrderByDescending(c => c.ShowDate);
+
+            if(take > 0)
+                contentQuery = contentQuery.Skip(skip).Take(take);
+
+            List<ContentRes> contents = await contentQuery
                                         .Select(c => new ContentRes(c))
                                         .ToListAsync();
 
