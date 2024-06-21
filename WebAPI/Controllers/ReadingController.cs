@@ -31,7 +31,10 @@ namespace WebAPI.Controllers
                 date = DateTime.Today;
 
             List<ReadingRes> dailyReadings = (await readingService.GetAll()
-                                                            .Where(r => !r.Deleted && r.Date.ToUniversalTime().Date == date.Value.ToUniversalTime().Date)
+                                                            .Where(r => !r.Deleted
+                                                                && !string.IsNullOrEmpty(r.Name)
+                                                                && !string.IsNullOrEmpty(r.Text)
+                                                                && r.Date.ToUniversalTime().Date == date.Value.ToUniversalTime().Date)
                                                             .Select(r => new ReadingRes(r))
                                                             .ToListAsync())
                                                             .OrderBy(r => r.Lecture)
