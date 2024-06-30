@@ -8,7 +8,8 @@ $(document).ready(function () {
         columns: [
             { data: "name" },
             { data: "category" },
-            { data: "showDate" },
+            { data: "dateStart" },
+            { data: "dateEnd" },
             {
                 data: "active",
                 render: function (data, type, row) {
@@ -36,8 +37,7 @@ $(document).ready(function () {
     });
 });
 
-function Delete(id)
-{
+function Delete(id) {
     Swal.fire({
         title: "\xbfDesea eliminar el contenido?",
         text: "Esta acci\xf3n es irreversible",
