@@ -21,7 +21,8 @@ public class ContentViewModel
     public string Name { get; set; }
 
     [Required(ErrorMessage = "La fecha de inicio es requerida")]
-    public DateTime ShowDate { get; set; }
+    public DateTime DateStart { get; set; }
+    public DateTime? DateEnd { get; set; }
 
     public string? File { get; set; }
 
@@ -36,7 +37,7 @@ public class ContentViewModel
         Id = Guid.NewGuid();
         Link = string.Empty;
         Name = string.Empty;
-        ShowDate = DateTime.Today;
+        DateStart = DateTime.Today;
     }
 
     public ContentViewModel(Content content)
@@ -47,7 +48,8 @@ public class ContentViewModel
         Id = content.Id;
         Link = content.Link;
         Name = content.Name;
-        ShowDate = content.ShowDate;
+        DateStart = content.DateStart;
+        DateEnd = content.DateEnd;
         FileUrl = content.FileUrl;
     }
 
@@ -61,7 +63,8 @@ public class ContentViewModel
             Id = Id,
             Link = string.IsNullOrEmpty(Link) ? string.Empty : Link,
             Name = Name,
-            ShowDate = ShowDate.ToUniversalTime(),
+            DateStart = DateStart.ToUniversalTime(),
+            DateEnd = DateEnd?.ToUniversalTime(),
             FileUrl = FileUrl
         };
 

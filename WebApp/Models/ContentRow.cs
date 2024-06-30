@@ -8,5 +8,6 @@ public class ContentRow(Content content)
     public string Category { get; set; } = content.Category!.Name;
     public Guid Id { get; set; } = content.Id;
     public string Name { get; set; } = content.Name;
-    public string ShowDate { get; set; } = content.ShowDate.ToString("dd/MM/yyyy");
+    public string DateStart { get; set; } = content.DateStart.ToString("dd/MM/yyyy");
+    public string DateEnd { get; set; } = content.DateEnd?.ToString("dd/MM/yyyy");
 }

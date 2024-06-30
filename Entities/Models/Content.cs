@@ -25,7 +25,8 @@ public class Content : Entity
     [StringLength(2000)]
     public string Link { get; set; }
 
-    public DateTime ShowDate { get; set; }
+    public DateTime DateStart { get; set; }
+    public DateTime? DateEnd { get; set; }
 
     [StringLength(500)]
     public string? FileUrl { get; set; }
