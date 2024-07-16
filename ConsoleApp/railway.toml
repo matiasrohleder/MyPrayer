@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./ConsoleApp/Dockerfile"
+
+[deploy]
+startCommand = "dotnet ConsoleApp.dll"
+restartPolicyType = "never"
