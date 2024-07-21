@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{F2205A43-EE6F-4894-B089-A17FD763B786}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{79CCA081-B275-4AA0-B80E-920461F69DDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{F2205A43-EE6F-4894-B089-A17FD763B786}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2205A43-EE6F-4894-B089-A17FD763B786}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2205A43-EE6F-4894-B089-A17FD763B786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79CCA081-B275-4AA0-B80E-920461F69DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79CCA081-B275-4AA0-B80E-920461F69DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79CCA081-B275-4AA0-B80E-920461F69DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79CCA081-B275-4AA0-B80E-920461F69DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
