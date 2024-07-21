@@ -40,16 +40,18 @@ namespace WebAPI.Controllers
 
             List<RecentContentItem> recents = (await contentService.GetAll()
                                                             .Include(c => c.Category)
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime())
+                                                            .Where(c => !c.Deleted && c.Active
+                                                            && c.DateStart <= DateTime.Now.ToUniversalTime()
+                                                            && (c.DateEnd == null || c.DateEnd >= DateTime.Now.ToUniversalTime()))
                                                             .GroupBy(c => c.CategoryId)
                                                             .Select(c => new RecentContentItem(c.First().Category)
                                                             {
-                                                                Contents = c.OrderByDescending(i => i.ShowDate).Take(amount).Select(i => new ContentRes(i)).ToList()
+                                                                Contents = c.OrderByDescending(i => i.DateStart).Take(amount).Select(i => new ContentRes(i)).ToList()
                                                             })
                                                             .ToListAsync())
                                                             .OrderBy(c => c.Category.Order)
                                                             .ToList();
-                
+
             // Build public URLs for files
             var tasks = recents.SelectMany(carousel =>
                     carousel.Contents
@@ -61,7 +63,7 @@ namespace WebAPI.Controllers
                 ).ToList();
 
             await Task.WhenAll(tasks);
-            
+
             return Ok(recents);
         }
 
@@ -79,8 +81,11 @@ namespace WebAPI.Controllers
             int quality = 80)
         {
             List<ContentRes> contents = await contentService.GetAll()
-                                                            .Where(c => !c.Deleted && c.Active && c.ShowDate <= DateTime.Now.ToUniversalTime() && c.CategoryId == categoryId)
-                                                            .OrderByDescending(c => c.ShowDate)
+                                                            .Where(c => !c.Deleted && c.Active
+                                                            && c.DateStart <= DateTime.Now.ToUniversalTime()
+                                                            && (c.DateEnd == null || c.DateEnd >= DateTime.Now.ToUniversalTime())
+                                                            && c.CategoryId == categoryId)
+                                                            .OrderByDescending(c => c.DateStart)
                                                             .Select(c => new ContentRes(c))
                                                             .ToListAsync();
             // Build public URLs for files
@@ -104,7 +109,7 @@ namespace WebAPI.Controllers
             int quality = 80)
         {
             Content? content = await contentService.GetAsync(id);
-            if(content is null)
+            if (content is null)
                 return NoContent();
 
             ContentRes response = new ContentRes(content!);

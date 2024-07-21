@@ -34,9 +34,14 @@
         </div>
 
         <div class="mb-3">
-            <label for="ShowDate">Fecha de inicio</label>
-            <input type="datetime-local" class="form-control" id="ShowDate" asp-for="ShowDate">
-            <span asp-validation-for="ShowDate" class="text-danger"></span>
+            <label for="DateStart">Fecha de inicio</label>
+            <input type="date" class="form-control" id="DateStart" asp-for="DateStart">
+            <span asp-validation-for="DateStart" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="DateEnd">Fecha final</label>
+            <input type="date" class="form-control" id="DateEnd" asp-for="DateEnd">
         </div>
 
         <div class="mb-3">
